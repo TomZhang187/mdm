@@ -1,0 +1,8 @@
+eladmin-common/target/
+eladmin-generator/target
+eladmin-system/target
+eladmin-tools/target
+eladmin-logging/target
+
+# Editor directories and files
+.idea

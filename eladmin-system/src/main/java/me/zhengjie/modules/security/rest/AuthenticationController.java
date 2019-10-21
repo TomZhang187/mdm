@@ -4,17 +4,15 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.aop.log.Log;
-import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.monitor.service.RedisService;
 import me.zhengjie.modules.security.security.AuthenticationInfo;
 import me.zhengjie.modules.security.security.AuthorizationUser;
 import me.zhengjie.modules.security.security.ImgResult;
 import me.zhengjie.modules.security.security.JwtUser;
+import me.zhengjie.modules.security.utils.JwtTokenUtil;
 import me.zhengjie.modules.security.utils.VerifyCodeUtils;
 import me.zhengjie.utils.EncryptUtils;
-import me.zhengjie.modules.security.utils.JwtTokenUtil;
 import me.zhengjie.utils.SecurityUtils;
-import me.zhengjie.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +21,7 @@ import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -63,12 +62,12 @@ public class AuthenticationController {
         String code = redisService.getCodeVal(authorizationUser.getUuid());
         // 清除验证码
         redisService.delete(authorizationUser.getUuid());
-        if (StringUtils.isBlank(code)) {
-            throw new BadRequestException("验证码已过期");
-        }
-        if (StringUtils.isBlank(authorizationUser.getCode()) || !authorizationUser.getCode().equalsIgnoreCase(code)) {
-            throw new BadRequestException("验证码错误");
-        }
+//        if (StringUtils.isBlank(code)) {
+//            throw new BadRequestException("验证码已过期");
+//        }
+//        if (StringUtils.isBlank(authorizationUser.getCode()) || !authorizationUser.getCode().equalsIgnoreCase(code)) {
+//            throw new BadRequestException("验证码错误");
+//        }
         final JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(authorizationUser.getUsername());
 
         if(!jwtUser.getPassword().equals(EncryptUtils.encryptPassword(authorizationUser.getPassword()))){
