@@ -113,6 +113,10 @@ public class DeptServiceImpl implements DeptService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id) {
-        deptRepository.deleteById(id);
+        Optional<Dept> optionalDept = deptRepository.findById(id);
+        ValidationUtil.isNull( optionalDept,"Dept","id",id);
+        Dept dept = optionalDept.get();
+        dept.setEnabled(false);//假删除，设置状态为false不可用
+        deptRepository.save(dept);
     }
 }

@@ -53,5 +53,8 @@ public class Dept implements Serializable {
     @CreationTimestamp
     private Timestamp createTime;
 
+    @Column(name = "employee_code")
+    private String employeeCode;
+
     public @interface Update {}
 }
