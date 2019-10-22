@@ -70,10 +70,10 @@ public class EmployeeController {
         employeeService.download(employeeService.queryAll(criteria), response);
     }
 
-    @Log("根据工号查询员工数据")
-    @GetMapping(value = "/employee/code")
-    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE_ALL','EMPLOYEE_SELECT')")
-    public ResponseEntity getEmploysByCode(Dept resources) throws IOException {
-        return  new ResponseEntity(employeeService.findByEmployeeCode(resources.getEmployeeCode()),HttpStatus.OK);
-    }
+//    @Log("根据工号查询员工数据")
+//    @GetMapping(value = "/employee/code")
+//    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE_ALL','EMPLOYEE_SELECT')")
+//    public ResponseEntity getEmploysByCode(Dept resources) throws IOException {
+//        return  new ResponseEntity(employeeService.findByEmployeeCode(resources.getEmployeeCode()),HttpStatus.OK);
+//    }
 }

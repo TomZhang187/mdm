@@ -39,6 +39,7 @@ public class DeptController {
         // 数据权限
         criteria.setIds(dataScope.getDeptIds());
         List<DeptDTO> deptDTOS = deptService.queryAll(criteria);
+        System.out.println(deptDTOS);
         return new ResponseEntity(deptService.buildTree(deptDTOS),HttpStatus.OK);
     }
 

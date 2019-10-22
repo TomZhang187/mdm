@@ -1,6 +1,7 @@
 package me.zhengjie.modules.system.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hqhop.modules.employee.domain.Employee;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
@@ -55,6 +56,10 @@ public class Dept implements Serializable {
 
     @Column(name = "employee_code")
     private String employeeCode;
+
+    @ManyToOne
+    @JoinColumn(name = "leader_id")
+    private Employee leader;
 
     public @interface Update {}
 }

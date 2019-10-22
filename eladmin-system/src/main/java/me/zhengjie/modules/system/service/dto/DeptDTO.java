@@ -1,6 +1,7 @@
 package me.zhengjie.modules.system.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hqhop.modules.employee.domain.Employee;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,8 @@ public class DeptDTO implements Serializable {
     private Timestamp createTime;
 
     private String employeeCode;
+
+    private Employee leader;
 
     public String getLabel() {
         return name;
