@@ -1,6 +1,6 @@
 package com.hqhop.modules.material.rest;
 
-import me.zhengjie.aop.log.Log;
+import com.hqhop.aop.log.Log;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.dto.MaterialQueryCriteria;

@@ -1,6 +1,6 @@
 package com.hqhop.modules.material.service.mapper;
 
-import me.zhengjie.mapper.EntityMapper;
+import com.hqhop.mapper.EntityMapper;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.service.dto.MaterialDTO;
 import org.mapstruct.Mapper;

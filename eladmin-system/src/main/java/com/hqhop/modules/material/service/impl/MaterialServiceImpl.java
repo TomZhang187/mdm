@@ -1,7 +1,7 @@
 package com.hqhop.modules.material.service.impl;
 
 import com.hqhop.modules.material.domain.Material;
-import me.zhengjie.utils.ValidationUtil;
+import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.material.repository.MaterialRepository;
 import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.dto.MaterialDTO;
@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import me.zhengjie.utils.PageUtil;
-import me.zhengjie.utils.QueryHelp;
+import com.hqhop.utils.PageUtil;
+import com.hqhop.utils.QueryHelp;
 import java.util.List;
 import java.util.Map;
 

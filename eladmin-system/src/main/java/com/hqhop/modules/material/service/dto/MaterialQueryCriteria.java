@@ -1,7 +1,7 @@
 package com.hqhop.modules.material.service.dto;
 
 import lombok.Data;
-import me.zhengjie.annotation.Query;
+import com.hqhop.annotation.Query;
 
 /**
 * @author chengy

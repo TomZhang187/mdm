@@ -5,8 +5,8 @@ public class DingTalkConstant {
     public static final String CORPID = "ding1d7e8b088fab194f35c2f4657eb6378f";
 
     public static final String AGENTID = "258960428";
-    public static final String APPKEY = "dinguggbel3hyvmovqwn";
-    public static final String APPSECRET = "6ABfHpy0s1vCGewM24DkBIzFTV1zij-T8m5YF957WEJZM32lVwlsVhqcLKAaHOZu";
+    public static final String APPKEY = "dingvbqhfyejajuhowyu";
+    public static final String APPSECRET = "Qg72b2JwNqMnkpVyG_hsppyd5K7FW2d3tnkFc4GMomymSQ185c2feyxec4tWxLVv";
     /**
      * 后台服务器的URL 外网地址，审批流程回调函数校验时需要用到
      */

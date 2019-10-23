@@ -1,6 +1,5 @@
 package com.hqhop.utils;
 
-import me.zhengjie.utils.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
