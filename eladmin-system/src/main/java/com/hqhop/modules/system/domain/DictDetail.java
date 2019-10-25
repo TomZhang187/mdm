@@ -14,6 +14,8 @@ import java.io.Serializable;
 @Table(name="sys_dict_detail")
 public class DictDetail implements Serializable {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

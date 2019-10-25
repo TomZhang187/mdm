@@ -28,7 +28,7 @@ public class DictController {
 
     @Log("查询字典")
     @GetMapping(value = "/dict")
-    @PreAuthorize("hasAnyRole('ADMIN','DICT_ALL','DICT_SELECT')")
+//    @PreAuthorize("hasAnyRole('ADMIN','DICT_ALL','DICT_SELECT')")
     public ResponseEntity getDicts(DictQueryCriteria resources, Pageable pageable){
         return new ResponseEntity(dictService.queryAll(resources,pageable),HttpStatus.OK);
     }
