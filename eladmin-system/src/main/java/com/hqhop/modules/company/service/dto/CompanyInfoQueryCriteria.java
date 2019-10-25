@@ -10,15 +10,15 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
-* @author zf
-* @date 2019-10-22
-*/
+ * @author zf
+ * @date 2019-10-22
+ */
 @Data
-public class CompanyInfoQueryCriteria{
+public class CompanyInfoQueryCriteria {
 
     // 客商ID
     // 处理精度丢失问题
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long companyKey;
 
     // 批准时间
@@ -96,7 +96,7 @@ public class CompanyInfoQueryCriteria{
     @Query
     private Integer trade;
 
-   //联系人的名字 模糊查询
-    private String   contactName;
+    //联系人的名字 模糊查询
+    private String contactName;
 
 }

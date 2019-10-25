@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
-* @author zf
-* @date 2019-10-22
-*/
+ * @author zf
+ * @date 2019-10-22
+ */
 @Entity
 //@ToString(exclude={"contacts"})
-@Table(name="company_info")
+@Table(name = "company_info")
 public class CompanyInfo implements Serializable {
 
     // 客商ID
@@ -36,15 +36,15 @@ public class CompanyInfo implements Serializable {
     private Timestamp approveTime;
 
     // 所属地区
-    @Column(name = "belong_area",nullable = false)
+    @Column(name = "belong_area", nullable = false)
     private Integer belongArea;
 
     // 所属公司
-    @Column(name = "belong_company",nullable = false)
+    @Column(name = "belong_company", nullable = false)
     private Integer belongCompany;
 
     // 公司属性
-    @Column(name = "company_prop",nullable = false)
+    @Column(name = "company_prop", nullable = false)
     private Integer companyProp;
 
     // 客商简称
@@ -52,11 +52,11 @@ public class CompanyInfo implements Serializable {
     private String companyShortName;
 
     // 客商状态
-    @Column(name = "company_state",nullable = false)
+    @Column(name = "company_state", nullable = false)
     private Integer companyState;
 
     // 客商类型
-    @Column(name = "company_type",nullable = false)
+    @Column(name = "company_type", nullable = false)
     private Integer companyType;
 
     // 客商名称
@@ -68,7 +68,7 @@ public class CompanyInfo implements Serializable {
     private String contactAddress;
 
     // 经济类型
-    @Column(name = "economic_type",nullable = false)
+    @Column(name = "economic_type", nullable = false)
     private Integer economicType;
 
     // 外文名称
@@ -76,11 +76,11 @@ public class CompanyInfo implements Serializable {
     private String foreignName;
 
     // 是否禁用
-    @Column(name = "is_disable",nullable = false)
+    @Column(name = "is_disable", nullable = false)
     private Integer isDisable;
 
     // 是否散户
-    @Column(name = "is_retai",nullable = false)
+    @Column(name = "is_retai", nullable = false)
     private Integer isRetai;
 
     // 法人
@@ -108,16 +108,16 @@ public class CompanyInfo implements Serializable {
     private String taxId;
 
     // 所属行业
-    @Column(name = "trade",nullable = false)
+    @Column(name = "trade", nullable = false)
     private Integer trade;
 
     //联系人
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class ,cascade = CascadeType.ALL )
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "company_key")
-    private Set<Contact > contacts = new HashSet<>();
+    private Set<Contact> contacts = new HashSet<>();
 
-    public void copy(CompanyInfo source){
-        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
+    public void copy(CompanyInfo source) {
+        BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }
 
     public Long getCompanyKey() {
@@ -135,8 +135,8 @@ public class CompanyInfo implements Serializable {
     public void setApproveTime(String approveTime) {
 
 
-
-        this.approveTime = new Timestamp( new Date().getTime());;
+        this.approveTime = new Timestamp(new Date().getTime());
+        ;
     }
 
     public Integer getBelongArea() {

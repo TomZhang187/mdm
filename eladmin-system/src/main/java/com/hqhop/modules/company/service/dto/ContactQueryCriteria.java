@@ -5,11 +5,11 @@ import lombok.Data;
 
 
 /**
-* @author zf
-* @date 2019-10-22
-*/
+ * @author zf
+ * @date 2019-10-22
+ */
 @Data
-public class ContactQueryCriteria{
+public class ContactQueryCriteria {
 
     // 精确
     @Query

@@ -59,7 +59,6 @@ public class Contact implements Serializable {
     }
 
 
-
     public Long getContactKey() {
 
         return contactKey;

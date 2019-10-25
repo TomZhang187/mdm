@@ -8,35 +8,39 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+
 import java.util.Map;
 import java.util.List;
 
 /**
-* @author zf
-* @date 2019-10-22
-*/
+ * @author zf
+ * @date 2019-10-22
+ */
 //@CacheConfig(cacheNames = "contact")
 public interface ContactService {
 
     /**
-    * 查询数据分页
-    * @param criteria
-    * @param pageable
-    * @return
-    */
+     * 查询数据分页
+     *
+     * @param criteria
+     * @param pageable
+     * @return
+     */
     //@Cacheable
-    Map<String,Object> queryAll(ContactQueryCriteria criteria, Pageable pageable);
+    Map<String, Object> queryAll(ContactQueryCriteria criteria, Pageable pageable);
 
     /**
-    * 查询所有数据不分页
-    * @param criteria
-    * @return
-    */
+     * 查询所有数据不分页
+     *
+     * @param criteria
+     * @return
+     */
     //@Cacheable
     List<ContactDTO> queryAll(ContactQueryCriteria criteria);
 
     /**
      * 根据ID查询
+     *
      * @param contactKey
      * @return
      */
@@ -45,6 +49,7 @@ public interface ContactService {
 
     /**
      * 创建
+     *
      * @param resources
      * @return
      */
@@ -53,6 +58,7 @@ public interface ContactService {
 
     /**
      * 编辑
+     *
      * @param resources
      */
     //@CacheEvict(allEntries = true)
@@ -60,6 +66,7 @@ public interface ContactService {
 
     /**
      * 删除
+     *
      * @param contactKey
      */
     //@CacheEvict(allEntries = true)

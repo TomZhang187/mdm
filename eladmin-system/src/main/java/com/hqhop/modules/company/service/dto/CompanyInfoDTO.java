@@ -2,6 +2,7 @@ package com.hqhop.modules.company.service.dto;
 
 import com.hqhop.modules.company.domain.Contact;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -18,15 +19,15 @@ import javax.persistence.OneToMany;
 
 
 /**
-* @author zf
-* @date 2019-10-22
-*/
+ * @author zf
+ * @date 2019-10-22
+ */
 @Data
 public class CompanyInfoDTO implements Serializable {
 
     // 客商ID
     // 处理精度丢失问题
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long companyKey;
 
     // 批准时间
@@ -91,12 +92,12 @@ public class CompanyInfoDTO implements Serializable {
     private Integer trade;
 
     //联系人
-    private Set<Contact > contacts = new HashSet<>();
+    private Set<Contact> contacts = new HashSet<>();
 
     public void setApproveTime(Timestamp approveTime) {
 
 
-        this.approveTime =null;
+        this.approveTime = null;
     }
 
 }
