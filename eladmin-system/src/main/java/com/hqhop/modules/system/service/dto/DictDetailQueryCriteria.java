@@ -15,4 +15,8 @@ public class DictDetailQueryCriteria {
 
     @Query(propName = "name",joinName = "dict")
     private String dictName;
+
+    // 精确
+    @Query
+    private String value;
 }

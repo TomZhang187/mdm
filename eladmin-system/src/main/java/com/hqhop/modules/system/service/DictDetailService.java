@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -49,4 +50,16 @@ public interface DictDetailService {
 
     @Cacheable
     Map queryAll(DictDetailQueryCriteria criteria, Pageable pageable);
+
+    /*
+        返回label-value Map集合对象
+        * */
+    @Transactional(rollbackFor = Exception.class)
+    Map getLabelByValue(DictDetailQueryCriteria criteria);
+
+    /*
+        返回value-label Map集合
+        * */
+@Transactional(rollbackFor = Exception.class)
+Map getValueByLabel(DictDetailQueryCriteria criteria);
 }

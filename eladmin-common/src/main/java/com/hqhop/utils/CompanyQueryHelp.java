@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class CompanyQueryHelp {
-    public static <R, Q> Predicate getPredicate(Root<R> root, Q query, CriteriaBuilder cb, List<BigInteger> bigIntegerList) {
+    public static <R, Q> Predicate getPredicate(Root<R> root, Q query, CriteriaBuilder cb, List<BigInteger> compyKeyList) {
         List<Predicate> list = new ArrayList<>();
 
         if (query == null) {
@@ -115,10 +115,10 @@ public class CompanyQueryHelp {
             log.error(e.getMessage(), e);
         }
 
-        if (!bigIntegerList.isEmpty()) {
+        if (!compyKeyList.isEmpty()) {
             Path<Long> path = root.<Long>get("companyKey");
             CriteriaBuilder.In<Object> in = cb.in(path);
-            for (BigInteger bigInteger : bigIntegerList) {
+            for (BigInteger bigInteger : compyKeyList) {
                 in.value(bigInteger.longValue());
             }
             Predicate predicate4 = cb.and(in);

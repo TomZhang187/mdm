@@ -16,13 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
 * @author Zheng Jie
 * @date 2019-04-10
 */
+@SuppressWarnings("ALL")
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class DictDetailServiceImpl implements DictDetailService {
@@ -67,4 +67,37 @@ public class DictDetailServiceImpl implements DictDetailService {
     public void delete(Long id) {
         dictDetailRepository.deleteById(id);
     }
+
+    /*
+    返回label-value Map集合对象
+    * */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Map getLabelByValue(DictDetailQueryCriteria criteria) {
+                criteria.setDictName(criteria.getDictName().trim());
+        List<DictDetail> list = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
+        HashMap map = new HashMap();
+        for (DictDetail dictDetail : list) {
+                 map.put(dictDetail.getValue(),dictDetail.getLabel());
+        }
+
+          return  map;
+        }
+
+
+        /*
+        返回value-label Map集合
+        * */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Map getValueByLabel(DictDetailQueryCriteria criteria) {
+        criteria.setDictName(criteria.getDictName().trim());
+        List<DictDetail> list = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
+        HashMap map = new HashMap();
+        for (DictDetail dictDetail : list) {
+            map.put(dictDetail.getLabel(),dictDetail.getValue());
+        }
+        return  map;
+    }
+
 }

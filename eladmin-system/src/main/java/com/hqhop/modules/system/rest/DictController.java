@@ -35,7 +35,7 @@ public class DictController {
 
     @Log("新增字典")
     @PostMapping(value = "/dict")
-    @PreAuthorize("hasAnyRole('ADMIN','DICT_ALL','DICT_CREATE')")
+//    @PreAuthorize("hasAnyRole('ADMIN','DICT_ALL','DICT_CREATE')")
     public ResponseEntity create(@Validated @RequestBody Dict resources){
         if (resources.getId() != null) {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");

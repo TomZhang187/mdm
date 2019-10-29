@@ -54,12 +54,12 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     public Map<String, Object> queryAll(CompanyInfoQueryCriteria criteria, Pageable pageable) {
 
 
-        List<BigInteger> bigIntegerList = findCompanykeys(criteria.getContactName());
+        List<BigInteger> compyKeyList = findCompanykeys(criteria.getContactName());
         if (criteria.getIsDisable() == null || "".equals(criteria.getIsDisable())) {
             criteria.setIsDisable(0);
         }
 
-        Page<CompanyInfo> page = companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> CompanyQueryHelp.getPredicate(root, criteria, criteriaBuilder, bigIntegerList), pageable);
+        Page<CompanyInfo> page = companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> CompanyQueryHelp.getPredicate(root, criteria, criteriaBuilder, compyKeyList ), pageable);
         return PageUtil.toPage(page);
     }
 
