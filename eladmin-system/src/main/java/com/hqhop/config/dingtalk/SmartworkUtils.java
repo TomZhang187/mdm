@@ -1,4 +1,4 @@
-package com.hqhop.modules.dingtalk;
+package com.hqhop.config.dingtalk;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;

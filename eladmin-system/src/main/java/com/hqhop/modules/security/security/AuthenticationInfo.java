@@ -16,4 +16,5 @@ public class AuthenticationInfo implements Serializable {
     private final String token;
 
     private final JwtUser user;
+
 }

@@ -13,6 +13,10 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class AuthorizationUser {
 
+    private String dduserid;
+
+    private String empnum;
+
     @NotBlank
     private String username;
 

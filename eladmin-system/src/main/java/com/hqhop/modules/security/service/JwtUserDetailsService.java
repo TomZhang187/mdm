@@ -50,6 +50,8 @@ public class JwtUserDetailsService implements UserDetailsService {
                 permissionService.mapToGrantedAuthorities(user),
                 user.getEnabled(),
                 user.getCreateTime(),
+                user.getDduserid(),
+                user.getEmpnum(),
                 user.getLastPasswordResetTime()
         );
     }

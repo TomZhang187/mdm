@@ -1,4 +1,4 @@
-package com.hqhop.modules.dingtalk;
+package com.hqhop.config.dingtalk;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
@@ -89,17 +89,16 @@ public class DingTalkUtils {
      * @return
      * @throws ApiException
      */
-//    public static ResultVO getUserInfo(String userid) throws ApiException {
-//
-//        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
-//        OapiUserGetRequest request = new OapiUserGetRequest();
-//        request.setUserid(userid);
-//        request.setHttpMethod("GET");
-//        OapiUserGetResponse response = null;
-//        response = client.execute(request, getAccessToken());
-//        response.setBody(null);
-//        return ResultUtil.success(response);
-//    }
+    public static OapiUserGetResponse getUserInfo(String userid) throws ApiException {
+
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
+        OapiUserGetRequest request = new OapiUserGetRequest();
+        request.setUserid(userid);
+        request.setHttpMethod("GET");
+        OapiUserGetResponse response = client.execute(request, getAccessToken());
+
+        return response;
+    }
 
     /**
      * 获取企业下的钉盘自定义空间
@@ -163,12 +162,6 @@ public class DingTalkUtils {
             request.setFileids(fileids);
         }
         OapiCspaceGrantCustomSpaceResponse response = client.execute(request, getAccessToken());
-
-//        if(response.getErrcode() == 0 ){
-//            ResultUtil.success();
-//        } else {
-//            new CustomException(response.getErrmsg());
-//        }
         return response;
     }
 

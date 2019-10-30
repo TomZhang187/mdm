@@ -43,6 +43,10 @@ public class JwtUser implements UserDetails {
 
     private Timestamp createTime;
 
+    private String dduserid;
+
+    private String empnum;
+
     @JsonIgnore
     private final Date lastPasswordResetDate;
 

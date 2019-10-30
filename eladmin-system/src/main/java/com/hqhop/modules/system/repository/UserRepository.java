@@ -14,6 +14,20 @@ import java.util.Date;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor {
 
     /**
+     *  根据工号查询用户
+     * @param empnum
+     * @return
+     */
+    User findByEmpnum(String empnum);
+
+    /**
+     * 根据钉钉userid查询用户
+     * @param dduserid
+     * @return
+     */
+    User findByDduserid(String dduserid);
+
+    /**
      * findByUsername
      * @param username
      * @return

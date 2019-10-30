@@ -1,5 +1,9 @@
-package com.hqhop.modules.dingtalk;
+package com.hqhop.config.dingtalk;
 
+/**
+ * 定义钉钉常量
+ * @author chengy
+ */
 public class DingTalkConstant {
 
     public static final String CORPID = "ding1d7e8b088fab194f35c2f4657eb6378f";

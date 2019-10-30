@@ -73,13 +73,21 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserDTO create(User resources) {
-
+        // 唯一值判断
         if(userRepository.findByUsername(resources.getUsername())!=null){
             throw new EntityExistException(User.class,"username",resources.getUsername());
         }
 
         if(userRepository.findByEmail(resources.getEmail())!=null){
             throw new EntityExistException(User.class,"email",resources.getEmail());
+        }
+
+        if(userRepository.findByDduserid(resources.getDduserid())!=null){
+            throw new EntityExistException(User.class,"dduserid",resources.getEmail());
+        }
+
+        if(userRepository.findByEmpnum(resources.getEmpnum())!=null){
+            throw new EntityExistException(User.class,"empnum",resources.getEmail());
         }
 
         // 默认密码 123456，此密码是加密后的字符
@@ -97,6 +105,8 @@ public class UserServiceImpl implements UserService {
 
         User user1 = userRepository.findByUsername(user.getUsername());
         User user2 = userRepository.findByEmail(user.getEmail());
+        User user3 = userRepository.findByDduserid(user.getDduserid());
+        User user4 = userRepository.findByEmpnum(user.getEmpnum());
 
         if(user1 !=null&&!user.getId().equals(user1.getId())){
             throw new EntityExistException(User.class,"username",resources.getUsername());
@@ -106,6 +116,12 @@ public class UserServiceImpl implements UserService {
             throw new EntityExistException(User.class,"email",resources.getEmail());
         }
 
+        if(user3!=null&&!user.getId().equals(user3.getId())){
+            throw new EntityExistException(User.class,"dduserid",resources.getEmail());
+        }
+        if(user4!=null&&!user.getId().equals(user4.getId())){
+            throw new EntityExistException(User.class,"empnum",resources.getEmail());
+        }
         // 如果用户的角色改变了，需要手动清理下缓存
         if (!resources.getRoles().equals(user.getRoles())) {
             String key = "role::loadPermissionByUser:" + user.getUsername();
@@ -116,6 +132,8 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(resources.getUsername());
         user.setEmail(resources.getEmail());
+        user.setDduserid(resources.getDduserid());
+        user.setEmpnum(resources.getEmpnum());
         user.setEnabled(resources.getEnabled());
         user.setRoles(resources.getRoles());
         user.setDept(resources.getDept());
@@ -136,7 +154,10 @@ public class UserServiceImpl implements UserService {
         if(ValidationUtil.isEmail(userName)){
             user = userRepository.findByEmail(userName);
         } else {
-            user = userRepository.findByUsername(userName);
+            user = userRepository.findByEmpnum(userName);
+            if(user == null){
+                user = userRepository.findByUsername(userName);
+            }
         }
         if (user == null) {
             throw new EntityNotFoundException(User.class, "name", userName);

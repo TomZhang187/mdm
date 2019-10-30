@@ -33,6 +33,10 @@ public class UserDTO implements Serializable {
 
     private Timestamp createTime;
 
+    private String dduserid;
+
+    private String empnum;
+
     private Date lastPasswordResetTime;
 
     @ApiModelProperty(hidden = true)

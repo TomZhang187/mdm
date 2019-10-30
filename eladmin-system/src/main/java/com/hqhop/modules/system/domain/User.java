@@ -47,6 +47,10 @@ public class User implements Serializable {
 
     private String password;
 
+    private String dduserid;
+
+    private String empnum;
+
     @CreationTimestamp
     @Column(name = "create_time")
     private Timestamp createTime;
@@ -72,6 +76,8 @@ public class User implements Serializable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", dduserid='" + dduserid + '\'' +
+                ", empnum='" + empnum + '\'' +
                 ", enabled=" + enabled +
                 ", password='" + password + '\'' +
                 ", createTime=" + createTime +

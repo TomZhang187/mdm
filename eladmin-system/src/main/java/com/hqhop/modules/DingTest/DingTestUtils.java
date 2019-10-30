@@ -12,8 +12,9 @@ import com.dingtalk.api.request.OapiUserGetuserinfoRequest;
 import com.dingtalk.api.response.OapiGettokenResponse;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.dingtalk.api.response.OapiUserGetuserinfoResponse;
-import com.hqhop.modules.dingtalk.DingTalkConstant;
-import com.hqhop.modules.dingtalk.DingTalkUtils;
+import com.hqhop.config.dingtalk.DingTalkConstant;
+import com.hqhop.config.dingtalk.DingTalkUtils;
+
 import com.taobao.api.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

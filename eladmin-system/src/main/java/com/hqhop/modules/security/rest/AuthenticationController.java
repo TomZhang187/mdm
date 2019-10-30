@@ -2,6 +2,11 @@ package com.hqhop.modules.security.rest;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.IdUtil;
+import com.dingtalk.api.response.OapiUserGetResponse;
+import com.hqhop.config.dingtalk.DingTalkConstant;
+import com.hqhop.config.dingtalk.DingTalkUtils;
+import com.hqhop.exception.BadRequestException;
+import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import com.hqhop.aop.log.Log;
 import com.hqhop.modules.monitor.service.RedisService;
@@ -51,30 +56,46 @@ public class AuthenticationController {
 
     /**
      * 登录授权
+     *
      * @param authorizationUser
      * @return
      */
     @Log("用户登录")
     @PostMapping(value = "${jwt.auth.path}")
-    public ResponseEntity login(@Validated @RequestBody AuthorizationUser authorizationUser){
+    public ResponseEntity login(@Validated @RequestBody AuthorizationUser authorizationUser) {
 
         // 查询验证码
-        String code = redisService.getCodeVal(authorizationUser.getUuid());
+//        String code = redisService.getCodeVal(authorizationUser.getUuid());
         // 清除验证码
-        redisService.delete(authorizationUser.getUuid());
+//        redisService.delete(authorizationUser.getUuid());
 //        if (StringUtils.isBlank(code)) {
 //            throw new BadRequestException("验证码已过期");
 //        }
 //        if (StringUtils.isBlank(authorizationUser.getCode()) || !authorizationUser.getCode().equalsIgnoreCase(code)) {
 //            throw new BadRequestException("验证码错误");
 //        }
-        final JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(authorizationUser.getUsername());
-
-        if(!jwtUser.getPassword().equals(EncryptUtils.encryptPassword(authorizationUser.getPassword()))){
-            throw new AccountExpiredException("密码错误");
+       String username = null;
+        // 系统上线后 只保留钉钉登录的功能
+        if (!authorizationUser.getUsername().equals(DingTalkConstant.CORPID)) { // 账号为Corpid的数据为钉钉传过来的数据
+//            throw new BadRequestException("非法请求，只能在钉钉中打开应用");
+            username = authorizationUser.getUsername();
+        } else {
+            log.info("请求的requestCode为:{}", authorizationUser.getPassword());
+            String userId = null;
+            OapiUserGetResponse userInfo = null;
+            try {
+                userId = DingTalkUtils.getUserId(authorizationUser.getPassword());
+                userInfo = DingTalkUtils.getUserInfo(userId);
+            } catch (ApiException e) {
+                e.printStackTrace();
+                throw new BadRequestException("钉钉接口异常："+ e.getErrMsg());
+            }
+            username = userInfo.getJobnumber();
         }
 
-        if(!jwtUser.isEnabled()){
+        final JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
+
+        if (!jwtUser.isEnabled()) {
             throw new AccountExpiredException("账号已停用，请联系管理员");
         }
 
@@ -82,16 +103,17 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken(jwtUser);
 
         // 返回 token
-        return ResponseEntity.ok(new AuthenticationInfo(token,jwtUser));
+        return ResponseEntity.ok(new AuthenticationInfo(token, jwtUser));
     }
 
     /**
      * 获取用户信息
+     *
      * @return
      */
     @GetMapping(value = "${jwt.auth.account}")
-    public ResponseEntity getUserInfo(){
-        JwtUser jwtUser = (JwtUser)userDetailsService.loadUserByUsername(SecurityUtils.getUsername());
+    public ResponseEntity getUserInfo() {
+        JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(SecurityUtils.getUsername());
         return ResponseEntity.ok(jwtUser);
     }
 
@@ -104,13 +126,13 @@ public class AuthenticationController {
         //生成随机字串
         String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
         String uuid = IdUtil.simpleUUID();
-        redisService.saveCode(uuid,verifyCode);
+        redisService.saveCode(uuid, verifyCode);
         // 生成图片
         int w = 111, h = 36;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         VerifyCodeUtils.outputImage(w, h, stream, verifyCode);
         try {
-            return new ImgResult(Base64.encode(stream.toByteArray()),uuid);
+            return new ImgResult(Base64.encode(stream.toByteArray()), uuid);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
