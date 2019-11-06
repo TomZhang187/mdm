@@ -1,24 +1,20 @@
 package com.hqhop.modules.material.service.dto;
 
-import lombok.Data;
 import com.hqhop.annotation.Query;
+import lombok.Data;
+
+import java.sql.Timestamp;
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
 */
 @Data
 public class MaterialQueryCriteria{
 
     // 精确
     @Query
-    private String materialModel;
+    private Timestamp createTime;
 
-    // 精确
-    @Query
-    private String materialName;
 
-    // 精确
-    @Query
-    private String materialNumber;
 }

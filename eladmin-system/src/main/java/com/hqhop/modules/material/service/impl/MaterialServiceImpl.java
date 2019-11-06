@@ -1,27 +1,28 @@
 package com.hqhop.modules.material.service.impl;
 
 import com.hqhop.modules.material.domain.Material;
-import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.material.repository.MaterialRepository;
 import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.dto.MaterialDTO;
 import com.hqhop.modules.material.service.dto.MaterialQueryCriteria;
 import com.hqhop.modules.material.service.mapper.MaterialMapper;
+import com.hqhop.utils.PageUtil;
+import com.hqhop.utils.QueryHelp;
+import com.hqhop.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import com.hqhop.utils.PageUtil;
-import com.hqhop.utils.QueryHelp;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
 */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
@@ -45,31 +46,50 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public MaterialDTO findById(Integer id) {
+    public Material findById(Long id) {
         Optional<Material> material = materialRepository.findById(id);
         ValidationUtil.isNull(material,"Material","id",id);
-        return materialMapper.toDto(material.get());
+
+        return material.get();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public MaterialDTO create(Material resources) {
-        return materialMapper.toDto(materialRepository.save(resources));
+    public Material create(Material resources) {
+        if(resources==null){
+            return null;
+        }
+        return materialRepository.save(resources);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void update(Material resources) {
-        Optional<Material> optionalMaterial = materialRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalMaterial,"Material","id",resources.getId());
-        Material material = optionalMaterial.get();
-        material.copy(resources);
-        materialRepository.save(material);
+    public void update(Material materialEntity) {
+        Optional<Material> materialById = materialRepository.findById(materialEntity.getId());
+        ValidationUtil.isNull( materialById,"Material","id", materialEntity.getId());
+        Material material1 = materialById.get();
+        materialRepository.save(material1);
     }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Integer id) {
+    public void delete(Long id) {
+        if(null==id){
+            System.out.println("id不正确");
+        }
         materialRepository.deleteById(id);
     }
+
+    @Override
+    public List<Material> queryAllByType(Long typeId) {
+
+        return materialRepository.findAllByType(typeId);
+    }
+
+    @Override
+    public List<Material> queryAllByTyPid(Long typePid) {
+        return null;
+    }
+
+
 }

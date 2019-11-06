@@ -3,16 +3,14 @@ package com.hqhop.modules.material.service;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.service.dto.MaterialDTO;
 import com.hqhop.modules.material.service.dto.MaterialQueryCriteria;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
-import java.util.Map;
+
 import java.util.List;
+import java.util.Map;
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
 */
 //@CacheConfig(cacheNames = "material")
 public interface MaterialService {
@@ -40,15 +38,15 @@ public interface MaterialService {
      * @return
      */
     //@Cacheable(key = "#p0")
-    MaterialDTO findById(Integer id);
+    Material findById(Long id);
 
     /**
-     * 创建
-     * @param resources
+     * 新增物料
+     * @param material
      * @return
      */
     //@CacheEvict(allEntries = true)
-    MaterialDTO create(Material resources);
+    Material create(Material material);
 
     /**
      * 编辑
@@ -62,5 +60,20 @@ public interface MaterialService {
      * @param id
      */
     //@CacheEvict(allEntries = true)
-    void delete(Integer id);
+    void delete(Long id);
+
+    /**
+     * 通过物料类型查询相关的物料
+     * @param type
+     * @return
+     */
+    List<Material> queryAllByType(Long typeId);
+
+
+    /**
+     * 通过大类型查找所有物料
+     * @param typePid
+     * @return
+     */
+    List<Material> queryAllByTyPid(Long typePid);
 }

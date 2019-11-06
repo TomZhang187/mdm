@@ -1,21 +1,27 @@
 package com.hqhop.modules.material.service.dto;
 
 import lombok.Data;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
 */
 @Data
 public class MaterialDTO implements Serializable {
 
-    private Integer id;
+    // ID
+    private Long id;
 
-    private String materialModel;
+    // 创建时间
+    private Timestamp createTime;
 
-    private String materialName;
 
-    private String materialNumber;
+    // 名称
+    private String name;
+
+
 }

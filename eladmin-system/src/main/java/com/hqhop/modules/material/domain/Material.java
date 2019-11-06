@@ -1,34 +1,112 @@
 package com.hqhop.modules.material.domain;
 
-import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Set;
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
+ * 物料主表
 */
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name="material")
 public class Material implements Serializable {
 
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
-    @Column(name = "material_model")
-    private String materialModel;
+    //标识
+    @Column(name = "remark")
+    private String remark;
 
-    @Column(name = "material_name")
-    private String materialName;
+    //分类编码(001.0001)
+    @Column(name = "classify_num")
+    private String classifyNum;
 
-    @Column(name = "material_number")
-    private String materialNumber;
+    //大类
+    @Column(name = "big_type")
+    private String bigType;
+
+    //是否应税劳务
+    private Boolean isTaxable;
+
+    //流水码
+    @Column(name = "flow_code")
+    private String flowCode;
+
+    //新物料代码
+    @Column(name = "new_code",nullable = false)
+    private String newCode;
+
+    //原物料代码1
+    @Column(name = "old_code_one",nullable = false)
+    private String oldCode1;
+
+    //原物料代码2
+    @Column(name = "old_code_two",nullable = false)
+    private String oldCode2;
+
+    //原物料代码3
+    @Column(name = "old_code_three",nullable = false)
+    private String oldCode3;
+
+    // 名称(图纸明细栏名称)
+    @Column(name = "material_name",nullable = false)
+    private String name;
+
+
+    //规格型号(图纸明细栏规格型号)
+    @Column(name = "specifications")
+    private String specifications;
+
+    //创建时间
+    @Column(name = "create_time")
+    @CreationTimestamp
+    private Timestamp createTime;
+
+
+
+    //创建时间
+    @Column(name = "modified_time")
+    @CreationTimestamp
+    private Timestamp modifiedTime;
+
+
+    //单位
+    @Column(name = "unit")
+    private String unit;
+
+    //物料类型(物料种类小类型)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"materials"})
+    @JoinColumn(name = "type_id")
+    private MaterialType type;
+
+    //物料所关联的公司
+    @ManyToMany(cascade = { CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "materials" })// 解决循环查找的问题
+    @JoinTable(name = "t_material_company", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = { @JoinColumn(name = "company_id") })
+    private Set<Company> companyEntities;
 
     public void copy(Material source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
     }
+
+
 }
