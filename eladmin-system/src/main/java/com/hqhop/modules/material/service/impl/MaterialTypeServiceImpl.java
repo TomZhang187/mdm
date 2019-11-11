@@ -7,6 +7,7 @@ import com.hqhop.modules.material.service.dto.MaterialTypeDTO;
 import com.hqhop.modules.material.service.dto.MaterialTypeQueryCriteria;
 import com.hqhop.modules.material.service.mapper.MaterialTypeMapper;
 import com.hqhop.utils.QueryHelp;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -108,5 +109,15 @@ public class MaterialTypeServiceImpl implements MaterialTypeService {
     @Override
     public MaterialType addBigType(MaterialType materialType) {
         return materialTypeRepository.save(materialType);
+    }
+
+    /**
+     * 修改物料分类
+     * @param entity
+     * @return
+     */
+    @Override
+    public MaterialType update(MaterialType entity) {
+        return materialTypeRepository.saveAndFlush(entity);
     }
 }

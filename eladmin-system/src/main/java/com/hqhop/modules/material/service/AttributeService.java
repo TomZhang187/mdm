@@ -11,4 +11,15 @@ public interface AttributeService {
 
     @Cacheable
     List<Attribute> queryAllByMaterialType(Long typeId);
+
+    @Cacheable
+    List<Attribute> findList(Long[] typeId);
+
+    /**
+     * 新增属性
+     * @param attribute
+     * @return
+     */
+    @Cacheable
+    Attribute addAttribute(Attribute attribute);
 }

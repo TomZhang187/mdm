@@ -35,7 +35,7 @@ public class MaterialType implements Serializable {
     @SequenceGenerator(name="PK_SEQ_TBL",sequenceName="type_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "type_id")
-    @NotNull(groups = MaterialType.Update.class)
+    @NotNull(groups = Update.class)
     private Long id;
 
     //物料类型名称

@@ -1,11 +1,14 @@
 package com.hqhop.modules.material.rest;
 
 import com.hqhop.aop.log.Log;
+import com.hqhop.modules.material.domain.Attribute;
 import com.hqhop.modules.material.domain.MaterialType;
+import com.hqhop.modules.material.service.AttributeService;
 import com.hqhop.modules.material.service.MaterialTypeService;
 import com.hqhop.modules.material.service.dto.MaterialTypeDTO;
 import com.hqhop.modules.material.service.dto.MaterialTypeQueryCriteria;
 import com.hqhop.modules.material.service.mapper.MaterialTypeMapper;
+import com.hqhop.modules.material.service.vo.TypeAttributeVo;
 import com.hqhop.modules.material.utils.DataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
 * @author KinLin
@@ -39,6 +40,9 @@ public class MaterialTypeController {
 
     @Autowired
     private MaterialTypeMapper materialTypeMapper;
+
+    @Autowired
+    private AttributeService attributeService;
 
     @Log("查询物料分类")
     @ApiOperation(value = "查询物料分类")
@@ -77,7 +81,7 @@ public class MaterialTypeController {
     @ApiOperation(value = "增加物料大类")
     @GetMapping(value = "/addBigType")
     //@PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT','DEPT_ALL','DEPT_SELECT')")
-    public ResponseEntity addBigType( MaterialTypeDTO materialTypeDTO){
+    public ResponseEntity addBigType( @Valid @RequestBody(required = true)MaterialTypeDTO materialTypeDTO){
         //如果父類大於1，則是小分類
         if(materialTypeDTO.getParentId()>1||materialTypeDTO==null){
             return new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
@@ -86,6 +90,45 @@ public class MaterialTypeController {
 
         MaterialType materialType = materialTypeService.addSmallType(materialType1);
         return new ResponseEntity(materialType1,HttpStatus.OK);
-
     }
+
+    @Log("修改分类信息")
+    @ApiOperation(value = "修改分类信息")
+    @GetMapping(value = "/updateType")
+    //@PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT','DEPT_ALL','DEPT_SELECT')")
+    public ResponseEntity updateType( @Valid @RequestBody(required = true)MaterialTypeDTO materialTypeDTO){
+//        materialTypeService.update()
+        return null;
+    }
+
+
+    @Log("给分类添加属性")
+    @ApiOperation(value = "设置属性")
+    @GetMapping(value = "/setAttributes")
+    //@PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT','DEPT_ALL','DEPT_SELECT')")
+    public ResponseEntity addTypeAttribute( @Valid @RequestBody(required = true) TypeAttributeVo typeAttributeVo){
+        List<Attribute> materialTypes = attributeService.findList(typeAttributeVo.getAttributes());
+        MaterialType materialType = materialTypeService.findById(typeAttributeVo.getTypeId());
+        Set<Attribute> set=new HashSet<Attribute>(materialTypes);
+        materialType.setAttributes(set);
+        MaterialType update = materialTypeService.update(materialType);
+        return new ResponseEntity(update,HttpStatus.OK);
+    }
+
+
+    @Log("给分类取消属性")
+    @ApiOperation(value = "取消属性")
+    @GetMapping(value = "/deleteAttributes")
+    //@PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT','DEPT_ALL','DEPT_SELECT')")
+    public ResponseEntity deleteTypeAttribute( @Valid @RequestBody(required = true) TypeAttributeVo typeAttributeVo){
+        List<Attribute> materialAttributes = attributeService.findList(typeAttributeVo.getAttributes());
+        MaterialType materialType = materialTypeService.findById(typeAttributeVo.getTypeId());
+        Set<Attribute> set=new HashSet<Attribute>(materialAttributes);
+        //去除原有的属性
+        materialType.getAttributes().removeAll(set);
+
+        MaterialType update = materialTypeService.update(materialType);
+        return new ResponseEntity(update,HttpStatus.OK);
+    }
+
 }

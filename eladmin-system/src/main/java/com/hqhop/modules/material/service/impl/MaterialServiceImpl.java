@@ -37,6 +37,7 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public Map<String,Object> queryAll(MaterialQueryCriteria criteria, Pageable pageable){
         Page<Material> page = materialRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+
         return PageUtil.toPage(page.map(materialMapper::toDto));
     }
 
@@ -62,6 +63,10 @@ public class MaterialServiceImpl implements MaterialService {
         return materialRepository.save(resources);
     }
 
+    /**
+     *
+     * @param materialEntity
+     */
     @Override
     public void update(Material materialEntity) {
         Optional<Material> materialById = materialRepository.findById(materialEntity.getId());
@@ -80,12 +85,32 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.deleteById(id);
     }
 
+    /**
+     * 通过类型id查找该类型物料
+     * @param typeId
+     * @return
+     */
     @Override
-    public List<Material> queryAllByType(Long typeId) {
-
-        return materialRepository.findAllByType(typeId);
+    public List<Material> queryAllByType(Long typeId,Integer pageNo,Integer pageSize) {
+        return materialRepository.findAllByType(typeId,pageNo,pageSize);
     }
 
+    /**
+     * 通过类型id查找该类型物料数量
+     * @param typeId
+     * @return
+     */
+    @Override
+    public Integer getCountByTypeId(Long typeId) {
+
+        return materialRepository.getCountByTypeId(typeId);
+    }
+
+    /**
+     *
+     * @param typePid
+     * @return
+     */
     @Override
     public List<Material> queryAllByTyPid(Long typePid) {
         return null;

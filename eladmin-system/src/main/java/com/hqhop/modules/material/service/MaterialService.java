@@ -64,10 +64,17 @@ public interface MaterialService {
 
     /**
      * 通过物料类型查询相关的物料
-     * @param type
+     * @param typeId
      * @return
      */
-    List<Material> queryAllByType(Long typeId);
+    List<Material> queryAllByType(Long typeId, Integer pageNo, Integer pageSize);
+
+    /**
+     * 通过类型查找该类型物料数量
+     * @param typeId
+     * @return
+     */
+    Integer getCountByTypeId(Long typeId);
 
 
     /**

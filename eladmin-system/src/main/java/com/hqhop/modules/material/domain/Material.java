@@ -2,9 +2,7 @@ package com.hqhop.modules.material.domain;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,10 +13,10 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 /**
-* @author KinLin
-* @date 2019-10-30
+ * @author KinLin
+ * @date 2019-10-30
  * 物料主表
-*/
+ */
 @Entity
 @Getter
 @Setter
@@ -35,11 +33,8 @@ public class Material implements Serializable {
     @Column(name = "remark")
     private String remark;
 
-    //分类编码(001.0001)
-    @Column(name = "classify_num")
-    private String classifyNum;
 
-    //大类
+    //大分类
     @Column(name = "big_type")
     private String bigType;
 
@@ -74,19 +69,26 @@ public class Material implements Serializable {
     //规格型号(图纸明细栏规格型号)
     @Column(name = "specifications")
     private String specifications;
-
+    //创建者
+    @Column(name = "creator")
+    private String createPerson;
     //创建时间
     @Column(name = "create_time")
     @CreationTimestamp
     private Timestamp createTime;
 
+    //修改者
+    @Column(name = "modifier")
+    private String modifier;
 
-
-    //创建时间
+    //修改时间
     @Column(name = "modified_time")
     @CreationTimestamp
     private Timestamp modifiedTime;
 
+    //数量
+    @Column(name = "count")
+    private Integer count;
 
     //单位
     @Column(name = "unit")

@@ -3,6 +3,7 @@ package com.hqhop.modules.material.service;
 import com.hqhop.modules.material.domain.MaterialType;
 import com.hqhop.modules.material.service.dto.MaterialTypeDTO;
 import com.hqhop.modules.material.service.dto.MaterialTypeQueryCriteria;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -48,4 +49,7 @@ public interface MaterialTypeService {
     MaterialType addSmallType(MaterialType materialType);
 
     MaterialType addBigType(MaterialType materialType);
+
+
+    public MaterialType update(MaterialType entity);
 }

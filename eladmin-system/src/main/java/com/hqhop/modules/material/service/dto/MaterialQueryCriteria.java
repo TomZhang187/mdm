@@ -1,6 +1,7 @@
 package com.hqhop.modules.material.service.dto;
 
 import com.hqhop.annotation.Query;
+import com.hqhop.modules.material.domain.MaterialType;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -12,7 +13,21 @@ import java.sql.Timestamp;
 @Data
 public class MaterialQueryCriteria{
 
-    // 精确
+    @Query
+    private String name;
+
+    @Query
+    private String remark;
+    @Query
+    private String classifyNum;
+    @Query
+    private String bigType;
+    @Query
+    private String isTaxable;
+    @Query
+    private String unit;
+
+
     @Query
     private Timestamp createTime;
 
