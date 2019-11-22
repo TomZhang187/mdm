@@ -54,6 +54,10 @@ public class Contact implements Serializable {
     @Column(name = "is_default_address")
     private Integer isDefaultAddress;
 
+    //联系人状态
+    @Column(name = "contact_state")
+    private Integer contactState;
+
     //所属公司
     @Column(name = "company_key")
     private Long companyKey;
@@ -75,6 +79,14 @@ public class Contact implements Serializable {
                 ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", isDefaultAddress=" + isDefaultAddress +
                 '}';
+    }
+
+    public Integer getContactState() {
+        return contactState;
+    }
+
+    public void setContactState(Integer contactState) {
+        this.contactState = contactState;
     }
 
     public Long getCompanyKey() {
