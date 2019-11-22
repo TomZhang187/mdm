@@ -51,7 +51,7 @@ jwt:
   expiration: 7200000
   auth:
     # 授权路径
-    path: /login
+    path: /
     # 获取用户信息
     account: /info
 

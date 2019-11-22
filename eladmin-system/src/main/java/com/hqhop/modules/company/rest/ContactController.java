@@ -30,7 +30,7 @@ public class ContactController {
     @Log("查询Contact")
     @ApiOperation(value = "查询Contact")
     @GetMapping(value = "/contact")
-    @PreAuthorize("hasAnyRole('ADMIN','CONTACT_ALL','CONTACT_SELECT')")
+//    @PreAuthorize("hasAnyRole('ADMIN','CONTACT_ALL','CONTACT_SELECT')")
     public ResponseEntity getContacts(ContactQueryCriteria criteria, Pageable pageable){
         return new ResponseEntity(contactService.queryAll(criteria,pageable),HttpStatus.OK);
     }

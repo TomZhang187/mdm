@@ -6,6 +6,8 @@ import com.dingtalk.api.request.*;
 import com.dingtalk.api.response.*;
 import com.dingtalk.oapi.lib.aes.DingTalkEncryptException;
 import com.dingtalk.oapi.lib.aes.DingTalkJsApiSingnature;
+import com.hqhop.config.dingtalk.dingtalkVo.ResultVO;
+import com.hqhop.config.dingtalk.utils.ResultUtil;
 import com.taobao.api.ApiException;
 import com.taobao.api.FileItem;
 import com.taobao.api.internal.util.WebUtils;
@@ -50,7 +52,7 @@ public class DingTalkUtils {
     public static String getAccessToken() throws ApiException {
         long curTime = System.currentTimeMillis();
 
-        if (accessToken == null && curTime - startTimeToken >= cacheTime) {
+        if (accessToken == null || curTime - startTimeToken >= cacheTime) {
             DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
             OapiGettokenRequest request = new OapiGettokenRequest();
             request.setAppkey(DingTalkConstant.APPKEY);
@@ -89,7 +91,7 @@ public class DingTalkUtils {
      * @return
      * @throws ApiException
      */
-    public static OapiUserGetResponse getUserInfo(String userid) throws ApiException {
+    public static OapiUserGetResponse  getUserInfo(String userid) throws ApiException {
 
         DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
         OapiUserGetRequest request = new OapiUserGetRequest();

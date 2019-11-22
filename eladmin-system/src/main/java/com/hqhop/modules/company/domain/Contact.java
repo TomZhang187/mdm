@@ -42,6 +42,22 @@ public class Contact implements Serializable {
     @Column(name = "position")
     private String position;
 
+    //联系人类型
+    @Column(name = "contact_type")
+    private Integer contactType;
+
+    //客商收发货地址名称
+    @Column(name = "delivery_address")
+    private String deliveryAddress;
+
+    //是否默认地址
+    @Column(name = "is_default_address")
+    private Integer isDefaultAddress;
+
+    //所属公司
+    @Column(name = "company_key")
+    private Long companyKey;
+
     public void copy(Contact source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }
@@ -55,12 +71,21 @@ public class Contact implements Serializable {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", position='" + position + '\'' +
+                ", contactType=" + contactType +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", isDefaultAddress=" + isDefaultAddress +
                 '}';
     }
 
+    public Long getCompanyKey() {
+        return companyKey;
+    }
+
+    public void setCompanyKey(Long companyKey) {
+        this.companyKey = companyKey;
+    }
 
     public Long getContactKey() {
-
         return contactKey;
     }
 
@@ -107,4 +132,30 @@ public class Contact implements Serializable {
     public void setPosition(String position) {
         this.position = position;
     }
+
+    public Integer getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(Integer contactType) {
+        this.contactType = contactType;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public Integer getIsDefaultAddress() {
+        return isDefaultAddress;
+    }
+
+    public void setIsDefaultAddress(Integer isDefaultAddress) {
+        this.isDefaultAddress = isDefaultAddress;
+    }
+
+
 }

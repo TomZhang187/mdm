@@ -20,5 +20,7 @@ public interface DictDetailRepository extends JpaRepository<DictDetail, Long>, J
     @Query(value = "select label,value from  sys_dict_detail where dict_id =?1", nativeQuery = true)
     List<DictDetail> findAllByDictId(Long dictId);
 
+   DictDetail findByValueAndDict_Id(String value,Long dictId);
 
+    DictDetail findByLabelAndDict_Id(String label,Long dictId);
 }

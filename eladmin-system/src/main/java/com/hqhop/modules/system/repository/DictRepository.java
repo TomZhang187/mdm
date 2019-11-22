@@ -9,4 +9,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 * @date 2019-04-10
 */
 public interface DictRepository extends JpaRepository<Dict, Long>, JpaSpecificationExecutor {
+
+    //通过过名字拿字典
+    Dict findByName(String name);
+
 }

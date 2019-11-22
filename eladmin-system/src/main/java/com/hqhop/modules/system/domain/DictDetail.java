@@ -47,5 +47,15 @@ public class DictDetail implements Serializable {
     @JoinColumn(name = "dict_id")
     private Dict dict;
 
+    @Override
+    public String toString() {
+        return "DictDetail{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                ", value='" + value + '\'' +
+                ", sort='" + sort + '\'' +
+                '}';
+    }
+
     public @interface Update {}
 }

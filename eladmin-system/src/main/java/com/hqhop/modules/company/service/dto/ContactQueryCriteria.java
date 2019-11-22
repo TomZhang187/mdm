@@ -3,13 +3,12 @@ package com.hqhop.modules.company.service.dto;
 import com.hqhop.annotation.Query;
 import lombok.Data;
 
-
 /**
- * @author zf
- * @date 2019-10-22
- */
+* @author zf
+* @date 2019-11-07
+*/
 @Data
-public class ContactQueryCriteria {
+public class ContactQueryCriteria{
 
     // 精确
     @Query
@@ -34,4 +33,20 @@ public class ContactQueryCriteria {
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
     private String position;
+
+    // 精确
+    @Query
+    private Long companyKey;
+
+    // 精确
+    @Query
+    private Integer contactType;
+
+    // 模糊
+    @Query(type = Query.Type.INNER_LIKE)
+    private String deliveryAddress;
+
+    // 精确
+    @Query
+    private Integer isDefaultAddress;
 }
