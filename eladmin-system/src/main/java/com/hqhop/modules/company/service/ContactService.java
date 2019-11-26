@@ -1,10 +1,12 @@
 package com.hqhop.modules.company.service;
 
 
+import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Contact;
 import com.hqhop.modules.company.service.dto.ContactDTO;
 import com.hqhop.modules.company.service.dto.ContactQueryCriteria;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -62,4 +64,8 @@ public interface ContactService {
      */
     //@CacheEvict(allEntries = true)
     void delete(Long contactKey);
+
+
+    @Transactional(rollbackFor = Exception.class)
+    String getDingUrl(Contact resources, DingUser dingUser);
 }

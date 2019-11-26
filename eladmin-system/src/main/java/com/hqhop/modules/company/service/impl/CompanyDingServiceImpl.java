@@ -90,7 +90,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         input.setValue(dictDetailService.getDicLabel("company_operation_type",1));
 
             OapiProcessinstanceCreateRequest.FormComponentValueVo vo4 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
-            vo4.setName("内容");
+            vo4.setName("客商");
            //vo4.setValue(JSON.toJSONString(Arrays.asList(Arrays.asList(ItemName1, ItemName2, ItemName3,ItemName4))));
             vo4.setValue(JSON.toJSONString(Arrays.asList(getItemList(resouces))));
             listForm.add(input);
@@ -319,7 +319,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         list1.add(ItemName17);
 
         OapiProcessinstanceCreateRequest.FormComponentValueVo vo4 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
-        vo4.setName("内容");
+        vo4.setName("客商");
         //vo4.setValue(JSON.toJSONString(Arrays.asList(Arrays.asList(ItemName1, ItemName2, ItemName3,ItemName4))));
         vo4.setValue(JSON.toJSONString(Arrays.asList(list1)));
         listForm.add(input);
@@ -502,7 +502,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
             input.setValue(dictDetailService.getDicLabel("company_operation_type",4));
         }
         OapiProcessinstanceCreateRequest.FormComponentValueVo vo4 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
-        vo4.setName("内容");
+        vo4.setName("客商");
         //vo4.setValue(JSON.toJSONString(Arrays.asList(Arrays.asList(ItemName1, ItemName2, ItemName3,ItemName4))));
         vo4.setValue(JSON.toJSONString(Arrays.asList(getItemList(resouces))));
         listForm.add(input);

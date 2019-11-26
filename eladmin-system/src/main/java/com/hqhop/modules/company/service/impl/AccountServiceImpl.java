@@ -1,6 +1,10 @@
 package com.hqhop.modules.company.service.impl;
 
+import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Account;
+import com.hqhop.modules.company.domain.CompanyUpdate;
+import com.hqhop.modules.company.domain.Contact;
+import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.company.repository.AccountRepository;
 import com.hqhop.modules.company.service.AccountService;
@@ -31,6 +35,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private CompanyUpdateRepository companyUpdateRepository;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -38,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Map<String,Object> queryAll(AccountQueryCriteria criteria, Pageable pageable){
         Page<Account> page = accountRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
-        return PageUtil.toPage(page.map(accountMapper::toDto));
+        return PageUtil.toPage(page);
     }
 
     @Override
@@ -58,17 +64,19 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO create(Account resources) {
         Snowflake snowflake = IdUtil.createSnowflake(1, 1);
         resources.setAccountKey(snowflake.nextId());
+        //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批  字典为准
+        resources.setAccountState(1);
         return accountMapper.toDto(accountRepository.save(resources));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(Account resources) {
-        Optional<Account> optionalAccount = accountRepository.findById(resources.getAccountKey());
-        ValidationUtil.isNull( optionalAccount,"Account","id",resources.getAccountKey());
-        Account account = optionalAccount.get();
-        account.copy(resources);
-        accountRepository.save(account);
+
+        if(resources.getAccountKey() != null && !"".equals(resources.getAccountKey())){
+            accountRepository.save(resources);
+        }
+
     }
 
     @Override
@@ -76,4 +84,20 @@ public class AccountServiceImpl implements AccountService {
     public void delete(Long accountKey) {
         accountRepository.deleteById(accountKey);
     }
+
+    @Override
+    public String getDingUrl(Account resources, DingUser dingUser) {
+        CompanyUpdate companyUpdate =companyUpdateRepository.findByAccountKeyAndUserIdAndApproveResult(resources.getAccountKey(),dingUser.getUserid(),"未知");
+        if(companyUpdate != null){
+            if(companyUpdate.getDingUrl() != null){
+                return   companyUpdate.getDingUrl();
+           }
+           return  null;
+        }else {
+            return  null;
+       }
+    }
 }
+
+
+

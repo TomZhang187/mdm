@@ -31,8 +31,8 @@ public class Contact implements Serializable {
     private String email;
 
     // 姓名
-    @Column(name = "name")
-    private String name;
+    @Column(name = "contact_name")
+    private String contactName;
 
     // 电话
     @Column(name = "phone")
@@ -54,47 +54,20 @@ public class Contact implements Serializable {
     @Column(name = "is_default_address")
     private Integer isDefaultAddress;
 
+    //所属公司
+    @Column(name = "belong_company")
+    private Long belongCompany;
+
+    //分配公司
+    @Column(name = "company_key")
+    private Long companyKey;
+
     //联系人状态
     @Column(name = "contact_state")
     private Integer contactState;
 
-    //所属公司
-    @Column(name = "company_key")
-    private Long companyKey;
-
     public void copy(Contact source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
-    }
-
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "contactKey=" + contactKey +
-                ", contactAddress='" + contactAddress + '\'' +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", position='" + position + '\'' +
-                ", contactType=" + contactType +
-                ", deliveryAddress='" + deliveryAddress + '\'' +
-                ", isDefaultAddress=" + isDefaultAddress +
-                '}';
-    }
-
-    public Integer getContactState() {
-        return contactState;
-    }
-
-    public void setContactState(Integer contactState) {
-        this.contactState = contactState;
-    }
-
-    public Long getCompanyKey() {
-        return companyKey;
-    }
-
-    public void setCompanyKey(Long companyKey) {
-        this.companyKey = companyKey;
     }
 
     public Long getContactKey() {
@@ -121,12 +94,12 @@ public class Contact implements Serializable {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getContactName() {
+        return contactName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
     public String getPhone() {
@@ -169,5 +142,27 @@ public class Contact implements Serializable {
         this.isDefaultAddress = isDefaultAddress;
     }
 
+    public Long getBelongCompany() {
+        return belongCompany;
+    }
 
+    public void setBelongCompany(Long belongCompany) {
+        this.belongCompany = belongCompany;
+    }
+
+    public Long getCompanyKey() {
+        return companyKey;
+    }
+
+    public void setCompanyKey(Long companyKey) {
+        this.companyKey = companyKey;
+    }
+
+    public Integer getContactState() {
+        return contactState;
+    }
+
+    public void setContactState(Integer contactState) {
+        this.contactState = contactState;
+    }
 }

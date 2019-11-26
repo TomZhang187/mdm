@@ -139,13 +139,12 @@ public class CompanyInfoController {
 
     @Log("客商审批接口")
     @ApiOperation(value = "客商审批接口")
-    @GetMapping(value = "/addApproval")
+    @GetMapping(value = "/companyApproval")
 //    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
     public ResponseEntity addApproval( DingUser dingUser,CompanyUpdate resouces)throws
             ApiException {
         System.out.println("操作类型" + resouces.getOperationType());
         System.out.println("公司主键" + resouces.getCompanyKey());
-        System.out.println("公司Test" + resouces.getTest());
         System.out.println("用户名" + dingUser.getName());
         System.out.println("用户Id" + dingUser.getUserid());
         System.out.println("部门ID" + dingUser.getDepteId());

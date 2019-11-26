@@ -43,4 +43,11 @@ public interface CompanyUpdateRepository extends JpaRepository<CompanyUpdate, Lo
     CompanyUpdate findByProcessIdAndOperationType(String processId,String operationType);
 
 
+    //通过联系人主键加用户ID加审批结果的数据
+    CompanyUpdate findByContactKeyAndUserIdAndApproveResult(Long contactKey,String userId,String approveResult);
+
+    //通过账户主键加用户ID加审批结果的数据
+    CompanyUpdate findByAccountKeyAndUserIdAndApproveResult(Long contactKey,String userId,String approveResult);
+
+
 }

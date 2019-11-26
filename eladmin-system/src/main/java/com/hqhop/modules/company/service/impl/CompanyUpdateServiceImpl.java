@@ -131,6 +131,7 @@ public class CompanyUpdateServiceImpl implements CompanyUpdateService {
         if("5".equals(resources.getCompanyState())){
               //操作类型  1新增2修改 3 停用...更多对照字典
             companyUpdate =companyUpdateRepository.findByCompanyKeyAndUserIdAndApproveResultAndOperationType(resources.getCompanyKey(),dingUser.getUserid(),"未知","2");
+
             if(companyUpdate == null){
                 companyUpdate = companyUpdateRepository.findByCompanyKeyAndUserIdAndApproveResult(resources.getCompanyKey(),dingUser.getUserid(),"未知");
             }

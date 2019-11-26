@@ -41,11 +41,19 @@ public class Account implements Serializable {
     private Integer isDefalut;
 
     // 账户名
-    @Column(name = "name")
-    private String name;
+    @Column(name = "account_name")
+    private String accountName;
 
+    //账户状态
+    @Column(name = "account_state")
+    private Integer accountState;
+    //绑定公司
     @Column(name = "company_key")
     private Long companyKey;
+
+    //所属公司
+    @Column(name = "belong_company")
+    private Long belongCompany;
 
     public void copy(Account source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
@@ -60,9 +68,35 @@ public class Account implements Serializable {
                 ", blankClass=" + blankClass +
                 ", currency=" + currency +
                 ", isDefalut=" + isDefalut +
-                ", name='" + name + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", accountState=" + accountState +
                 ", companyKey=" + companyKey +
+                ", belongCompany=" + belongCompany +
                 '}';
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public Long getBelongCompany() {
+        return belongCompany;
+    }
+
+    public void setBelongCompany(Long belongCompany) {
+        this.belongCompany = belongCompany;
+    }
+
+    public Integer getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(Integer accountState) {
+        this.accountState = accountState;
     }
 
     public Long getAccountKey() {
@@ -113,13 +147,6 @@ public class Account implements Serializable {
         this.isDefalut = isDefalut;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Long getCompanyKey() {
         return companyKey;

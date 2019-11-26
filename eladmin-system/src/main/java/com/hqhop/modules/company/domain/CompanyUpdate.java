@@ -54,7 +54,6 @@ public class CompanyUpdate implements Serializable {
     @Column(name = "approve_time")
     private Timestamp approveTime;
 
-    private String  test;
 
 
     // 操作类型
@@ -92,7 +91,7 @@ public class CompanyUpdate implements Serializable {
     @Column(name = "company_state")
     private String companyState="1";
 
-    // 公司状态
+    // 审批链接
     @Column(name = "ding_url")
     private String dingUrl;
 
@@ -162,19 +161,21 @@ public class CompanyUpdate implements Serializable {
     @Column(name = "trade")
     private String trade;
 
+    //关联唯一的联系人记录
+    @Column(name = "contact_key")
+    private Long contactKey;
+
+    //关联唯一的账户记录
+    @Column(name = "account_key")
+    private Long accountKey;
+
 
 
     public void copy(CompanyUpdate source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
     }
 
-    public String getTest() {
-        return test;
-    }
 
-    public void setTest(String test) {
-        this.test = test;
-    }
 
     @Override
     public String toString() {
@@ -184,7 +185,7 @@ public class CompanyUpdate implements Serializable {
                 ", approveResult='" + approveResult + '\'' +
                 ", userId='" + userId + '\'' +
                 ", createMan='" + createMan + '\'' +
-//                ", createTime=" + createTime +
+               ", createTime=" + createTime +
                 ", operationType='" + operationType + '\'' +
                 ", operateTime=" + operateTime +
                 ", companyKey=" + companyKey +
@@ -210,6 +211,15 @@ public class CompanyUpdate implements Serializable {
                 ", taxId='" + taxId + '\'' +
                 ", trade='" + trade + '\'' +
                 '}';
+    }
+
+
+    public Long getContactKey() {
+        return contactKey;
+    }
+
+    public void setContactKey(Long contactKey) {
+        this.contactKey = contactKey;
     }
 
     public Timestamp getCreateTime() {
@@ -258,7 +268,13 @@ public class CompanyUpdate implements Serializable {
     }
 
 
+    public Long getAccountKey() {
+        return accountKey;
+    }
 
+    public void setAccountKey(Long accountKey) {
+        this.accountKey = accountKey;
+    }
 
     public String getOperationType() {
         return operationType;
@@ -549,8 +565,7 @@ public class CompanyUpdate implements Serializable {
 
     public void copyCompanyInfo(CompanyInfo companyInfo){
         this.companyKey = companyInfo.getCompanyKey();
-        this.createMan = companyInfo.getCreateMan();
-//        this.createTime = companyInfo.getCreateTime();
+            this.createMan = companyInfo.getCreateMan();
         this.belongArea = companyInfo.getBelongArea().toString();
        this.belongCompany = companyInfo.getBelongCompany();
        this.companyProp = companyInfo.getCompanyProp().toString();

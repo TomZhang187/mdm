@@ -1,5 +1,6 @@
 package com.hqhop.modules.company.service;
 
+import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.service.dto.AccountDTO;
 import com.hqhop.modules.company.service.dto.AccountQueryCriteria;
@@ -7,6 +8,8 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Map;
 import java.util.List;
 
@@ -63,4 +66,8 @@ public interface AccountService {
      */
     //@CacheEvict(allEntries = true)
     void delete(Long accountKey);
+
+
+    @Transactional(rollbackFor = Exception.class)
+    String getDingUrl(Account resources, DingUser dingUser);
 }

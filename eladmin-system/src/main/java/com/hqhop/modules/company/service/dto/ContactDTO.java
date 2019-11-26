@@ -22,7 +22,7 @@ public class ContactDTO implements Serializable {
 
     private String email;
 
-    private String name;
+    private String contactName;
 
     private String phone;
 

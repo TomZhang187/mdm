@@ -204,4 +204,9 @@ public class DingUser {
     public void setDingId(String dingId) {
         this.dingId = dingId;
     }
+
+
+
+
+
 }

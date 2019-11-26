@@ -3,8 +3,6 @@ package com.hqhop.modules.company.service.dto;
 import com.hqhop.annotation.Query;
 import lombok.Data;
 
-import javax.persistence.Column;
-
 /**
 * @author zf
 * @date 2019-11-07
@@ -26,7 +24,7 @@ public class ContactQueryCriteria{
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
-    private String name;
+    private String contactName;
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
@@ -51,8 +49,4 @@ public class ContactQueryCriteria{
     // 精确
     @Query
     private Integer isDefaultAddress;
-
-    // 精确
-    @Query
-    private Integer contactState;
 }
