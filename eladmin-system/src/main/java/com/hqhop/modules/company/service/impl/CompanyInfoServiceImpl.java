@@ -3,8 +3,10 @@ package com.hqhop.modules.company.service.impl;
 
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.hqhop.modules.company.domain.CompanyInfo;
+import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.domain.Contact;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
+import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
 import com.hqhop.modules.company.service.CompanyInfoService;
 import com.hqhop.modules.company.service.dto.CompanyInfoDTO;
@@ -14,25 +16,20 @@ import com.hqhop.utils.CompanyQueryHelp;
 import com.hqhop.utils.PageUtil;
 import com.hqhop.utils.QueryHelp;
 import com.hqhop.utils.ValidationUtil;
-import com.taobao.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.*;
 
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.criteria.*;
-
 /**
- * @author zf
+ * @author zf`
  * @date 2019-10-22
  */
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -50,13 +47,16 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     private ContactRepository contactRepository;
 
 
+
+
+
     @Override
     public Map<String, Object> queryAll(CompanyInfoQueryCriteria criteria, Pageable pageable) {
 
 
         List<BigInteger> compyKeyList = findCompanykeys(criteria.getContactName());
         if (criteria.getIsDisable() == null || "".equals(criteria.getIsDisable())) {
-            criteria.setIsDisable(0);
+            criteria.setIsDisable(1);
         }
 
         Page<CompanyInfo> page = companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> CompanyQueryHelp.getPredicate(root, criteria, criteriaBuilder, compyKeyList ), pageable);
@@ -64,16 +64,18 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public List<CompanyInfoDTO> queryAll(CompanyInfoQueryCriteria criteria) {
-        List<BigInteger> bigIntegerList = contactRepository.findCompany_keyByLikeName("联系人2");
-        return companyInfoMapper.toDto(companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> CompanyQueryHelp.getPredicate(root, criteria, criteriaBuilder, bigIntegerList)));
+    public List<CompanyInfo> queryAll(CompanyInfoQueryCriteria criteria) {
+//        if (criteria.getIsDisable() == null || "".equals(criteria.getIsDisable())) {
+//            criteria.setIsDisable(1);
+//        }
+        return companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
     }
 
+
     @Override
-    public CompanyInfoDTO findById(Long companyKey) {
-        Optional<CompanyInfo> companyInfo = companyInfoRepository.findById(companyKey);
-        ValidationUtil.isNull(companyInfo, "CompanyInfo", "companyKey", companyKey);
-        return companyInfoMapper.toDto(companyInfo.get());
+    public CompanyInfo findById(Long companyKey) {
+        CompanyInfo companyInfo = companyInfoRepository.getOne(companyKey);
+        return companyInfo;
     }
 
     @Override
@@ -82,32 +84,19 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
         CompanyInfo companyInfo = companyInfoRepository.findByTaxIdAndBelongCompany(resources.getTaxId(), resources.getBelongCompany());
         if (companyInfo != null) {
-
-            //表中有的该公司联系人id
-            List<BigInteger> oldContactId = contactRepository.getContact_KeyByCompany_Key(resources.getCompanyKey());
-
-            //传进来的联系人id
-            List<Long> newContactId = new ArrayList<>();
-
-            Set<Contact> newContacts = resources.getContacts();
-
-            for (Contact newContact : newContacts) {
-                newContactId.add(newContact.getContactKey());
-            }
-
-            for (BigInteger bigInteger : oldContactId) {
-                if (!newContactId.contains(bigInteger.longValue())) {
-                    contactRepository.deleteByContactKey(bigInteger.longValue());
-                }
-
-            }
-
+         resources.setCompanyKey(companyInfo.getCompanyKey());
             return companyInfoRepository.save(resources);
 
         } else {
-            //1 新增状态 2 审批中 3 驳回 4 审批通过
-            resources.setIsDisable(0);
-            resources.setCompanyState(1);
+            if ( resources.getCompanyState() == null || "".equals( resources.getCompanyState())) {
+                //1 新增状态 2 审批中 3 驳回 4 审批通过
+                resources.setCompanyState(1);
+            }
+            if ( resources.getIsDisable() == null || "".equals( resources.getIsDisable())) {
+                //1 启用 0 停用
+                resources.setIsDisable(1);
+            }
+            resources.setCreateTime(new Date());
             return companyInfoRepository.save(resources);
         }
 
@@ -124,6 +113,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         companyInfoRepository.save(companyInfo);
     }
 
+    //通过ID删除客商数据
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long companyKey) {
@@ -165,10 +155,5 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
 
-    @Override
-    public OapiProcessinstanceCreateResponse saveApprovel(CompanyInfo resources) {
-
-        return null;
-    }
 
 }
