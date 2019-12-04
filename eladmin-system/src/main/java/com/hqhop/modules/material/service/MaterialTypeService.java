@@ -36,7 +36,6 @@ public interface MaterialTypeService {
      * @param id
      * @return
      */
-    @Cacheable
     List<MaterialType> findByPid(Long id);
 
     /**
@@ -48,8 +47,12 @@ public interface MaterialTypeService {
 
     MaterialType addSmallType(MaterialType materialType);
 
-    MaterialType addBigType(MaterialType materialType);
 
+    MaterialType update(MaterialType entity);
 
-    public MaterialType update(MaterialType entity);
+    void deleteMaterialType(Long id);
+
+    MaterialType findByTypeName(String typeName);
+
+    MaterialType getOne(Long parseLong);
 }

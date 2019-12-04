@@ -18,7 +18,8 @@ public class MaterialTypeQueryCriteria {
 
     @Query(type = Query.Type.INNER_LIKE)
     private String name;
-
     @Query
     private Long pid;
+    @Query
+    private Boolean enabled;
 }

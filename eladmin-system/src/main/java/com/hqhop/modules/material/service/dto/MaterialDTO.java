@@ -14,63 +14,40 @@ import java.sql.Timestamp;
 @Data
 public class MaterialDTO implements Serializable {
 
-    // ID
+
     private Long id;
 
-    // 创建时间
-    private Timestamp createTime;
+    //标识存货编码
 
-
-    // 名称
-    private String name;
-
-    //标识
     private String remark;
 
-    //分类编码(001.0001)
-    private String classifyNum;
+    //存货名称
 
-    //大类
-    private String bigType;
+    private String name;
 
     //是否应税劳务
+
     private Boolean isTaxable;
 
-    //流水码
-    private String flowCode;
+    //规格型号
 
-    //新物料代码
-    private String newCode;
+    private String model;
 
-    //原物料代码1
-    private String oldCode1;
+    //税目
+    private String taxRating;
 
-    //原物料代码2
-    private String oldCode2;
+    //创建者
+    private String createPerson;
+    //创建时间
 
-    //原物料代码3
-    private String oldCode3;
-
-
-
-    //规格型号(图纸明细栏规格型号)
-    private String specifications;
-
-    //创建人
-    private String creator;
-
-    //修改人
-    private String modifier;
-
-    //修改时间
-    private Timestamp modifiedTime;
-
+    private Timestamp createTime;
 
     //单位
     private String unit;
 
     //物料类型(物料种类小类型)
     private MaterialType type;
+
 
 
 

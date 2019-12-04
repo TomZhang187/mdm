@@ -1,5 +1,6 @@
 package com.hqhop.modules.material.service;
 
+import com.hqhop.modules.material.domain.Attribute;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.service.dto.MaterialDTO;
 import com.hqhop.modules.material.service.dto.MaterialQueryCriteria;
@@ -83,4 +84,12 @@ public interface MaterialService {
      * @return
      */
     List<Material> queryAllByTyPid(Long typePid);
+    List<Material> findAllBySecondaryType(Long typeId, Integer pageNo, Integer pageSize);
+    Integer getCountBySecondaryType(Long typePid);
+    List<Material> findAllByTopType(Long typeId, Integer pageNo, Integer pageSize);
+    Integer getCountByTopType(Long typePid);
+    List<Attribute> getMaterialAttributes(Long materialTypeId);
+    List<Material> findAll();
+    List<Material> queryAllByTypeId(Long id);
+    Material findByNameAndModel(String name,String model);
 }

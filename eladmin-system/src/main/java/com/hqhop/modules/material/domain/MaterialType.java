@@ -22,17 +22,17 @@ import java.util.Set;
  * 物料分类（小类）
  */
 @Entity
-@Table(name="material_type")
+@Table(name = "material_type")
 //不加要出現Type definition error:[simple type, class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializ
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MaterialType implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
-     ID
-      */
+     * ID
+     */
     @Id
-    @SequenceGenerator(name="PK_SEQ_TBL",sequenceName="type_id")
+    @SequenceGenerator(name = "PK_SEQ_TBL", sequenceName = "type_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "type_id")
     @NotNull(groups = Update.class)
@@ -46,29 +46,35 @@ public class MaterialType implements Serializable {
     /**
      * 上级分类
      */
-    @Column(name = "pid",nullable = false)
+    @Column(name = "pid", nullable = false)
     @NotNull
     private Long parentId;
-
-
+   /* *//**
+     * 物料分类编码
+     *//*
+    @Column(name = "material_type_code", nullable = false)
+    @NotNull
+    private String materialTypeCode;
+    */
     @Column(name = "create_time")
     @CreationTimestamp
     private Timestamp createTime;
 
     //属于具体的小类的物料实体
-    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL,orphanRemoval = true )
-    @JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
     private Set<Material> materials;
 
-    @ManyToMany(cascade = { CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "materialTypes" })// 解决循环查找的问题
-    @JoinTable(name = "t_type_attr", joinColumns = { @JoinColumn(name = "type_id") }, inverseJoinColumns = { @JoinColumn(name = "attribute_id") })
+    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"materialTypes"})// 解决循环查找的问题
+    @JoinTable(name = "t_type_attr", joinColumns = {@JoinColumn(name = "type_id")}, inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
     private Set<Attribute> attributes;
 
     /*public void copy(MaterialType source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
     }*/
-    public @interface Update {}
+    public @interface Update {
+    }
 
     /**
      * 主键生成策略
