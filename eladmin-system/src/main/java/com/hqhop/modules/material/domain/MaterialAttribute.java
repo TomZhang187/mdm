@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "t_material_attribute")
+@Table(name = "material_attribute")
 public class MaterialAttribute {
     @Id //在表中的名称
     @GeneratedValue(strategy = GenerationType.AUTO) //自动增长

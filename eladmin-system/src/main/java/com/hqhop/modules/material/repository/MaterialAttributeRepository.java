@@ -22,7 +22,7 @@ public interface MaterialAttributeRepository extends JpaRepository<MaterialAttri
      * @param materialId
      * @return
      */
-    @Query(value = "select * from t_material_attribute where attribute_id=?1 and material_id=?2", nativeQuery = true)
+    @Query(value = "select * from material_attribute where attribute_id=?1 and material_id=?2", nativeQuery = true)
     MaterialAttribute findByAttributeId(Long attributeId, Long materialId);
 
     /**
@@ -33,7 +33,7 @@ public interface MaterialAttributeRepository extends JpaRepository<MaterialAttri
      */
     @Transactional
     @Modifying
-    @Query(value = "update t_material_attribute set attribute_value=?1  where attribute_id=?2 and material_id=?3", nativeQuery = true)
+    @Query(value = "update material_attribute set attribute_value=?1  where attribute_id=?2 and material_id=?3", nativeQuery = true)
     void updateByAttributeId(String attributeValue, Long attributeId, Long materialId);
 
 }

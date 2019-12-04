@@ -54,7 +54,7 @@ public interface AttributeRepository extends JpaRepository<Attribute, Long>, Jpa
     @Query(value = "UPDATE attribute set attr_name=?1 where attribute_id=?2",nativeQuery = true)
     void updateAttribute(String attributeName,Long attributeId);
 
-    @Query(value = "select a.attribute_id,a.attr_name,a.create_time,m.attribute_value,attribute_number from attribute a inner join t_material_attribute m on m.attribute_id=a.attribute_id where m.material_id=?1 order by a.attribute_number", nativeQuery = true)
+    @Query(value = "select a.attribute_id,a.attr_name,a.create_time,m.attribute_value,attribute_number from attribute a inner join material_attribute m on m.attribute_id=a.attribute_id where m.material_id=?1 order by a.attribute_number", nativeQuery = true)
     List<Attribute> queryAllByMaterialId(Long id);
     Attribute findAttributeByAttributeName(String attributeName);
     @Query(value = "select * from attribute a inner join t_type_attr m on m.attribute_id=a.attribute_id where m.attribute_id=?1 and m.type_id=?2", nativeQuery = true)
