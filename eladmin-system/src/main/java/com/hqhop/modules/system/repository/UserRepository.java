@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Zheng Jie
@@ -67,4 +69,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Modifying
     @Query(value = "update user set email = ?2 where username = ?1",nativeQuery = true)
     void updateEmail(String username, String email);
+
+    @Query(value ="select DISTINCT employee_id from employees_depts where dept_id in ?1",nativeQuery = true)
+    Set<Long> getEmployeeIdByDeptsId(Set<Long> ids);
+
+
 }

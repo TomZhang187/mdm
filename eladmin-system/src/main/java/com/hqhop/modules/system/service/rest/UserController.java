@@ -1,4 +1,4 @@
-package com.hqhop.modules.system.rest;
+package com.hqhop.modules.system.service.rest;
 
 import com.hqhop.aop.log.Log;
 import com.hqhop.config.DataScope;
@@ -6,6 +6,7 @@ import com.hqhop.domain.VerificationCode;
 import com.hqhop.modules.system.domain.User;
 import com.hqhop.exception.BadRequestException;
 import com.hqhop.modules.system.domain.vo.UserPassVo;
+import com.hqhop.modules.system.repository.UserRepository;
 import com.hqhop.modules.system.service.DeptService;
 import com.hqhop.modules.system.service.RoleService;
 import com.hqhop.modules.system.service.dto.RoleSmallDTO;
@@ -42,6 +43,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private PictureService pictureService;
 
     @Autowired
@@ -65,7 +69,7 @@ public class UserController {
 
     @Log("查询用户")
     @GetMapping(value = "/users")
-    @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT')")
     public ResponseEntity getUsers(UserQueryCriteria criteria, Pageable pageable){
         Set<Long> deptSet = new HashSet<>();
         Set<Long> result = new HashSet<>();
@@ -76,7 +80,7 @@ public class UserController {
         }
 
         // 数据权限
-        Set<Long> deptIds = dataScope.getDeptIds();
+         Set<Long> deptIds = dataScope.getDeptIds();
 
         // 查询条件不为空并且数据权限不为空则取交集
         if (!CollectionUtils.isEmpty(deptIds) && !CollectionUtils.isEmpty(deptSet)){
@@ -85,8 +89,12 @@ public class UserController {
             result.addAll(deptSet);
             result.retainAll(deptIds);
 
+            if(!deptIds.isEmpty()){
+                Set<Long> list = userRepository.getEmployeeIdByDeptsId(result);
+            }
             // 若无交集，则代表无数据权限
-            criteria.setDeptIds(result);
+           criteria.setEmployeeIds(result);
+//            criteria.setDeptIds(result);
             if(result.size() == 0){
                 return new ResponseEntity(PageUtil.toPage(null,0),HttpStatus.OK);
             } else return new ResponseEntity(userService.queryAll(criteria,pageable),HttpStatus.OK);
@@ -94,7 +102,14 @@ public class UserController {
         } else {
             result.addAll(deptSet);
             result.addAll(deptIds);
-            criteria.setDeptIds(result);
+
+            if(!deptIds.isEmpty()){
+                Set<Long> list = userRepository.getEmployeeIdByDeptsId(result);
+            }
+            // 若无交集，则代表无数据权限
+            criteria.setEmployeeIds(result);
+//            criteria.setDeptIds(result);
+//                criteria.setDeptIds(null);
             return new ResponseEntity(userService.queryAll(criteria,pageable),HttpStatus.OK);
         }
     }
@@ -120,6 +135,7 @@ public class UserController {
     @DeleteMapping(value = "/users/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_DELETE')")
     public ResponseEntity delete(@PathVariable Long id){
+
         Integer currentLevel =  Collections.min(roleService.findByUsers_Id(SecurityUtils.getUserId()).stream().map(RoleSmallDTO::getLevel).collect(Collectors.toList()));
         Integer optLevel =  Collections.min(roleService.findByUsers_Id(id).stream().map(RoleSmallDTO::getLevel).collect(Collectors.toList()));
 

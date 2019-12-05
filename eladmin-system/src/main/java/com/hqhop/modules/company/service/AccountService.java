@@ -51,7 +51,7 @@ public interface AccountService {
      * @return
      */
     //@CacheEvict(allEntries = true)
-    AccountDTO create(Account resources);
+    Account create(Account resources);
 
     /**
      * 编辑

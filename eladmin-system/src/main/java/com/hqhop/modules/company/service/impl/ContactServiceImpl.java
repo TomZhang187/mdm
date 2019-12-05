@@ -63,12 +63,11 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ContactDTO create(Contact resources) {
-        Snowflake snowflake = IdUtil.createSnowflake(1, 1);
-        resources.setContactKey(snowflake.nextId());
+    public Contact create(Contact resources) {
+
         //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批  字典为准
         resources.setContactState(1);
-        return contactMapper.toDto(contactRepository.save(resources));
+        return contactRepository.save(resources);
     }
 
     @Override

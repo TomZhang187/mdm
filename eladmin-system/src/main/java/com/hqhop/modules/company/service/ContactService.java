@@ -49,7 +49,7 @@ public interface ContactService {
      * @return
      */
     //@CacheEvict(allEntries = true)
-    ContactDTO create(Contact resources);
+    Contact create(Contact resources);
 
     /**
      * 编辑

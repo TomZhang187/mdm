@@ -88,4 +88,6 @@ public interface UserService {
     List<UserDTO> queryAll(UserQueryCriteria criteria);
 
     void download(List<UserDTO> queryAll, HttpServletResponse response) throws IOException;
+
+
 }

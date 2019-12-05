@@ -1,6 +1,7 @@
 package com.hqhop.modules.material.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.hqhop.modules.company.domain.Account;
 import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -112,4 +113,11 @@ public class MaterialProduction implements Serializable {
    /* public void copy(MaterialProduction source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }*/
+
+    public void copy( MaterialProduction source){
+        BeanUtil.copyProperties( source,this, CopyOptions.create().setIgnoreNullValue(true));
+    }
+
+
+
 }

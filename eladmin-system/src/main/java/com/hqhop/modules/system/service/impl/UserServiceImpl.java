@@ -1,12 +1,15 @@
 package com.hqhop.modules.system.service.impl;
 
 import com.hqhop.modules.monitor.service.RedisService;
+import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.domain.User;
 import com.hqhop.exception.EntityExistException;
 import com.hqhop.exception.EntityNotFoundException;
 import com.hqhop.modules.system.domain.UserAvatar;
+import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.repository.UserAvatarRepository;
 import com.hqhop.modules.system.repository.UserRepository;
+import com.hqhop.modules.system.service.EmployeeService;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.RoleSmallDTO;
 import com.hqhop.modules.system.service.dto.UserDTO;
@@ -44,6 +47,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private UserAvatarRepository userAvatarRepository;
@@ -135,8 +141,9 @@ public class UserServiceImpl implements UserService {
         user.setDduserid(resources.getDduserid());
         user.setEmpnum(resources.getEmpnum());
         user.setEnabled(resources.getEnabled());
+        //赋予角色
         user.setRoles(resources.getRoles());
-        user.setDept(resources.getDept());
+
         user.setJob(resources.getJob());
         user.setPhone(resources.getPhone());
         userRepository.save(user);
@@ -162,7 +169,13 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new EntityNotFoundException(User.class, "name", userName);
         } else {
-            return userMapper.toDto(user);
+
+            UserDTO userDTO = userMapper.toDto(user);
+            Employee employee = employeeRepository.findByDingId(userDTO.getEmployee().getDingId());
+
+            userDTO.setDepts(employee.getDeptsSet());
+
+            return userDTO;
         }
     }
 
@@ -208,7 +221,6 @@ public class UserServiceImpl implements UserService {
             map.put("状态", userDTO.getEnabled() ? "启用" : "禁用");
             map.put("手机号码", userDTO.getPhone());
             map.put("角色", roles);
-            map.put("部门", userDTO.getDept().getName());
             map.put("岗位", userDTO.getJob().getName());
             map.put("最后修改密码的时间", userDTO.getLastPasswordResetTime());
             map.put("创建日期", userDTO.getCreateTime());
@@ -216,4 +228,21 @@ public class UserServiceImpl implements UserService {
         }
         FileUtil.downloadExcel(list, response);
     }
+
+
+//    //根据工号加载用户详细信息
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public void getDetailByEmployeeCode(User user) {
+//
+//
+//
+//    }
+
+
+
+
+
+
+
 }

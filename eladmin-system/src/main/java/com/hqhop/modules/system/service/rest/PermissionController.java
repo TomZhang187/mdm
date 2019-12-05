@@ -1,4 +1,4 @@
-package com.hqhop.modules.system.rest;
+package com.hqhop.modules.system.service.rest;
 
 import com.hqhop.aop.log.Log;
 import com.hqhop.modules.system.domain.Permission;

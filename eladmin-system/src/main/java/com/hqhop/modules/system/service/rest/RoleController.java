@@ -1,4 +1,4 @@
-package com.hqhop.modules.system.rest;
+package com.hqhop.modules.system.service.rest;
 
 import cn.hutool.core.lang.Dict;
 import com.hqhop.aop.log.Log;

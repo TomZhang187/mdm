@@ -17,6 +17,7 @@ public class Account implements Serializable {
 
     // 账户主键
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_key")
     private Long accountKey;
 
@@ -37,7 +38,7 @@ public class Account implements Serializable {
     private Integer currency;
 
     // 是否默认
-    @Column(name = "is_defalut",nullable = false)
+    @Column(name = "is_defalut")
     private Integer isDefalut;
 
     // 账户名

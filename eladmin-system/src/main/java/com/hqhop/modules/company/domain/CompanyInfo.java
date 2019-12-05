@@ -139,16 +139,23 @@ public class CompanyInfo implements Serializable {
     private Integer isSynergyPay;
 
     //账户
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Account.class, cascade = CascadeType.REFRESH )
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Account.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_key")
     private Set<Account > accounts  = new HashSet<>();
 
 
     //联系人
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.REFRESH )
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.PERSIST )
     @JoinColumn(name = "company_key")
     private Set<Contact> contacts = new HashSet<>();
 
+
+    //添加账户方法
+    public void addAccount(Account account){
+        if(account != null){
+            accounts.add(account);
+        }
+    }
 
     public void copy(CompanyInfo source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));

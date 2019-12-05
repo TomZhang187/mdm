@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 * @date 2019-11-06
 */
 public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpecificationExecutor {
+
+    Account findByAccountKey(Long key);
 }

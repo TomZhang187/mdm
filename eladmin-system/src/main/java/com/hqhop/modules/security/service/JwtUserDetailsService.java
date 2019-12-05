@@ -2,6 +2,9 @@ package com.hqhop.modules.security.service;
 
 import com.hqhop.exception.BadRequestException;
 import com.hqhop.modules.security.security.JwtUser;
+import com.hqhop.modules.system.domain.Employee;
+import com.hqhop.modules.system.repository.EmployeeRepository;
+import com.hqhop.modules.system.repository.UserRepository;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +19,27 @@ import java.util.Optional;
  * @author Zheng Jie
  * @date 2018-11-22
  */
+
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class JwtUserDetailsService implements UserDetailsService {
+public class    JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserService userService;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
     private JwtPermissionService permissionService;
 
+    //加载用户信息方法
     @Override
     public UserDetails loadUserByUsername(String username){
 
         UserDTO user = userService.findByName(username);
+        Employee employee = employeeRepository.findByDingId(user.getEmployee().getDingId());
+        user.setDepts(employee.getDeptsSet());
         if (user == null) {
             throw new BadRequestException("账号不存在");
         } else {
@@ -45,7 +55,8 @@ public class JwtUserDetailsService implements UserDetailsService {
                 user.getAvatar(),
                 user.getEmail(),
                 user.getPhone(),
-                Optional.ofNullable(user.getDept()).map(DeptSmallDTO::getName).orElse(null),
+                Optional.ofNullable(user.getEmployee().getEmployeeName()).orElse(null),
+                user.getDepts(),
                 Optional.ofNullable(user.getJob()).map(JobSmallDTO::getName).orElse(null),
                 permissionService.mapToGrantedAuthorities(user),
                 user.getEnabled(),

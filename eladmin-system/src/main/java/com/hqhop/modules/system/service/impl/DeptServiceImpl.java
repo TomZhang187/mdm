@@ -3,12 +3,14 @@ package com.hqhop.modules.system.service.impl;
 import com.hqhop.exception.BadRequestException;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.service.dto.DeptQueryCriteria;
+import com.hqhop.modules.system.service.DeptDingService;
 import com.hqhop.utils.QueryHelp;
 import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.system.repository.DeptRepository;
 import com.hqhop.modules.system.service.DeptService;
 import com.hqhop.modules.system.service.dto.DeptDTO;
 import com.hqhop.modules.system.service.mapper.DeptMapper;
+import com.taobao.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -29,10 +31,14 @@ public class DeptServiceImpl implements DeptService {
     private DeptRepository deptRepository;
 
     @Autowired
+    private DeptDingService deptDingService;
+
+    @Autowired
     private DeptMapper deptMapper;
 
     @Override
     public List<DeptDTO> queryAll(DeptQueryCriteria criteria) {
+
         return deptMapper.toDto(deptRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
     }
 
@@ -55,27 +61,33 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public Object buildTree(List<DeptDTO> deptDTOS) {
-        Set<DeptDTO> trees = new LinkedHashSet<>();
-        Set<DeptDTO> depts= new LinkedHashSet<>();
-        List<String> deptNames = deptDTOS.stream().map(DeptDTO::getName).collect(Collectors.toList());
-        Boolean isChild;
-        for (DeptDTO deptDTO : deptDTOS) {
+
+
+
+        Set<DeptDTO> trees = new LinkedHashSet<>();         //树集合
+        Set<DeptDTO> depts= new LinkedHashSet<>();          //部门集合
+
+        List<String> deptNames = deptDTOS.stream().map(DeptDTO::getName).collect(Collectors.toList());  //部门名字集合
+        Boolean isChild;     //判断是否为子部门
+
+        for (DeptDTO deptDTO : deptDTOS) {     //遍历传过来的部门集合
             isChild = false;
-            if ("0".equals(deptDTO.getPid().toString())) {
+            if ("0".equals(deptDTO.getPid().toString())) {     //如果父节点为0，放入trees集合
                 trees.add(deptDTO);
             }
-            for (DeptDTO it : deptDTOS) {
-                if (it.getPid().equals(deptDTO.getId())) {
+            for (DeptDTO it : deptDTOS) { //再次遍历传过来的部门集合
+                isChild = false;
+                if (it.getPid().equals(deptDTO.getId())) {      //如果父节点与当前节点相同
                     isChild = true;
-                    if (deptDTO.getChildren() == null) {
-                        deptDTO.setChildren(new ArrayList<DeptDTO>());
+                    if (deptDTO.getChildren() == null) {        //判断子节点是否为空
+                        deptDTO.setChildren(new ArrayList<DeptDTO>());      //为空新建集合
                     }
-                    deptDTO.getChildren().add(it);
+                    deptDTO.getChildren().add(it); //加入子节点中
                 }
             }
-            if(isChild)
-                depts.add(deptDTO);
-            else if(!deptNames.contains(deptRepository.findNameById(deptDTO.getPid())))
+            if(isChild)//有子节点
+                depts.add(deptDTO);//depts集合加入当前节点
+            else if(!deptNames.contains(deptRepository.findNameById(deptDTO.getPid())))  //非根节点
                 depts.add(deptDTO);
         }
 
@@ -93,26 +105,42 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public DeptDTO create(Dept resources) {
-        return deptMapper.toDto(deptRepository.save(resources));
+    public Dept create(Dept resources) throws
+            ApiException {
+       Dept dept = deptRepository.save(resources);
+        //钉钉新建部门
+       String dingId = deptDingService.createDignDept(dept);
+       dept.setDingId(dingId);
+        return deptRepository.save(dept);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(Dept resources) {
+    public void update(Dept resources) throws
+            ApiException{
         if(resources.getId().equals(resources.getPid())) {
             throw new BadRequestException("上级不能为自己");
+        }
+        if(resources.getDingId() == null){
+            Dept dept = deptRepository.getOne(resources.getId());
+            resources.setDingId(dept.getDingId());
         }
         Optional<Dept> optionalDept = deptRepository.findById(resources.getId());
         ValidationUtil.isNull( optionalDept,"Dept","id",resources.getId());
         Dept dept = optionalDept.get();
         resources.setId(dept.getId());
-        deptRepository.save(resources);
+        Dept dept1 = deptRepository.save(resources);
+        deptDingService.updateDingDept(dept1);
     }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public void delete(Long id)throws
+            ApiException {
+        Dept dept = deptRepository.getOne(id);
+        deptDingService.deleteDingDept(dept);
         deptRepository.deleteById(id);
     }
+
+
+
 }

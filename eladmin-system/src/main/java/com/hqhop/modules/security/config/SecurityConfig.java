@@ -20,6 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+/*
+* @EnableGlobalMethodSecurity 开启注解的权限控制,默认是关闭的
+*
+*
+*
+* */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -43,6 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${jwt.auth.path}")
     private String loginPath;
 
+
+    /*
+    从容器取出AuthenticationManagetBuilder,执行方法里的逻辑之后，放回容器
+    * */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth

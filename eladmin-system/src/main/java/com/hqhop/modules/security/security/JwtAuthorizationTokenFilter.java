@@ -17,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+/*
+* 拦截器
+* */
 @Slf4j
 @Component
 public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
@@ -31,6 +35,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         this.tokenHeader = tokenHeader;
     }
 
+    //拦截操作 验证令牌是否合法
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 

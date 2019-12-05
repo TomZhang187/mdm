@@ -61,12 +61,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AccountDTO create(Account resources) {
-        Snowflake snowflake = IdUtil.createSnowflake(1, 1);
-        resources.setAccountKey(snowflake.nextId());
-        //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批  字典为准
-        resources.setAccountState(1);
-        return accountMapper.toDto(accountRepository.save(resources));
+    public Account create(Account resources) {
+
+           //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批  字典为准
+           resources.setAccountState(1);
+           resources.setAccountKey(null);
+           return accountRepository.save(resources);
+
+
     }
 
     @Override

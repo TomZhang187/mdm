@@ -16,8 +16,9 @@ public class SecurityUtils {
         UserDetails userDetails = null;
         try {
             userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         } catch (Exception e) {
-            throw new BadRequestException(HttpStatus.UNAUTHORIZED, "登录状态过期");
+                throw new BadRequestException(HttpStatus.UNAUTHORIZED, "登录状态过期");
         }
         return userDetails;
     }

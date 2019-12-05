@@ -198,13 +198,13 @@ public class DingTalkUtils {
      * <p>
      * 如果签名数据是通过ajax异步请求的话，签名计算中的url必须是给用户展示页面的url
      *
-     * @param request
+     * @param
      * @return
      */
-    public static TicketConfigVO getConfig(HttpServletRequest request) throws ApiException {
+    public static TicketConfigVO getConfig(String url) throws ApiException {
 //        String url = "http://chengy.vaiwan.com/";
-        // 直接从配置文件中取， 因使用的时前端路由，对鉴权来说路径没有变所以就写死再这里了
-        String url = DingTalkConstant.WEBURL;
+//        // 直接从配置文件中取， 因使用的时前端路由，对鉴权来说路径没有变所以就写死再这里了
+//        String url = DingTalkConstant.WEBURL;
 
 //        String urlString = request.getRequestURL().toString();
 //        String queryString = request.getQueryString();

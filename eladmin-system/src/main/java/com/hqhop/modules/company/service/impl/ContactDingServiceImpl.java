@@ -143,7 +143,11 @@ public class ContactDingServiceImpl implements ContactDingService {
             Contact contact = contactRepository.getOne(companyUpdate.getContactKey());
             //1新增 2审批中 3驳回 4审核通过
            contact.setContactState(4);
-           contactRepository.save(contact);
+           Contact contact1 =  contactRepository.save(contact);
+           CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+           companyInfo.getContacts().add(contact1);
+           companyInfoRepository.save(companyInfo);
+
 
         }
 
@@ -292,6 +296,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         companyUpdate.setOperationType("6");
         //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批中
         resouces.setContactState(5);
+        resouces.setCompanyKey(null);
         Contact contact1 = contactRepository.save(resouces);
         companyUpdate.setContactKey(contact1.getContactKey());
         companyUpdateRepository.save( companyUpdate);
@@ -313,8 +318,11 @@ public class ContactDingServiceImpl implements ContactDingService {
             Contact contact = contactRepository.getOne(companyUpdate.getContactKey());
             //1新增 2审批中 3驳回 4审核通过
             contact.setContactState(4);
-            contact.setCompanyKey(contact.getBelongCompany());
-            contactRepository.save(contact);
+
+            Contact contact1 =  contactRepository.save(contact);
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+            companyInfo.getContacts().add(contact1);
+            companyInfoRepository.save(companyInfo);
         }
     }
 
@@ -417,6 +425,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         companyUpdate.setOperationType("10");
         //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批中
         resouces.setContactState(5);
+        contact.setCompanyKey(null);
         Contact contact1 = contactRepository.save(resouces);
         companyUpdate.setContactKey(contact1.getContactKey());
         companyUpdateRepository.save( companyUpdate);
@@ -460,7 +469,10 @@ public class ContactDingServiceImpl implements ContactDingService {
             Contact contact = contactRepository.getOne(companyUpdate.getContactKey());
             //1新增 2审批中 3驳回 4审核通过
             contact.setContactState(4);
-            contactRepository.save(contact);
+            Contact contact1 =  contactRepository.save(contact);
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+            companyInfo.getContacts().add(contact1);
+            companyInfoRepository.save(companyInfo);
         }
 
 
@@ -477,7 +489,10 @@ public class ContactDingServiceImpl implements ContactDingService {
             Contact contact = contactRepository.getOne(companyUpdate.getContactKey());
             //1新增 2审批中 3驳回 4审核通过
             contact.setContactState(4);
-            contactRepository.save(contact);
+            Contact contact1 =  contactRepository.save(contact);
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+            companyInfo.getContacts().add(contact1);
+            companyInfoRepository.save(companyInfo);
             companyUpdateRepository.deleteById(companyUpdate.getOperateKey());
         }
 
