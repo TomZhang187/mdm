@@ -101,4 +101,19 @@ public class  DataScope {
         );
         return list;
     }
+
+    public List<Long> getDeptParent(List<Dept> deptList) {
+        List<Long> list = new ArrayList<>();
+        deptList.forEach(dept -> {
+                    if (dept!=null && dept.getEnabled()){
+                        List<Dept> depts = deptService.findByPid(dept.getId());
+                        if(deptList!=null && deptList.size()!=0){
+                            list.addAll(getDeptChildren(depts));
+                        }
+                        list.add(dept.getId());
+                    }
+                }
+        );
+        return list;
+    }
 }

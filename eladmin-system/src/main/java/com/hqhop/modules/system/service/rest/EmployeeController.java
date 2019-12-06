@@ -24,6 +24,8 @@ import io.swagger.annotations.*;
 @RequestMapping("api")
 public class EmployeeController {
 
+
+
     @Autowired
     private EmployeeService employeeService;
     @Autowired
@@ -47,7 +49,14 @@ public class EmployeeController {
         return new ResponseEntity(employeeService.queryAll(criteria), HttpStatus.OK);
     }
 
+    @Log("通过工号查询Employee")
+    @ApiOperation(value = "通过工号查询Employee")
+    @GetMapping(value = "/getEmployeeByCode")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity getEmployeeByCode(EmployeeQueryCriteria criteria) {
 
+        return new ResponseEntity(employeeService.getEmployeeByCode(criteria.getEmployeeCode()), HttpStatus.OK);
+    }
 
     @Log("新增Employee")
     @ApiOperation(value = "新增Employee")

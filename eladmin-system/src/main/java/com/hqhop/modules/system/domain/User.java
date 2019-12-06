@@ -27,7 +27,8 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = Update.class)
+    @Column(name = "id")
+    @NotNull(groups = Employee.Update.class)
     private Long id;
 
     //用户名

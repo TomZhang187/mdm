@@ -49,7 +49,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
      * @param pass
      */
     @Modifying
-    @Query(value = "update user set password = ?2 , last_password_reset_time = ?3 where username = ?1",nativeQuery = true)
+    @Query(value = "update sys_user set password = ?2 , last_password_reset_time = ?3 where username = ?1",nativeQuery = true)
     void updatePass(String username, String pass, Date lastPasswordResetTime);
 
     /**

@@ -7,6 +7,7 @@ import com.taobao.api.ApiException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -76,4 +77,8 @@ public interface DeptService {
     List<Dept> findByPid(long pid);
 
     Set<Dept> findByRoleIds(Long id);
+
+    //查询所属分公司
+    @Transactional(rollbackFor = Exception.class)
+    Set<Dept> getBelongSubsidiary(Set<Long> depts);
 }

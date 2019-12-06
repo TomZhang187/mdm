@@ -83,31 +83,37 @@ public class UserController {
          Set<Long> deptIds = dataScope.getDeptIds();
 
         // 查询条件不为空并且数据权限不为空则取交集
+
         if (!CollectionUtils.isEmpty(deptIds) && !CollectionUtils.isEmpty(deptSet)){
 
             // 取交集
             result.addAll(deptSet);
             result.retainAll(deptIds);
 
-            if(!deptIds.isEmpty()){
-                Set<Long> list = userRepository.getEmployeeIdByDeptsId(result);
+            Set<Long> list = new HashSet<>();
+            if(result.size()!=0){
+               list = userRepository.getEmployeeIdByDeptsId(result);
+                list.add(0L);
             }
             // 若无交集，则代表无数据权限
-           criteria.setEmployeeIds(result);
+           criteria.setEmployeeIds(list);
 //            criteria.setDeptIds(result);
             if(result.size() == 0){
                 return new ResponseEntity(PageUtil.toPage(null,0),HttpStatus.OK);
             } else return new ResponseEntity(userService.queryAll(criteria,pageable),HttpStatus.OK);
         // 否则取并集
         } else {
+
+
             result.addAll(deptSet);
             result.addAll(deptIds);
-
-            if(!deptIds.isEmpty()){
-                Set<Long> list = userRepository.getEmployeeIdByDeptsId(result);
+            Set<Long> list = new HashSet<>();
+            if(result.size()!=0){
+              list = userRepository.getEmployeeIdByDeptsId(result);
+              list.add(0L);
             }
             // 若无交集，则代表无数据权限
-            criteria.setEmployeeIds(result);
+            criteria.setEmployeeIds(list);
 //            criteria.setDeptIds(result);
 //                criteria.setDeptIds(null);
             return new ResponseEntity(userService.queryAll(criteria,pageable),HttpStatus.OK);
@@ -206,5 +212,18 @@ public class UserController {
         if (currentLevel > optLevel) {
             throw new BadRequestException("角色权限不足");
         }
+    }
+
+
+
+    /**
+     * 对比用户名
+     * @param
+     * @return
+     */
+    @GetMapping(value = "/compareName")
+    public ResponseEntity compareUserName(String  name){
+
+       return  new ResponseEntity(userService.compareName(name),HttpStatus.OK);
     }
 }

@@ -42,6 +42,9 @@ public interface EmployeeService {
     //@Cacheable(key = "#p0")
     EmployeeDTO findById(Long id);
 
+    //通过工号查询
+    Employee getEmployeeByCode(String code);
+
     /**
      * 创建
      * @param resources

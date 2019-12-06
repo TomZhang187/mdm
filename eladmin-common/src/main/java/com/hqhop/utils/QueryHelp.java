@@ -110,6 +110,7 @@ public class QueryHelp {
                             if (CollUtil.isNotEmpty((Collection<Long>)val)) {
                                 list.add(getExpression(attributeName,join,root).in((Collection<Long>) val));
                             }
+
                             break;
                     }
                 }

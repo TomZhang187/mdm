@@ -5,6 +5,8 @@ import com.hqhop.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Set;
+
 /**
  * 获取当前登录的用户
  * @author Zheng Jie
@@ -22,6 +24,7 @@ public class SecurityUtils {
         }
         return userDetails;
     }
+
 
     /**
      * 获取系统用户名称

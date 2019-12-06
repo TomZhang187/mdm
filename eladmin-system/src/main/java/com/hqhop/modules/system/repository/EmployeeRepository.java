@@ -14,4 +14,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
     Employee findByDingId(String dingId);
 
 
+    //通过员工编码查询员工
+    Employee findByEmployeeCode(String code);
+
+
+
+
 }

@@ -78,7 +78,7 @@ public class MaterialServiceImpl implements MaterialService {
        /* MaterialType byId = materialTypeRepository.getOne(resources.getType().getId());
         resources.setType(byId);*/
        //查找上一个的获取流水码
-        Material material = materialRepository.lastTimeMaterial(resources.getType().getId());
+        Material material = materialRepository.lastTimeMaterial(resources.getType().getParentId());
         Material save = materialRepository.save(resources);
         Set<Attribute> attributes = resources.getAttributes();
         MaterialType one = materialTypeRepository.getOne(save.getType().getId());

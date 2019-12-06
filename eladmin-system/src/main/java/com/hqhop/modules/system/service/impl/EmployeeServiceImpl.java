@@ -3,6 +3,7 @@ package com.hqhop.modules.system.service.impl;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.DeptRepository;
+import com.hqhop.modules.system.service.dto.EmployeeSmallDTO;
 import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.service.EmployeeService;
@@ -22,6 +23,7 @@ import com.hqhop.utils.PageUtil;
 import com.hqhop.utils.QueryHelp;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * @author zf
@@ -42,7 +44,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Map<String,Object> queryAll(EmployeeQueryCriteria criteria, Pageable pageable){
         Page<Employee> page = employeeRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
-
         return PageUtil.toPage(page);
     }
 
@@ -59,6 +60,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employee.get());
     }
 
+    //通过工号查询
+    @Override
+    public Employee getEmployeeByCode(String code) {
+       Employee employee = employeeRepository.findByEmployeeCode(code);
+       if(employee!=null){
+           employee.setDepts(null);
+           return employee;
+       }
+     return null;
+    }
 
 
     @Override
