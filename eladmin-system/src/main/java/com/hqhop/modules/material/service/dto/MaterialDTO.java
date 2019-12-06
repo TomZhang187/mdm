@@ -48,7 +48,15 @@ public class MaterialDTO implements Serializable {
     //物料类型(物料种类小类型)
     private MaterialType type;
 
+    //修改者
+    private String updatePerson;
 
+    //修改日期
+    private Timestamp updateTime;
+
+
+    //审批状态
+    private String approvalState;
 
 
 }
