@@ -5,9 +5,11 @@ import com.hqhop.modules.company.domain.Account;
 import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @author wst
@@ -109,6 +111,82 @@ public class MaterialProduction implements Serializable {
     @JoinColumn(name = "material_id")
     @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
     private Material material;
+
+    //创建者
+    @Column(name = "create_person")
+    private String createPerson;
+
+    //创建时间
+    @Column(name = "create_time")
+    @CreationTimestamp
+    private Timestamp createTime;
+
+    //修改者
+    @Column(name = "update_person")
+    private String updatePerson;
+
+    //修改日期
+    @Column(name = "update_time")
+    @CreationTimestamp
+    private Timestamp updateTime;
+
+
+    //采购员
+    @Column(name = "buyer")
+    private String buyer;
+
+    //货位
+    @Column(name = "zhy")
+    private String zhy;
+
+    //是否封存
+    @Column(name = "enable")
+    private  Boolean enable;
+
+    //封存时间
+    @Column(name = "seal_time")
+    private Timestamp sealTime;
+
+    //封存标志
+    @Column(name = "seal_sign")
+    private String sealSign;
+
+    //封存人
+    @Column(name = "seal_person")
+    private String sealPerson;
+
+   //是否批准次核算
+   @Column(name = "is_batches_account")
+    private Boolean isBatchesAccount;
+
+    //安全库存
+    @Column(name = "safety_stock")
+    private String safetyStock;
+
+    //最低库存
+    @Column(name = "min_stock")
+    private String minStock;
+
+    //最高库存
+    @Column(name = "max_stock")
+    private String maxStock;
+
+    //再订购点
+    @Column(name = "again_buy_place")
+    private String againBuyPlace;
+
+    //生产部门
+    @Column(name = "production_depts")
+    private String productionDepts;
+
+    //固定提前期
+    @Column(name = "fixed_advance_time")
+     private  String  fixedAdvanceTime;
+
+    //审批状态
+    @Column(name = "approval_state")
+    private String approvalState;
+
 
    /* public void copy(MaterialProduction source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));

@@ -58,9 +58,24 @@ public class Material implements Serializable {
     @CreationTimestamp
     private Timestamp createTime;
 
+    //修改者
+    @Column(name = "update_person")
+    private String updatePerson;
+
+    //修改日期
+    @Column(name = "update_time")
+    @CreationTimestamp
+    private Timestamp updateTime;
+
     //单位
     @Column(name = "unit")
     private String unit;
+
+    //审批状态
+    @Column(name = "approval_state")
+    private String approvalState;
+
+
 
     //物料类型(物料种类小类型)
     @ManyToOne(fetch = FetchType.LAZY)
