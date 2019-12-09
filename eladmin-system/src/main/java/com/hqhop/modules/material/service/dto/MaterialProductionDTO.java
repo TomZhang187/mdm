@@ -5,6 +5,7 @@ import com.hqhop.modules.material.domain.Material;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 
 /**
@@ -84,6 +85,62 @@ public class MaterialProductionDTO implements Serializable {
     
     //物料级别
     private String materialLevel;
+
+
+    //创建者
+    private String createPerson;
+
+    //创建时间
+    private Timestamp createTime;
+
+    //修改者
+    private String updatePerson;
+
+    //修改日期
+    private Timestamp updateTime;
+
+
+    //采购员
+    private String buyer;
+
+    //货位
+    private String zhy;
+
+    //是否封存
+    private  Boolean enable;
+
+    //封存时间
+    private Timestamp sealTime;
+
+    //封存标志
+    private String sealSign;
+
+    //封存人
+    private String sealPerson;
+
+    //是否批准次核算
+    private Boolean isBatchesAccount;
+
+    //安全库存
+    private String safetyStock;
+
+    //最低库存
+    private String minStock;
+
+    //最高库存
+    private String maxStock;
+
+    //再订购点
+    private String againBuyPlace;
+
+    //生产部门
+    private String productionDepts;
+
+    //固定提前期
+    private  String  fixedAdvanceTime;
+
+    //审批状态
+    private String approvalState;
 
     public MaterialProductionDTO() {
     }

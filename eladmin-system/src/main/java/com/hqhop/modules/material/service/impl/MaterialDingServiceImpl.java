@@ -19,14 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class MaterialDingServiceImpl implements MaterialDingService {
 
-    //物料生成审批
-
-
-
-
-
-
-
 
 
 
