@@ -142,7 +142,6 @@ public class AuthenticationController {
         }
     }
 
-
     /**
      * 鉴权
      */

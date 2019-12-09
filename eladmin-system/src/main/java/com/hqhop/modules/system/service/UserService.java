@@ -56,7 +56,7 @@ public interface UserService {
      * @param userName
      * @return
      */
-    @Cacheable(key = "'loadUserByUsername:'+#p0")
+//    @Cacheable(key = "'loadUserByUsername:'+#p0")
     UserDTO findByName(String userName);
 
     /**

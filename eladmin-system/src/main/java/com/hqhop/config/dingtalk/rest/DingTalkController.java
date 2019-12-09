@@ -34,7 +34,7 @@ import org.springframework.web.util.ServletContextPropertyUtils;
  */
 @Api(tags = "DingTalk接口")
 @RestController
-@RequestMapping("api")
+@RequestMapping("ding")
 public class DingTalkController {
 
     @Autowired
@@ -66,7 +66,7 @@ public class DingTalkController {
 
     @Log("获取空间ID")
     @ApiOperation(value = "获取审批钉盘空间ID")
-    @GetMapping(value = "/getApprovalSpaceId")
+    @GetMapping(value = "/getDingSpaceId")
     public ResponseEntity getSpaceId() {
 
         UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
@@ -80,7 +80,7 @@ public class DingTalkController {
             e.printStackTrace();
         }
         System.out.println(rsp.getBody());
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(rsp.getResult().getSpaceId(),HttpStatus.OK);
     }
 
 

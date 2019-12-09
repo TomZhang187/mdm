@@ -7,3 +7,5 @@ eladmin-logging/target
 # Editor directories and files
 .idea
 .iml
+eladmin-logging/*.iml
+eladmin-tools/*.imp
