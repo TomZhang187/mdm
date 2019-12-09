@@ -34,7 +34,7 @@ import org.springframework.web.util.ServletContextPropertyUtils;
  */
 @Api(tags = "DingTalk接口")
 @RestController
-@RequestMapping("ding")
+@RequestMapping("api")
 public class DingTalkController {
 
     @Autowired
