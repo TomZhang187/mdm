@@ -55,4 +55,19 @@ public class UserDTO implements Serializable {
 
 
 
+    public Long getDeptId(){
+        Long id =-1L;
+        if(depts !=null){
+
+            for (Long dept : depts) {
+                  id = dept;
+                  break;
+            }
+        }
+
+        return   id;
+    }
+
+
+
 }

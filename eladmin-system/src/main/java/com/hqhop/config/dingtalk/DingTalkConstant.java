@@ -50,4 +50,14 @@ public class DingTalkConstant {
       * */
     public static final String PROCESSCODE_COMPAY_ADD = "PROC-1F000E3F-6764-4631-8712-6E270120E039";
 
+
+
+    /*
+    * 物料审批processCode
+    * */
+    public  static final String PROCESSCODE_MATERIAL_ADD = " PROC-7E6D638F-4D21-4441-AB53-71BB48B86223";
+
+
+
+
 }

@@ -3,6 +3,8 @@ package com.hqhop.modules.material.domain;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.hqhop.config.dingtalk.domain.Accessory;
+import com.hqhop.modules.company.domain.Contact;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,8 +29,8 @@ public class MaterialOperationRecord {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id")
-        private Long id;
+        @Column(name = "material_id")
+        private Long materialId;
 
         //标识存货编码
         @Column(name = "remark")
@@ -207,6 +210,41 @@ public class MaterialOperationRecord {
         //固定提前期
         @Column(name = "fixed_advance_time")
         private  String  fixedAdvanceTime;
+
+
+        // 审批实例ID
+        @Column(name = "process_id")
+        private String processId;
+
+
+        // 审批结果
+        @Column(name = "approve_result")
+        private String approveResult="未知";
+
+        // 操作人ID
+        @Column(name = "user_id")
+        private String userId;
+
+    // 审批时间
+    @Column(name = "approve_time")
+    private Timestamp approveTime;
+
+    // 操作类型
+    @Column(name = "operation_type")
+    private String  operationType;
+
+    // 审批链接
+    @Column(name = "ding_url")
+    private String dingUrl;
+
+
+    //附加集合
+    //联系人
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.PERSIST )
+    @JoinColumn(name = "material_id")
+    private Set<Accessory> Accessorys = new HashSet<>();
+
+
 
         public void copy(MaterialOperationRecord source) {
             BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
