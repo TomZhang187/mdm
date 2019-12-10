@@ -8,8 +8,10 @@ import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.hqhop.config.dingtalk.DingTalkConstant;
 import com.hqhop.config.dingtalk.DingTalkUtils;
 import com.hqhop.config.dingtalk.URLConstant;
-import com.hqhop.config.dingtalk.domain.Accessory;
+import com.hqhop.modules.material.domain.Accessory;
+import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
+import com.hqhop.modules.material.repository.MaterialRepository;
 import com.hqhop.modules.material.service.MaterialDingService;
 import com.hqhop.modules.system.service.DictDetailService;
 import com.hqhop.modules.system.service.UserService;
@@ -20,10 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+
+import java.sql.Timestamp;
+import java.util.*;
+
 /**
  * @author ：张丰
  * @date ：Created in 2019/12/6 0006 9:05
@@ -44,122 +46,35 @@ public class MaterialDingServiceImpl implements MaterialDingService  {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MaterialRepository materialRepository;
 
 
-//
-//    //物料新增审批
-//    @Override
-//    public void addApprovel(MaterialOperationRecord resources) throws
-//            ApiException {
-//
-//
-////        OapiProcessinstanceCreateResponse response = getApprovalResponse(resources);
-////
-////        //1 新增 2 修改 3停用4启用....更多对照字典
-////        resouces.setOperationType("1");
-////        //放入审批实例ID
-////        resouces.setProcessId(response.getProcessInstanceId());
-////        //放入当前用户ID
-////        resouces.setUserId(dingUser.getUserid());
-////
-////        resouces.setCreateMan(dingUser.getName());
-////
-////        //1 新增状态 2 新增审批中 3 驳回 4 审批通过
-////        CompanyInfo companyInfo2 = resouces.toCompanyInfo();
-////        companyInfo2.setCompanyState(2);
-////
-////        CompanyInfo  companyInfo =  companyInfoService.createAndUpadte(companyInfo2);
-////        //放入新增客商商主键
-////        resouces.setCompanyKey(companyInfo.getCompanyKey());
-////        CompanyUpdate companyUpdate = companyUpdateRepository.save(resouces);
-////        return companyUpdate;
-//    }
 
 
+    //物料新增审批
+    @Override
+    public void addApprovel(MaterialOperationRecord resources) throws
+            ApiException {
 
+        UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
 
+        //1 基础档案新增 2 基础档案修改 ....更多对照字典
+        resources.setOperationType("1");
+        resources.setCreator(userDTO.getEmployee().getEmployeeName());
+        resources.setCreateTime(new Timestamp(new Date().getTime()));
+        resources.setUserId(userDTO.getEmployee().getDingId());
+        OapiProcessinstanceCreateResponse response = getApprovalResponse(resources,userDTO);
+        //1 新增状态 2 新增审批中 3 驳回 4 审批通过
+        Material material = resources.getMaterial();
+        material.setApprovalState("2");
+        materialRepository.save(material);
 
 
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public OapiProcessinstanceCreateResponse getApprovalResponse(MaterialOperationRecord resources)throws
+    public OapiProcessinstanceCreateResponse getApprovalResponse(MaterialOperationRecord resources,UserDTO userDTO)throws
             ApiException {
 
         DefaultDingTalkClient client = new DefaultDingTalkClient(URLConstant.URL_PROCESSINSTANCE_START);
@@ -213,7 +128,7 @@ public class MaterialDingServiceImpl implements MaterialDingService  {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName6 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName6.setName("创建人");
-        ItemName6.setValue(resources.getName());
+        ItemName6.setValue(resources.getCreator());
         list1.add(ItemName6);
 
         vo4.setValue(JSON.toJSONString(Arrays.asList(list1)));
@@ -377,7 +292,7 @@ public class MaterialDingServiceImpl implements MaterialDingService  {
         OapiProcessinstanceCreateRequest.FormComponentValueVo attachmentComponent = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
 
         JSONArray array = new JSONArray();
-        Set<Accessory> list4 = resources.getAccessorys();
+        Set<Accessory> list4 = resources.getAccessories();
         for (Accessory accessory : list4) {
             JSONObject attachmentJson = new JSONObject();
             attachmentJson.put("fileId",accessory.getFileId());
@@ -390,13 +305,10 @@ public class MaterialDingServiceImpl implements MaterialDingService  {
         attachmentComponent.setValue(array.toJSONString());
         attachmentComponent.setName("设计图纸");
 
-
         listForm.add(input);
         listForm.add(vo4);
         listForm.add(vo5);
         listForm.add(attachmentComponent);
-
-        UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
 
         request.setFormComponentValues(listForm);
         request.setOriginatorUserId(userDTO.getEmployee().getDingId());

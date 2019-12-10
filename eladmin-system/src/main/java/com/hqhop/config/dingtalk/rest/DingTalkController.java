@@ -23,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.ServletContextPropertyUtils;
 
 /**
@@ -68,54 +65,43 @@ public class DingTalkController {
         return resultVO;
     }
 
-    @Log("获取空间ID")
+    @Log("获取审批钉盘空间ID")
     @ApiOperation(value = "获取审批钉盘空间ID")
     @GetMapping(value = "/getApprovalSpaceId")
-    public ResponseEntity getSpaceId() {
+    public ResponseEntity getSpaceId() throws ApiException{
 
         UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
-        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/cspace/info");
-        OapiProcessinstanceCspaceInfoRequest req = new OapiProcessinstanceCspaceInfoRequest();
-        req.setUserId(userDTO.getEmployee().getDingId());
-        OapiProcessinstanceCspaceInfoResponse rsp = null;
-        try {
-            rsp = client.execute(req, DingTalkUtils.getAccessToken());
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-        System.out.println(rsp.getBody());
+        OapiProcessinstanceCspaceInfoResponse rsp = DingTalkUtils.getProcessSpace(userDTO.getEmployee().getDingId());
         return new ResponseEntity(rsp.getResult().getSpaceId(),HttpStatus.OK);
     }
 
 
 
-    @Log("授权用户 上传和下载自定义空间权限 默认为/material路径")
+    @Log("授权用户 上传和下载自定义空间权限 默认为/contract路径")
     @ApiOperation(value = "授权用户空间权限")
     @GetMapping(value = "/getSpacePermission")
-    public ResponseEntity grantCustomSpace(String type,String fileids) throws ApiException {
-
-
+    public ResponseEntity grantCustomSpace(@RequestParam( value="type")String type,@RequestParam( value="fileids") String fileids) throws ApiException {
+          String type2 = null;
         UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
-        OapiProcessinstanceCspaceInfoResponse processSpace = DingTalkUtils.getProcessSpace(userDTO.getEmployee().getDingId());
-        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/cspace/grant_custom_space");
-        OapiCspaceGrantCustomSpaceRequest request = new OapiCspaceGrantCustomSpaceRequest();
-        request.setAgentId(DingTalkConstant.AGENTID);
-        request.setDomain("material"); // 企业内部调用时传入，授权访问该domain的自定义空间
-        request.setType(type); // 权限类型，目前支持上传和下载，上传请传add，下载请传download
-        request.setUserid(userDTO.getEmployee().getDingId()); // 企业用户userid
-        request.setPath("/"); // 授权访问的路径，如授权访问所有文件传"/"，授权访问/doc文件夹传"/doc/"，需要utf-8 urlEncode, type=add时必须传递
-        request.setDuration(3600L); // 权限有效时间，有效范围为0~3600秒
-        request.setHttpMethod("GET");
-        if ("download".equals(type)) {
-            request.setFileids(fileids);
+        if(",add".equals(type)){
+            type2 = "add";
+        }else {
+            type2 = "download ";
         }
-        OapiCspaceGrantCustomSpaceResponse response = client.execute(request, DingTalkUtils.getAccessToken());
+        OapiCspaceGrantCustomSpaceResponse response = DingTalkUtils.grantCustomSpace(userDTO.getEmployee().getDingId(),type2,fileids);
        return new ResponseEntity(response.getErrmsg(),HttpStatus.OK);
     }
 
 
 
+    @Log("获取企业自定义空间ID")
+    @ApiOperation(value = "获取企业自定义空间ID")
+    @GetMapping(value = "/getCustomSpaceId")
+    public ResponseEntity getCustomSpace() throws ApiException{
 
+        OapiCspaceGetCustomSpaceResponse response = DingTalkUtils.getCustomSpace();
+        return new ResponseEntity(response.getSpaceid(),HttpStatus.OK);
+    }
 
 
 }

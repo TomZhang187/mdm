@@ -1,4 +1,4 @@
-package com.hqhop.config.dingtalk.domain;
+package com.hqhop.modules.material.domain;
 
 import lombok.Data;
 
@@ -13,9 +13,8 @@ import javax.persistence.*;
  */
 @Entity
 @Data
-@Table(name = "Accessory")
+@Table(name = "accessory")
 public class Accessory {
-
 
     // 主键
     @Id
@@ -46,16 +45,5 @@ public class Accessory {
     //文件类型
     @Column(name = "file_type")
     public String fileType;
-
-
-    //用户
-
-
-
-
-
-
-
-
 
 }
