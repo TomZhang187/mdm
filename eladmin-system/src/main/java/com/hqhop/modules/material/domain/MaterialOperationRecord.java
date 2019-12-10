@@ -261,6 +261,23 @@ public class MaterialOperationRecord implements Serializable {
         return material;
     }
 
+    public  void getDataByMaterial(Material material) {
+        this.id = material.getId();
+        this.approvalState = material.getApprovalState();
+        this.unit = material.getUnit();
+        this.updatePerson = material.getUpdatePerson();
+        this.updateTime = material.getUpdateTime();
+        this.createTime = material.getCreateTime();
+        this.creator = material.getCreatePerson();
+        this.taxRating = material.getTaxRating();
+        this.name = material.getName();
+        this.model = material.getModel();
+        this.isTaxable = material.getIsTaxable();
+        this.remark = material.getRemark();
+    }
+
+
+
 
 
 
