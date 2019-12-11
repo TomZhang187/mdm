@@ -7,3 +7,4 @@ eladmin-logging/target
 # Editor directories and files
 .idea
 .iml
+.DS_Store
