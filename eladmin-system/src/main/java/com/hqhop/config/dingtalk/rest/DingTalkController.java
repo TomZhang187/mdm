@@ -77,13 +77,13 @@ public class DingTalkController {
 
 
 
-    @Log("授权用户 上传和下载自定义空间权限 默认为/contract路径")
+    @Log("授权用户 上传和下载自定义空间权限 默认为/mdm路径")
     @ApiOperation(value = "授权用户空间权限")
     @GetMapping(value = "/getSpacePermission")
     public ResponseEntity grantCustomSpace(@RequestParam( value="type")String type,@RequestParam( value="fileids") String fileids) throws ApiException {
           String type2 = null;
         UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
-        if(",add".equals(type)){
+        if("add".equals(type)){
             type2 = "add";
         }else {
             type2 = "download ";

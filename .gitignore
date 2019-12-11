@@ -7,9 +7,7 @@ eladmin-logging/target
 # Editor directories and files
 .idea
 .iml
-<<<<<<< HEAD
 .DS_Store
-=======
 eladmin-logging/*.iml
-eladmin-tools/*.imp
->>>>>>> 41bce952e7cc9414f81f73d9bdfe1262a12bbdb0
+eladmin-tools/*.iml
+

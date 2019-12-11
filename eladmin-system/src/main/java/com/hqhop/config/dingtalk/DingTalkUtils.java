@@ -113,7 +113,7 @@ public class DingTalkUtils {
         DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/cspace/get_custom_space");
         OapiCspaceGetCustomSpaceRequest request = new OapiCspaceGetCustomSpaceRequest();
         request.setAgentId(DingTalkConstant.AGENTID);
-        request.setDomain("contract");
+        request.setDomain("mdm");
         request.setHttpMethod("GET");
         OapiCspaceGetCustomSpaceResponse response = client.execute(request, getAccessToken());
 
@@ -154,10 +154,10 @@ public class DingTalkUtils {
         DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/cspace/grant_custom_space");
         OapiCspaceGrantCustomSpaceRequest request = new OapiCspaceGrantCustomSpaceRequest();
         request.setAgentId(DingTalkConstant.AGENTID);
-        request.setDomain("contract"); // 企业内部调用时传入，授权访问该domain的自定义空间
+        request.setDomain("mdm"); // 企业内部调用时传入，授权访问该domain的自定义空间
         request.setType(type); // 权限类型，目前支持上传和下载，上传请传add，下载请传download
         request.setUserid(userid); // 企业用户userid
-        request.setPath("/"); // 授权访问的路径，如授权访问所有文件传"/"，授权访问/doc文件夹传"/doc/"，需要utf-8 urlEncode, type=add时必须传递
+        request.setPath("/drawing"); // 授权访问的路径，如授权访问所有文件传"/"，授权访问/doc文件夹传"/doc/"，需要utf-8 urlEncode, type=add时必须传递
         request.setDuration(3600L); // 权限有效时间，有效范围为0~3600秒
         request.setHttpMethod("GET");
         if ("download".equals(type)) {
