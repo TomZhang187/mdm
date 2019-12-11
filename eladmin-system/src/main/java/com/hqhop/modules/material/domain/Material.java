@@ -76,6 +76,11 @@ public class Material implements Serializable {
     private String approvalState;
 
 
+    //使用状态
+    @Column(name="enable")
+    private Boolean enable=true;
+
+
 
     //物料类型(物料种类小类型)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -94,6 +99,8 @@ public class Material implements Serializable {
     @JoinTable(name = "t_material_attribute", joinColumns = {@JoinColumn(name = "material_id")}, inverseJoinColumns = {@JoinColumn(name = "attribute_id")})*/
     @Transient
     private Set<Attribute> attributes;
+
+
     @Transient
     private List<MaterialAttribute> materialAttributes;
 

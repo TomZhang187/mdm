@@ -3,11 +3,15 @@ package com.hqhop.modules.material.rest;
 
 import com.hqhop.aop.log.Log;
 import com.hqhop.modules.material.domain.Material;
+import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.domain.MaterialType;
+import com.hqhop.modules.material.repository.MaterialRepository;
+import com.hqhop.modules.material.service.MaterialDingService;
 import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.MaterialTypeService;
 import com.hqhop.modules.material.service.dto.MaterialQueryCriteria;
 import com.hqhop.modules.material.utils.PageBean;
+import com.taobao.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,13 @@ public class MaterialController {
 
     @Autowired
     private MaterialTypeService materialTypeService;
+
+    @Autowired
+    private MaterialRepository materialRepository;
+
+
+    @Autowired
+    private MaterialDingService materialDingService;
 
     @Log("查询Material")
     @ApiOperation(value = "查询Material")
@@ -167,4 +178,29 @@ public class MaterialController {
         List<Material> materials = materialService.findAll();
         return new ResponseEntity(materials, HttpStatus.OK);
     }
+
+
+
+    @Log("物料基本档案审批接口")
+    @ApiOperation(value = "物料基本档案审批接口")
+    @PostMapping(value = "/materialApproval")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity addApproval(@Validated @RequestBody Material resources)throws
+            ApiException {
+
+
+        if (resources.getId() != null && !"".equals(resources.getId()) && "4".equals(resources.getApprovalState())) {
+
+            //修改审批调用
+           materialDingService.updateApprovel(resources);
+
+        } else {
+            //新增审批调用
+            materialDingService.addApprovel(resources);
+
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 }

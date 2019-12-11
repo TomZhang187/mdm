@@ -58,5 +58,8 @@ public class MaterialDTO implements Serializable {
     //审批状态
     private String approvalState;
 
+    //使用状态
+    private Boolean enable;
+
 
 }
