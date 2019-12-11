@@ -1,5 +1,6 @@
 package com.hqhop.modules.material.service.impl;
 
+import com.hqhop.exception.BadRequestException;
 import com.hqhop.modules.material.domain.Attribute;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialAttribute;
@@ -89,7 +90,7 @@ public class MaterialServiceImpl implements MaterialService {
         String model = save.getModel();
         String[] split = model.split("，");
         if(split.length!=attributes.size()){
-            return null;
+            throw new BadRequestException("型号不对");
         }
         for (Attribute attribute : collect) {
             Attribute one1 = attributeRepository.getOne(attribute.getAttributeId());
