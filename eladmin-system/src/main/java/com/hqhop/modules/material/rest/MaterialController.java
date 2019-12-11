@@ -114,13 +114,7 @@ public class MaterialController {
             stringStringHashMap.put("message", "该物料已经存在");
             return new ResponseEntity(stringStringHashMap,HttpStatus.EXPECTATION_FAILED);
         }
-        Material material = materialService.create(resources);
-        if (material==null){
-            HashMap<String, String> stringStringHashMap = new HashMap<>();
-            stringStringHashMap.put("message", "该物料型号不对");
-            return new ResponseEntity(stringStringHashMap, HttpStatus.EXPECTATION_FAILED);
-        }
-        return new ResponseEntity(material, HttpStatus.CREATED);
+        return new ResponseEntity(materialService.create(resources), HttpStatus.CREATED);
     }
 
 

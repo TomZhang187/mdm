@@ -53,7 +53,7 @@ public class EmployeeDingServiceImpl implements EmployeeDingService {
     @Transactional(rollbackFor = Exception.class)
     public void syncDingUser() throws
             ApiException {
-
+        
         List<OapiUserListbypageResponse.Userlist> list = getDeptUserDetails(1L);
         if(!list.isEmpty()){
             for (OapiUserListbypageResponse.Userlist userlist : list) {
