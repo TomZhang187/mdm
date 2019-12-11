@@ -3,9 +3,11 @@ package com.hqhop.modules.system.service;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.service.dto.DeptDTO;
 import com.hqhop.modules.system.service.dto.DeptQueryCriteria;
+import com.taobao.api.ApiException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -39,21 +41,24 @@ public interface DeptService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    DeptDTO create(Dept resources);
+    Dept create(Dept resources) throws
+            ApiException ;
 
     /**
      * update
      * @param resources
      */
     @CacheEvict(allEntries = true)
-    void update(Dept resources);
+    void update(Dept resources)throws
+            ApiException ;
 
     /**
      * delete
      * @param id
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id);
+    void delete(Long id)throws
+            ApiException ;
 
     /**
      * buildTree
@@ -72,4 +77,8 @@ public interface DeptService {
     List<Dept> findByPid(long pid);
 
     Set<Dept> findByRoleIds(Long id);
+
+    //查询所属分公司
+    @Transactional(rollbackFor = Exception.class)
+    Set<Dept> getBelongSubsidiary(Set<Long> depts);
 }

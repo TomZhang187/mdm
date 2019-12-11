@@ -53,6 +53,8 @@ public @interface Query {
         , LESS_THAN_NQ
         //** jie 2019/6/4 包含 */
         , IN
+        //字符包含
+        ,INSTRING
     }
 
     /**

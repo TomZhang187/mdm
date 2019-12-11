@@ -1,12 +1,15 @@
 package com.hqhop.modules.system.service.impl;
 
 import com.hqhop.modules.monitor.service.RedisService;
+import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.domain.User;
 import com.hqhop.exception.EntityExistException;
 import com.hqhop.exception.EntityNotFoundException;
 import com.hqhop.modules.system.domain.UserAvatar;
+import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.repository.UserAvatarRepository;
 import com.hqhop.modules.system.repository.UserRepository;
+import com.hqhop.modules.system.service.EmployeeService;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.RoleSmallDTO;
 import com.hqhop.modules.system.service.dto.UserDTO;
@@ -46,7 +49,12 @@ public class UserServiceImpl implements UserService {
     private RedisService redisService;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
     private UserAvatarRepository userAvatarRepository;
+
+
 
     @Value("${file.avatar}")
     private String avatar;
@@ -78,20 +86,22 @@ public class UserServiceImpl implements UserService {
             throw new EntityExistException(User.class,"username",resources.getUsername());
         }
 
-        if(userRepository.findByEmail(resources.getEmail())!=null){
-            throw new EntityExistException(User.class,"email",resources.getEmail());
-        }
+//        if(userRepository.findByEmail(resources.getEmail())!=null){
+//            throw new EntityExistException(User.class,"email",resources.getEmail());
+//        }
 
-        if(userRepository.findByDduserid(resources.getDduserid())!=null){
-            throw new EntityExistException(User.class,"dduserid",resources.getEmail());
-        }
-
-        if(userRepository.findByEmpnum(resources.getEmpnum())!=null){
-            throw new EntityExistException(User.class,"empnum",resources.getEmail());
-        }
+//        if(userRepository.findByDduserid(resources.getDduserid())!=null){
+//            throw new EntityExistException(User.class,"dduserid",resources.getEmail());
+//        }
+//
+//        if(userRepository.findByEmpnum(resources.getEmpnum())!=null){
+//            throw new EntityExistException(User.class,"empnum",resources.getEmail());
+//        }
 
         // 默认密码 123456，此密码是加密后的字符
         resources.setPassword("e10adc3949ba59abbe56e057f20f883e");
+        Employee employee = employeeRepository.findByEmployeeCode(resources.getEmployee().getEmployeeCode());
+        resources.setEmployee(employee);
         return userMapper.toDto(userRepository.save(resources));
     }
 
@@ -104,24 +114,24 @@ public class UserServiceImpl implements UserService {
         User user = userOptional.get();
 
         User user1 = userRepository.findByUsername(user.getUsername());
-        User user2 = userRepository.findByEmail(user.getEmail());
-        User user3 = userRepository.findByDduserid(user.getDduserid());
-        User user4 = userRepository.findByEmpnum(user.getEmpnum());
+//        User user2 = userRepository.findByEmail(user.getEmail());
+//        User user3 = userRepository.findByDduserid(user.getDduserid());
+//        User user4 = userRepository.findByEmpnum(user.getEmpnum());
 
         if(user1 !=null&&!user.getId().equals(user1.getId())){
             throw new EntityExistException(User.class,"username",resources.getUsername());
         }
 
-        if(user2!=null&&!user.getId().equals(user2.getId())){
-            throw new EntityExistException(User.class,"email",resources.getEmail());
-        }
-
-        if(user3!=null&&!user.getId().equals(user3.getId())){
-            throw new EntityExistException(User.class,"dduserid",resources.getEmail());
-        }
-        if(user4!=null&&!user.getId().equals(user4.getId())){
-            throw new EntityExistException(User.class,"empnum",resources.getEmail());
-        }
+//        if(user2!=null&&!user.getId().equals(user2.getId())){
+//            throw new EntityExistException(User.class,"email",resources.getEmail());
+//        }
+//
+//        if(user3!=null&&!user.getId().equals(user3.getId())){
+//            throw new EntityExistException(User.class,"dduserid",resources.getEmail());
+//        }
+//        if(user4!=null&&!user.getId().equals(user4.getId())){
+//            throw new EntityExistException(User.class,"empnum",resources.getEmail());
+//        }
         // 如果用户的角色改变了，需要手动清理下缓存
         if (!resources.getRoles().equals(user.getRoles())) {
             String key = "role::loadPermissionByUser:" + user.getUsername();
@@ -131,14 +141,15 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setUsername(resources.getUsername());
-        user.setEmail(resources.getEmail());
-        user.setDduserid(resources.getDduserid());
-        user.setEmpnum(resources.getEmpnum());
+//        user.setEmail(resources.getEmail());
+//        user.setDduserid(resources.getDduserid());
+//        user.setEmpnum(resources.getEmpnum());
         user.setEnabled(resources.getEnabled());
+        //赋予角色
         user.setRoles(resources.getRoles());
-        user.setDept(resources.getDept());
-        user.setJob(resources.getJob());
-        user.setPhone(resources.getPhone());
+
+//        user.setJob(resources.getJob());
+//        user.setPhone(resources.getPhone());
         userRepository.save(user);
     }
 
@@ -162,7 +173,13 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new EntityNotFoundException(User.class, "name", userName);
         } else {
-            return userMapper.toDto(user);
+
+            UserDTO userDTO = userMapper.toDto(user);
+            Employee employee = employeeRepository.findByDingId(userDTO.getEmployee().getDingId());
+
+            userDTO.setDepts(employee.getDeptsSet());
+
+            return userDTO;
         }
     }
 
@@ -208,7 +225,6 @@ public class UserServiceImpl implements UserService {
             map.put("状态", userDTO.getEnabled() ? "启用" : "禁用");
             map.put("手机号码", userDTO.getPhone());
             map.put("角色", roles);
-            map.put("部门", userDTO.getDept().getName());
             map.put("岗位", userDTO.getJob().getName());
             map.put("最后修改密码的时间", userDTO.getLastPasswordResetTime());
             map.put("创建日期", userDTO.getCreateTime());
@@ -216,4 +232,23 @@ public class UserServiceImpl implements UserService {
         }
         FileUtil.downloadExcel(list, response);
     }
+
+
+    //对比用户姓名是否同名
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String compareName(String name) {
+        User user1 = userRepository.findByUsername(name);
+        if(user1 !=null){
+           return "yes";
+        }
+         return "no";
+    }
+
+
+
+
+
+
+
 }

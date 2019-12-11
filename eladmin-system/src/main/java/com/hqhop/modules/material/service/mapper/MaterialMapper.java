@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
 */
 @Mapper(componentModel = "spring",uses = {},unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MaterialMapper extends EntityMapper<MaterialDTO, Material> {

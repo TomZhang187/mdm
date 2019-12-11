@@ -62,4 +62,22 @@ public interface DictDetailService {
         * */
 @Transactional(rollbackFor = Exception.class)
 Map getValueByLabel(DictDetailQueryCriteria criteria);
+
+    /*
+          拿到字典标签通过字典值
+        * */
+    @Transactional(rollbackFor = Exception.class)
+    String getDicLabel(String dictName, Integer value);
+
+    /*
+   拿到字典标签通过字典值
+   * */
+    @Transactional(rollbackFor = Exception.class)
+    String getDicLabel(String dictName, String value);
+
+    /*
+            拿到字典值通过字典标签
+           * */
+    @Transactional(rollbackFor = Exception.class)
+    String getDicValue(String dictName,  String label);
 }

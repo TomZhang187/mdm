@@ -2,11 +2,9 @@ package com.hqhop.modules.company.service;
 
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.hqhop.modules.company.domain.CompanyInfo;
+import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.service.dto.CompanyInfoDTO;
 import com.hqhop.modules.company.service.dto.CompanyInfoQueryCriteria;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +35,9 @@ public interface CompanyInfoService {
      * @return
      */
     //@Cacheable
-    List<CompanyInfoDTO> queryAll(CompanyInfoQueryCriteria criteria);
+    List<CompanyInfo> queryAll(CompanyInfoQueryCriteria criteria);
+
+
 
     /**
      * 根据ID查询
@@ -46,7 +46,7 @@ public interface CompanyInfoService {
      * @return
      */
     //@Cacheable(key = "#p0")
-    CompanyInfoDTO findById(Long companyKey);
+    CompanyInfo findById(Long companyKey);
 
     /**
      * 保存和修改
@@ -58,12 +58,12 @@ public interface CompanyInfoService {
     CompanyInfo createAndUpadte(CompanyInfo resources);
 
 
-    /*
-     * 客商保存审批流接口
-     *
-     * */
-    @Transactional(rollbackFor = Exception.class)
-    OapiProcessinstanceCreateResponse saveApprovel(CompanyInfo resources);
+//    /*
+//     * 客商修改预先保存
+//     *
+//     * */
+//    @Transactional(rollbackFor = Exception.class)
+//    OapiProcessinstanceCreateResponse saveApprovel(CompanyInfo resources);
 
     /**
      * 编辑
@@ -86,6 +86,7 @@ public interface CompanyInfoService {
        添加前客商验证
        * */
     CompanyInfo VerifyAdd(CompanyInfoDTO resources);
+
 
 
 }

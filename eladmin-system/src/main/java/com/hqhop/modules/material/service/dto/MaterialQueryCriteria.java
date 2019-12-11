@@ -1,24 +1,30 @@
 package com.hqhop.modules.material.service.dto;
 
-import lombok.Data;
 import com.hqhop.annotation.Query;
+import com.hqhop.modules.material.domain.MaterialType;
+import lombok.Data;
+
+import java.sql.Timestamp;
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
 */
 @Data
 public class MaterialQueryCriteria{
 
-    // 精确
+    @Query(type = Query.Type.INNER_LIKE)
+    private String name;
     @Query
-    private String materialModel;
+    private String remark;
+    @Query
+    private String isTaxable;
+    @Query
+    private String unit;
+    @Query (propName = "id", joinName = "type")
+    private String typeId;
+    @Query
+    private Timestamp createTime;
 
-    // 精确
-    @Query
-    private String materialName;
 
-    // 精确
-    @Query
-    private String materialNumber;
 }

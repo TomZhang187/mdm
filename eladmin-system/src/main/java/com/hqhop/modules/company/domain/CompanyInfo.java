@@ -1,11 +1,14 @@
-package com.hqhop.modules.company.domain;
+    package com.hqhop.modules.company.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hqhop.modules.company.utils.CompanyUtils;
 import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,9 +34,27 @@ public class CompanyInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long companyKey;
 
+    //创建人
+    @Column(name = "create_man")
+    private String createMan;
+
+    //创建时间
+    @Column(name = " create_time")
+    private Timestamp createTime;
+
+
     // 批准时间
     @Column(name = "approve_time")
     private Timestamp approveTime;
+
+    //修改人
+    @Column(name = "update_man")
+    private String updateMan;
+
+
+    //修改时间
+    @Column(name = "update_time")
+    private Timestamp updateTime;
 
     // 所属地区
     @Column(name = "belong_area", nullable = false)
@@ -60,8 +81,8 @@ public class CompanyInfo implements Serializable {
     private Integer companyType;
 
     // 客商名称
-    @Column(name = "compay_name")
-    private String compayName;
+    @Column(name = "company_name")
+    private String companyName;
 
     // 通讯地址
     @Column(name = "contact_address")
@@ -89,7 +110,7 @@ public class CompanyInfo implements Serializable {
 
     // 总公司编码
     @Column(name = "parent_company_id")
-    private Long parentCompanyId;
+    private Long parentCompanyId=0L;
 
     // 邮政编码
     @Column(name = "postal_code")
@@ -111,10 +132,30 @@ public class CompanyInfo implements Serializable {
     @Column(name = "trade", nullable = false)
     private Integer trade;
 
+
+
+    //是否协同付款
+    @Column(name = "is_synergy_pay")
+    private Integer isSynergyPay;
+
+    //账户
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Account.class, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "company_key")
+    private Set<Account > accounts  = new HashSet<>();
+
+
     //联系人
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.PERSIST )
     @JoinColumn(name = "company_key")
     private Set<Contact> contacts = new HashSet<>();
+
+
+    //添加账户方法
+    public void addAccount(Account account){
+        if(account != null){
+            accounts.add(account);
+        }
+    }
 
     public void copy(CompanyInfo source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
@@ -128,16 +169,19 @@ public class CompanyInfo implements Serializable {
         this.companyKey = companyKey;
     }
 
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") //入参
+    public void setCreateTime(Date  createTime) {
+        this.createTime = new Timestamp(createTime.getTime());
+    }
+
     public Timestamp getApproveTime() {
         return approveTime;
     }
 
-    public void setApproveTime(String approveTime) {
-
-
-        this.approveTime = new Timestamp(new Date().getTime());
-        ;
-    }
 
     public Integer getBelongArea() {
         return belongArea;
@@ -187,12 +231,12 @@ public class CompanyInfo implements Serializable {
         this.companyType = companyType;
     }
 
-    public String getCompayName() {
-        return compayName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompayName(String compayName) {
-        this.compayName = compayName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getContactAddress() {
@@ -299,10 +343,56 @@ public class CompanyInfo implements Serializable {
         this.contacts = contacts;
     }
 
+    public String getCreateMan() {
+        return createMan;
+    }
+
+    public void setCreateMan(String createMan) {
+        this.createMan = createMan;
+    }
+
+    public void setApproveTime(Timestamp approveTime) {
+        this.approveTime = approveTime;
+    }
+
+    public String getUpdateMan() {
+        return updateMan;
+    }
+
+    public void setUpdateMan(String updateMan) {
+        this.updateMan = updateMan;
+    }
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+
+        this.updateTime = updateTime;
+    }
+
+    public Integer getIsSynergyPay() {
+        return isSynergyPay;
+    }
+
+    public void setIsSynergyPay(Integer isSynergyPay) {
+        this.isSynergyPay = isSynergyPay;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
+    }
+
     @Override
     public String toString() {
         return "CompanyInfo{" +
                 "companyKey=" + companyKey +
+                ", createMan='" + createMan + '\'' +
                 ", approveTime=" + approveTime +
                 ", belongArea=" + belongArea +
                 ", belongCompany=" + belongCompany +
@@ -310,7 +400,7 @@ public class CompanyInfo implements Serializable {
                 ", companyShortName='" + companyShortName + '\'' +
                 ", companyState=" + companyState +
                 ", companyType=" + companyType +
-                ", compayName='" + compayName + '\'' +
+                ", companyName='" + companyName + '\'' +
                 ", contactAddress='" + contactAddress + '\'' +
                 ", economicType=" + economicType +
                 ", foreignName='" + foreignName + '\'' +
@@ -323,6 +413,10 @@ public class CompanyInfo implements Serializable {
                 ", remark='" + remark + '\'' +
                 ", taxId='" + taxId + '\'' +
                 ", trade=" + trade +
+                ", updateMan='" + updateMan + '\'' +
+                ", updateTime=" + updateTime +
+                ", isSynergyPay=" + isSynergyPay +
+                ", accounts=" + accounts +
                 ", contacts=" + contacts +
                 '}';
     }

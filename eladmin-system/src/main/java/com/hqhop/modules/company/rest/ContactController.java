@@ -1,9 +1,15 @@
 package com.hqhop.modules.company.rest;
 
 import com.hqhop.aop.log.Log;
+import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.modules.company.domain.CompanyInfo;
+import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.domain.Contact;
+import com.hqhop.modules.company.repository.ContactRepository;
+import com.hqhop.modules.company.service.ContactDingService;
 import com.hqhop.modules.company.service.ContactService;
 import com.hqhop.modules.company.service.dto.ContactQueryCriteria;
+import com.taobao.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +33,16 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
+    @Autowired
+    private ContactDingService contactDingService;
+
+    @Autowired
+    private ContactRepository contactRepository;
+
     @Log("查询Contact")
     @ApiOperation(value = "查询Contact")
     @GetMapping(value = "/contact")
-    @PreAuthorize("hasAnyRole('ADMIN','CONTACT_ALL','CONTACT_SELECT')")
+//    @PreAuthorize("hasAnyRole('ADMIN','CONTACT_ALL','CONTACT_SELECT')")
     public ResponseEntity getContacts(ContactQueryCriteria criteria, Pageable pageable){
         return new ResponseEntity(contactService.queryAll(criteria,pageable),HttpStatus.OK);
     }
@@ -59,5 +71,43 @@ public class ContactController {
     public ResponseEntity delete(@PathVariable Long contactKey){
         contactService.delete(contactKey);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    @Log("联系人审批接口")
+    @ApiOperation(value = "联系人审批接口")
+    @GetMapping(value = "/contactApproval")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity addApproval(DingUser dingUser, Contact resouces)throws
+            ApiException {
+
+
+
+        if (resouces.getContactKey() != null && !"".equals(resouces.getContactKey()) && resouces.getContactState()==4 ) {
+
+            if(resouces.getContactName() != null && !"".equals(resouces.getContactName())){
+                //修改审批调用
+                contactDingService.updateApproval(resouces,dingUser);
+            }else {
+                //解除绑定审批
+                Contact contact = contactRepository.getOne(resouces.getContactKey());
+               contactDingService.removeApproval(contact,dingUser);
+            }
+        } else {
+            //新增审批调用
+            contactDingService.addApprovel(resouces,dingUser);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    @Log("获取联系人审批链接getDingUrl")
+    @ApiOperation(value = "获取联系人审批链接getDingUrl")
+    @GetMapping(value = "/contactDingUrl")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYUPDATE_ALL','COMPANYUPDATE_CREATE')")
+    public ResponseEntity getContactDingUrl(Contact resources,DingUser dingUser){
+
+        return new ResponseEntity(contactService.getDingUrl(resources,dingUser),HttpStatus.CREATED);
     }
 }

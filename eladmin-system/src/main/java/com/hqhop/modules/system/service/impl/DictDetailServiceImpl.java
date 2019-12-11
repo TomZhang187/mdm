@@ -1,6 +1,8 @@
 package com.hqhop.modules.system.service.impl;
 
+import com.hqhop.modules.system.domain.Dict;
 import com.hqhop.modules.system.domain.DictDetail;
+import com.hqhop.modules.system.repository.DictRepository;
 import com.hqhop.modules.system.service.dto.DictDetailQueryCriteria;
 import com.hqhop.utils.PageUtil;
 import com.hqhop.utils.QueryHelp;
@@ -9,6 +11,7 @@ import com.hqhop.modules.system.repository.DictDetailRepository;
 import com.hqhop.modules.system.service.DictDetailService;
 import com.hqhop.modules.system.service.dto.DictDetailDTO;
 import com.hqhop.modules.system.service.mapper.DictDetailMapper;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +32,9 @@ public class DictDetailServiceImpl implements DictDetailService {
 
     @Autowired
     private DictDetailRepository dictDetailRepository;
+
+    @Autowired
+    private DictRepository dictRepository;
 
     @Autowired
     private DictDetailMapper dictDetailMapper;
@@ -69,7 +75,7 @@ public class DictDetailServiceImpl implements DictDetailService {
     }
 
     /*
-    返回label-value Map集合对象
+    返回value-label Map集合
     * */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -86,7 +92,7 @@ public class DictDetailServiceImpl implements DictDetailService {
 
 
         /*
-        返回value-label Map集合
+       返回label-value Map集合对象
         * */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -99,5 +105,56 @@ public class DictDetailServiceImpl implements DictDetailService {
         }
         return  map;
     }
+
+    /*
+    拿到字典标签通过字典值
+    * */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String getDicLabel(String dictName, Integer value) {
+        DictDetailQueryCriteria criteria = new DictDetailQueryCriteria();
+        criteria.setDictName(dictName.trim());
+        criteria.setValue(value.toString());
+        List<DictDetail> list = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
+        if(list.isEmpty()){
+            return null;
+        }else {
+            return  list.get(0).getLabel();
+        }
+    }
+
+    /*
+   拿到字典标签通过字典值
+   * */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String getDicLabel(String dictName, String value) {
+        DictDetailQueryCriteria criteria = new DictDetailQueryCriteria();
+        criteria.setDictName(dictName.trim());
+        criteria.setValue(value);
+        List<DictDetail> list = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
+        if(list.isEmpty()){
+            return null;
+        }else {
+            return  list.get(0).getLabel();
+        }
+    }
+
+
+
+
+/* 拿到字典值通过字典标签
+* */
+    @Override
+    public String getDicValue(String dictName, String label) {
+
+        Dict dict = dictRepository.findByName(dictName);
+
+        DictDetail dictDetail = dictDetailRepository.findByLabelAndDict_Id(label,dict.getId());
+
+        return  dictDetail.getValue();
+
+    }
+
 
 }

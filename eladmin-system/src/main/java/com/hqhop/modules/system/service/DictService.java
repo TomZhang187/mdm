@@ -3,6 +3,7 @@ package com.hqhop.modules.system.service;
 import com.hqhop.modules.system.domain.Dict;
 import com.hqhop.modules.system.service.dto.DictDTO;
 import com.hqhop.modules.system.service.dto.DictQueryCriteria;
+import com.taobao.api.ApiException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

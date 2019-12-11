@@ -61,8 +61,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         // 建议使用这种方式，小范围指定白名单
         ParserConfig.getGlobalInstance().addAccept("com.hqhop.domain");
         ParserConfig.getGlobalInstance().addAccept("com.hqhop.modules.system.service.dto");
+        ParserConfig.getGlobalInstance().addAccept("com.hqhop.modules.material.service.dto");
         ParserConfig.getGlobalInstance().addAccept("com.hqhop.service.dto");
         ParserConfig.getGlobalInstance().addAccept("com.hqhop.modules.system.domain");
+        ParserConfig.getGlobalInstance().addAccept("com.hqhop.modules.material.domain");
         ParserConfig.getGlobalInstance().addAccept("com.hqhop.modules.quartz.domain");
         ParserConfig.getGlobalInstance().addAccept("com.hqhop.modules.monitor.domain");
         ParserConfig.getGlobalInstance().addAccept("com.hqhop.modules.security.security");

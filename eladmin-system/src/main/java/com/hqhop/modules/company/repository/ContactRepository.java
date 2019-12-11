@@ -16,6 +16,8 @@ import java.util.List;
  */
 public interface ContactRepository extends JpaRepository<Contact, Long>, JpaSpecificationExecutor {
 
+    Contact findByContactKey(Long key);
+
 
     @Query(value = "select contact_key from  contact where company_key = ?1", nativeQuery = true)
     List<BigInteger> getContact_KeyByCompany_Key(Long key);

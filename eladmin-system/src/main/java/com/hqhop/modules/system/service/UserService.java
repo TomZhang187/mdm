@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +56,7 @@ public interface UserService {
      * @param userName
      * @return
      */
-    @Cacheable(key = "'loadUserByUsername:'+#p0")
+//    @Cacheable(key = "'loadUserByUsername:'+#p0")
     UserDTO findByName(String userName);
 
     /**
@@ -88,4 +89,9 @@ public interface UserService {
     List<UserDTO> queryAll(UserQueryCriteria criteria);
 
     void download(List<UserDTO> queryAll, HttpServletResponse response) throws IOException;
+
+
+    //对比用户姓名是否同名
+    @Transactional(rollbackFor = Exception.class)
+    String compareName(String name);
 }

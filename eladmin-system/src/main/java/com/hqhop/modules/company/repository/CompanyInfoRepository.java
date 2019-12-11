@@ -19,4 +19,6 @@ public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long>,
     //通过纳税登记号查询客商数据
     List<CompanyInfo> findByTaxId(String taxId);
 
+    //通过主键获取数据
+    CompanyInfo findByCompanyKey(Long key);
 }

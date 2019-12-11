@@ -27,6 +27,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -139,5 +140,19 @@ public class AuthenticationController {
         } finally {
             stream.close();
         }
+    }
+
+    /**
+     * 鉴权
+     */
+    @GetMapping(value = "dingAuth")
+    public ResponseEntity getDingAuth(String url) throws IOException {
+        HttpServletRequest request = null;
+        try {
+            return ResponseEntity.ok(DingTalkUtils.getConfig(url));
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

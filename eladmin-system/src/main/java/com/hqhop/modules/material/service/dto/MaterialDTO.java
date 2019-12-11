@@ -1,21 +1,62 @@
 package com.hqhop.modules.material.service.dto;
 
+import com.hqhop.modules.material.domain.MaterialType;
 import lombok.Data;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 
 /**
-* @author chengy
-* @date 2019-10-17
+* @author KinLin
+* @date 2019-10-30
 */
 @Data
 public class MaterialDTO implements Serializable {
 
-    private Integer id;
 
-    private String materialModel;
+    private Long id;
 
-    private String materialName;
+    //标识存货编码
 
-    private String materialNumber;
+    private String remark;
+
+    //存货名称
+
+    private String name;
+
+    //是否应税劳务
+
+    private Boolean isTaxable;
+
+    //规格型号
+
+    private String model;
+
+    //税目
+    private String taxRating;
+
+    //创建者
+    private String createPerson;
+    //创建时间
+
+    private Timestamp createTime;
+
+    //单位
+    private String unit;
+
+    //物料类型(物料种类小类型)
+    private MaterialType type;
+
+    //修改者
+    private String updatePerson;
+
+    //修改日期
+    private Timestamp updateTime;
+
+
+    //审批状态
+    private String approvalState;
+
+
 }

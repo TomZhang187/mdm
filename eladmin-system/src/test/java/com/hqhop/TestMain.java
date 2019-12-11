@@ -1,25 +1,37 @@
 package com.hqhop;
 
+import com.hqhop.modules.system.service.UserService;
+import com.hqhop.modules.system.service.dto.UserDTO;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class TestMain {
 
-    public static void main(String[] args) {
-//        Timer timer = new Timer(1000, e -> System.out.println(e));
-//        List strings = new ArrayList<>();
+    @Autowired
+    private UserService userService;
 
-//        Arrays.sort("bca2abadf", String::compareToIgnoreCase);
+    @Test
+    void contextLoads() {
 
-        ArrayList<String> names = new ArrayList<>();
-        names.ensureCapacity(10);
+       UserDTO userDTO = userService.findByName("admin");
 
-//        names.add("apple");
-//        names.add("banana");
-//        names.add("orange");
+       System.out.println(userDTO);
 
-//        names.stream().map()
+
+
+
+
+
+
 
 
 

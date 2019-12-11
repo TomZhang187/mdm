@@ -1,11 +1,13 @@
 package com.hqhop.modules.system.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hqhop.modules.system.domain.Employee;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,11 +35,14 @@ public class UserDTO implements Serializable {
 
     private Timestamp createTime;
 
+    private Set<Long> depts;
+
     private String dduserid;
 
     private String empnum;
 
     private Date lastPasswordResetTime;
+
 
     @ApiModelProperty(hidden = true)
     private Set<RoleSmallDTO> roles;
@@ -45,7 +50,24 @@ public class UserDTO implements Serializable {
     @ApiModelProperty(hidden = true)
     private JobSmallDTO job;
 
-    private DeptSmallDTO dept;
+    @ApiModelProperty(hidden = true)
+    private EmployeeSmallDTO employee;
 
-    private Long deptId;
+
+
+    public Long getDeptId(){
+        Long id =-1L;
+        if(depts !=null){
+
+            for (Long dept : depts) {
+                  id = dept;
+                  break;
+            }
+        }
+
+        return   id;
+    }
+
+
+
 }
