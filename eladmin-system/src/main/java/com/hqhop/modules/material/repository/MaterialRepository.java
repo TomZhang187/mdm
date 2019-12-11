@@ -33,6 +33,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSp
     @Query(value = "select * from material m inner join material_type mt on m.type_id=mt.type_id" +
             " where m.type_id " +
             " in (select mt.type_id from material_type mt where mt.pid=?1)" +
+            "and m.enable='true'"+
             " ORDER BY m.create_time DESC " +
             " limit ?3 offset ?2", nativeQuery = true)
     List<Material> findAllBySecondaryType(Long typeId, Integer pageNo, Integer pageSize);
@@ -45,6 +46,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSp
     @Query(value = "select * from material m inner join material_type mt on m.type_id=mt.type_id" +
             " where mt.pid " +
             " in (select mt.type_id from material_type mt where mt.pid=?1)" +
+            "and m.enable='true'"+
             " ORDER BY m.create_time DESC " +
             " limit ?3 offset ?2", nativeQuery = true)
     List<Material> findAllByTopType(Long typeId, Integer pageNo, Integer pageSize);

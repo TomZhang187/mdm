@@ -1,10 +1,12 @@
 package com.hqhop;
 
 import com.alipay.api.domain.ItemDiagnoseType;
+import com.hqhop.modules.material.domain.Attribute;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.repository.MaterialRepository;
 import com.hqhop.modules.material.service.MaterialDingService;
+import com.hqhop.modules.material.service.impl.AttributeServiceImpl;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.domain.Role;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,15 +61,25 @@ public class JpaTest {
     @Autowired
     private MaterialRepository materialRepository;
 
-   @Transactional
-   @Test
+    @Autowired
+    private AttributeServiceImpl attributeService;
+
+
+
+    @Test
    public  void contextLoads() throws
            ApiException {
 
-       Material material = materialRepository.getOne(95L);
-       MaterialOperationRecord materialOperationRecord = new MaterialOperationRecord();
-       materialOperationRecord.getDataByMaterial(material);
-       materialDingService.addApprovel(materialOperationRecord);
+       Material material = materialRepository.findByKey(95L);
+
+
+        Set<Attribute> collect = attributeService.queryAllByMaterialId(material.getId()).stream().collect(Collectors.toSet());
+        material.setAttributes( collect);
+
+        material.setId(null);
+//       MaterialOperationRecord materialOperationRecord = new MaterialOperationRecord();
+//       materialOperationRecord.getDataByMaterial(material);
+       materialDingService.addApprovel( material);
 
    }
 

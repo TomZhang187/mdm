@@ -15,6 +15,18 @@ public interface MaterialOperationRecordRepository extends JpaRepository<Materia
      MaterialOperationRecord findByProcessIdAndApproveResult(String prcoessId,String result);
 
 
+    //通过id加审批结果查找记录
+    MaterialOperationRecord findByIdAndApproveResult(Long id,String result);
+
+
+    //通过审批实例ID加操作类型
+    MaterialOperationRecord findByProcessIdAndOperationType(String prcoessId,String type);
+
+
+
+
+
+
 
 
 

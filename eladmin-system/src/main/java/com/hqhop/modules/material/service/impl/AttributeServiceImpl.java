@@ -102,6 +102,7 @@ public class AttributeServiceImpl implements AttributeService {
         attributeRepository.updateAttribute(attributeVo.getAttributeName(),attributeVo.getAttributeId());
     }
 
+
     @Override
     public List<Attribute> queryAllByMaterialId(Long id) {
         List<Attribute> attributes = attributeRepository.queryAllByMaterialId(id);

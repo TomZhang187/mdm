@@ -39,6 +39,7 @@ public class MaterialOperationRecord implements Serializable {
     @Column(name = "approve_time")
     private Timestamp approveTime;
 
+
     // 采购员
     @Column(name = "buyer")
     private String buyer;
@@ -74,6 +75,13 @@ public class MaterialOperationRecord implements Serializable {
     // 档案主键
     @Column(name = "id")
     private Long id;
+
+    // 临时保存的物料基本档案ID  变更审批后使用
+    @Column(name = "temporary_id")
+    private Long temporaryId;
+
+
+
 
     // 是否批准次核算
     @Column(name = "is_batches_account")
@@ -219,13 +227,14 @@ public class MaterialOperationRecord implements Serializable {
     @Column(name = "update_time")
     private Timestamp updateTime;
 
-    // 钉钉ID
+    // 钉钉ID、操作人ID
     @Column(name = "user_id")
     private String userId;
 
     // 计价方式
     @Column(name = "valuation_method")
     private String valuationMethod;
+
 
     // 货位
     @Column(name = "zhy")
@@ -236,8 +245,6 @@ public class MaterialOperationRecord implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, targetEntity = Accessory.class, cascade = CascadeType.PERSIST )
     @JoinColumn(name = "key")
     private Set<Accessory> accessories = new HashSet<>();
-
-
 
 
     public void copy(MaterialOperationRecord source){

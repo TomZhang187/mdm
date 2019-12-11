@@ -51,12 +51,14 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Map<String, Object> queryAll(MaterialQueryCriteria criteria, Pageable pageable) {
+        criteria.setEnable("true");
         Page<Material> page = materialRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(materialMapper::toDto));
     }
 
     @Override
     public List<MaterialDTO> queryAll(MaterialQueryCriteria criteria) {
+        criteria.setEnable("true");
         return materialMapper.toDto(materialRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
@@ -113,6 +115,8 @@ public class MaterialServiceImpl implements MaterialService {
         df = new DecimalFormat("00000");
         String str3 = df.format(countByTypeId);
         save.setRemark(str2 + "." + str3);
+        //1新建....更多对照字典
+        save.setApprovalState("1");
         //设置当前操作用户的用户名
         String username = SecurityUtils.getUsername();
         save.setCreatePerson(username);
@@ -125,7 +129,7 @@ public class MaterialServiceImpl implements MaterialService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(Material materialEntity) {
+    public Material update(Material materialEntity) {
         Optional<Material> materialById = materialRepository.findById(materialEntity.getId());
         Set<Attribute> attributes = materialEntity.getAttributes();
         MaterialType one = materialTypeRepository.getOne(materialEntity.getType().getId());
@@ -133,7 +137,9 @@ public class MaterialServiceImpl implements MaterialService {
         attributes.forEach(attribute -> materialAttributeRepository.updateByAttributeId(attribute.getAttributeValue(), attribute.getAttributeId(), materialEntity.getId()));
         ValidationUtil.isNull(materialById, "Material", "id", materialEntity.getId());
         Material material1 = materialById.get();
-        materialRepository.save(materialEntity);
+       Material material = materialRepository.save(materialEntity);
+
+       return material;
     }
 
 
@@ -145,6 +151,23 @@ public class MaterialServiceImpl implements MaterialService {
         }
         materialAttributeRepository.deleteByMaterialId(id);
         materialRepository.deleteById(id);
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteMaterial(Material material) {
+        if (null == material.getId()) {
+            System.out.println("id不正确");
+        }
+        materialRepository.deleteById(material.getId());
+        materialAttributeRepository.deleteByMaterialId(material.getId());
+        Set<Attribute> attributes = material.getAttributes();
+        for (Attribute attribute : attributes) {
+            attributeRepository.deleteById(attribute.getAttributeId());
+        }
+
+
     }
 
     /**

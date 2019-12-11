@@ -1,12 +1,18 @@
 package com.hqhop.modules.material.service.impl;
 
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
+import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
+import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
+import com.hqhop.modules.system.service.dto.UserDTO;
+import com.taobao.api.ApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -193,5 +199,95 @@ public class MaterialProductionDingServiceImpl {
 
         return  list2;
     }
-
+//    //物料基本档案 停用/启用
+//    @Transactional(rollbackFor = Exception.class)
+//    public void agreeIsAbleApproval(MaterialOperationRecord resources) throws
+//            ApiException {
+//
+//        UserDTO userDTO = userService.findByName("admin");
+//        //3 基础档案停用 4基础档案启用 ....更多对照字典
+//        resources.setOperationType(resources.getEnable()?"3":"4");
+//        resources.setUserId(userDTO.getEmployee().getDingId());
+//        OapiProcessinstanceCreateResponse response = getApprovalResponse(resources,userDTO);
+//
+//        if(response.getErrcode() == 0L){
+//            Material material = resources.getMaterial();
+//            // 4 审批通过5变更审批中....更多对照字典
+//            material.setApprovalState("5");
+//            Material material1 = materialRepository.save(material);
+//
+//            resources.setProcessId(response.getProcessInstanceId());
+//            resources.setId(material.getId());
+//            resources.setApproveResult("未知");
+//            materialOperationRecordRepository.save(resources);
+//        }
+//    }
+//
+//    //客商 停用/启用 审批通过
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public void agreeIsAbleApproval(String processId) {
+//
+//        MaterialOperationRecord record = materialOperationRecordRepository.findByProcessIdAndApproveResult(processId,"未知");
+//        if( record !=null){
+//
+//            record.setApproveResult("通过");
+//            record.setApproveTime(new Timestamp(new Date().getTime()));
+//            materialOperationRecordRepository.save( record);
+//
+//            Material material = record.getMaterial();
+//            //1新增 2审批中 3驳回 4审核通过
+//            material.setApprovalState(record.getApprovalState());
+//
+//            if("3".equals(record.getOperationType())){
+//                material.setEnable(false);
+//
+//            }else if("4".equals(record.getOperationType())) {
+//                material.setEnable(true);
+//            }
+//
+//            materialRepository.save(material);
+//
+//
+//        }
+//
+//    }
+//
+//    //客商 停用/启用 审批驳回
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public void refuseIsAbleApproval(String processId){
+//
+//        MaterialOperationRecord record = materialOperationRecordRepository.findByProcessIdAndApproveResult(processId,"未知");
+//
+//        if(record !=null){
+//
+//            record.setApproveResult("驳回");
+//            record.setApproveTime(new Timestamp(new Date().getTime()));
+//            materialOperationRecordRepository.save(record);
+//
+//            Material material = record.getMaterial();
+//            //1新增 2审批中 3驳回 4审核通过
+//            material.setApprovalState("4");
+//            materialRepository.save(material);
+//        }
+//
+//
+//
+//    }
+//
+//    //客商 停用/启用 审批撤销
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public void terminateIsAbleApproval(String processId) {
+//
+//        MaterialOperationRecord record = materialOperationRecordRepository.findByProcessIdAndApproveResult(processId,"未知");
+//        if(record !=null){
+//            Material material = record.getMaterial();
+//            //1新增 2审批中 3驳回 4审核通过
+//            material.setApprovalState("4");
+//            materialRepository.save(material);
+//            materialOperationRecordRepository.deleteById(record.getKey());
+//        }
+//    }
 }

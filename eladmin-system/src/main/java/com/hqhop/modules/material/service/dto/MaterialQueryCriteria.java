@@ -26,5 +26,11 @@ public class MaterialQueryCriteria{
     @Query
     private Timestamp createTime;
 
+    @Query
+    private String enable;
+
+
+
+
 
 }
