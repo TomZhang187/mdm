@@ -61,7 +61,7 @@ public class DingTalkConstant {
     /*
      * 物料生产档案管理审批
      * */
-    public  static final String PROCESSCODE_MATERIALPRODUCTION_ADD = "PROC-B0A45D0A-A9FC-43AE-BD86-76F54B5902AA";
+    public  static final String PROCESSCODE_MATERIALPRODUCTION_ADD = "PROC-7E6D638F-4D21-4441-AB53-71BB48B86223";
 
 
 

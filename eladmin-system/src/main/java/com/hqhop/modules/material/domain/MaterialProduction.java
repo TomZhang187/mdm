@@ -27,6 +27,10 @@ public class MaterialProduction implements Serializable {
     @Column(name = "id")
     private Integer id;
 
+    //出库跟踪入库
+    @Column(name = "is_out_track_warehousing")
+    private Boolean isOutTrackWarehousing;
+
     // 需求管理
     @Column(name = "outgoing_tracking")
     private Boolean outgoingTracking;
@@ -188,6 +192,8 @@ public class MaterialProduction implements Serializable {
     private String approvalState;
 
 
+
+
    /* public void copy(MaterialProduction source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }*/
@@ -195,7 +201,6 @@ public class MaterialProduction implements Serializable {
     public void copy( MaterialProduction source){
         BeanUtil.copyProperties( source,this, CopyOptions.create().setIgnoreNullValue(true));
     }
-
 
 
 }

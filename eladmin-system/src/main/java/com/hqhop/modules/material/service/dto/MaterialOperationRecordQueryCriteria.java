@@ -3,6 +3,8 @@ package com.hqhop.modules.material.service.dto;
 import lombok.Data;
 import com.hqhop.annotation.Query;
 
+import java.util.Set;
+
 /**
 * @author zf
 * @date 2019-12-09
@@ -23,8 +25,11 @@ public class MaterialOperationRecordQueryCriteria{
     private String approvalState;
 
     // 精确
-    @Query
+    @Query(type = Query.Type.INNER_LIKE)
     private String approveResult;
+
+    @Query(type = Query.Type.IN, propName="approveResult")
+    private Set<String> results;
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
@@ -32,7 +37,7 @@ public class MaterialOperationRecordQueryCriteria{
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
-    private String creator;
+    private String createPerson;
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)

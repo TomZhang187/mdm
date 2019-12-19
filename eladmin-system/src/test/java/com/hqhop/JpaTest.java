@@ -6,6 +6,7 @@ import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.repository.MaterialRepository;
 import com.hqhop.modules.material.service.MaterialDingService;
+import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.impl.AttributeServiceImpl;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;
@@ -64,22 +65,28 @@ public class JpaTest {
     @Autowired
     private AttributeServiceImpl attributeService;
 
+    @Autowired
+    private MaterialService materialService;
+
 
 
     @Test
    public  void contextLoads() throws
            ApiException {
 
-       Material material = materialRepository.findByKey(95L);
+        Material temporyary = materialService.findById(156L);
+
+        Material material = new Material();
+
+        material.copy(temporyary);
+
+        System.out.println(material);
 
 
-        Set<Attribute> collect = attributeService.queryAllByMaterialId(material.getId()).stream().collect(Collectors.toSet());
-        material.setAttributes( collect);
 
-        material.setId(null);
-//       MaterialOperationRecord materialOperationRecord = new MaterialOperationRecord();
-//       materialOperationRecord.getDataByMaterial(material);
-       materialDingService.addApprovel( material);
+
+
+
 
    }
 

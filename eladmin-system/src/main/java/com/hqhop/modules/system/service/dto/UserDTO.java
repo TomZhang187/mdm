@@ -1,6 +1,7 @@
 package com.hqhop.modules.system.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -37,11 +38,16 @@ public class UserDTO implements Serializable {
 
     private Set<Long> depts;
 
+    //所属二级公司/ 分公司集合
+    private  Set<Dept> belongFiliales;
+
     private String dduserid;
 
     private String empnum;
 
     private Date lastPasswordResetTime;
+
+
 
 
     @ApiModelProperty(hidden = true)

@@ -123,7 +123,12 @@ public class MaterialController {
     @PutMapping(value = "/updateMaterial")
     @PreAuthorize("hasAnyRole('ADMIN','MATERIAL_ALL','MATERIAL_EDIT')")
     public ResponseEntity update(@Validated @RequestBody Material resources) {
-        materialService.update(resources);
+
+          if("4".equals(resources.getApprovalState())){
+              materialService. ApprovalUpdate(resources);
+          }else{
+              materialService.update(resources);
+          }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -185,22 +190,45 @@ public class MaterialController {
     @ApiOperation(value = "物料基本档案审批接口")
     @PostMapping(value = "/materialApproval")
 //    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
-    public ResponseEntity addApproval(@Validated @RequestBody Material resources)throws
+    public ResponseEntity doApproval(@Validated @RequestBody Material resources)throws
             ApiException {
-
-
-        if (resources.getId() != null && !"".equals(resources.getId()) && "4".equals(resources.getApprovalState())) {
-
+        if (resources.getId() != null && !"".equals(resources.getId()) && "4".equals(resources.getApprovalState()) || !resources.getEnable()){
             //修改审批调用
            materialDingService.updateApprovel(resources);
 
         } else {
             //新增审批调用
-            materialDingService.addApprovel(resources);
-
+            if(resources.getId() ==null){
+              Material material =  materialService.create(resources);
+                materialDingService.addApprovel( material);
+            }else {
+                materialDingService.addApprovel( resources);
+            }
         }
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @Log("物料基本档案临时数据查询接口")
+    @ApiOperation(value = "物料基本档案临时数据查询接口")
+    @GetMapping(value = "/findTemporaryData")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity findTemporaryData(Material resources)throws
+            ApiException {
+        return new ResponseEntity(materialService.findTemporaryData(resources),HttpStatus.OK);
+    }
+
+
+    @Log("获取物料基本档案流水码")
+    @ApiOperation(value = "获取物料基本档案流水码")
+    @GetMapping(value = "/getWaterCode")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity getWaterCode(Long typeId)throws
+            ApiException {
+
+        return new ResponseEntity(materialService.getWaterCode(typeId),HttpStatus.OK);
+    }
+
+
 
 
 }

@@ -26,6 +26,12 @@ public class MaterialProductionQueryCriteria{
     @Query
     private Boolean isSerial;
 
+
+    // 精确
+    @Query
+    private Boolean enable;
+
+
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
     private String defaultFactory;
