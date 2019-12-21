@@ -71,3 +71,10 @@ file:
   # 文件大小 /M
   maxSize: 100
   avatarMaxSize: 5
+
+# 钉钉相关配置文件
+dingtalk:
+  corpid: ding1d7e8b088fab194f35c2f4657eb6378f
+  agentid: 258960428
+  appkey: dingizmgfqvs72jqtmws
+  appsecret: hQNyHxnCoWpo1AVA0vVu7tym2fSZDtb8MegIJRIY-28-8wX_f6bNKjLHCnDu8npx
