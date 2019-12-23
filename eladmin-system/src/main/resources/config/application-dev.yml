@@ -78,3 +78,9 @@ dingtalk:
   agentid: 258960428
   appkey: dingizmgfqvs72jqtmws
   appsecret: hQNyHxnCoWpo1AVA0vVu7tym2fSZDtb8MegIJRIY-28-8wX_f6bNKjLHCnDu8npx
+  # 审批流CODE
+  processcode:
+    # 物料基本档案新增
+    material-base-add: PROC-B0A45D0A-A9FC-43AE-BD86-76F54B5902AA
+    # 物料生产档案新增
+    material-production-add: PROC-B0A45D0A-A9FC-43AE-BD86-76F54B5902AA
