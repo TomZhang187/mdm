@@ -42,11 +42,11 @@ public class DingTalkConstant {
 
     @PostConstruct
     public void init() {
-        this.CORPID = this.corpid;
-        this.AGENTID = this.agentid;
-        this.APPKEY = this.appkey;
-        this.APPSECRET = this.appsecret;
-        this.PROCESSCODE_MATERIAL_ADD = this.processcodeMaterialBaseAdd;
-        this.processcodeMaterialProductionAdd = this.processcodeMaterialProductionAdd;
+        CORPID = this.corpid;
+        AGENTID = this.agentid;
+        APPKEY = this.appkey;
+        APPSECRET = this.appsecret;
+        PROCESSCODE_MATERIAL_ADD = this.processcodeMaterialBaseAdd;
+        PROCESSCODE_MATERIALPRODUCTION_ADD = this.processcodeMaterialProductionAdd;
     }
 }
