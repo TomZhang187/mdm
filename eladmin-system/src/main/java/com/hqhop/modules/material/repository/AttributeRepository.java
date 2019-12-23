@@ -69,4 +69,14 @@ public interface AttributeRepository extends JpaRepository<Attribute, Long>, Jpa
     @Modifying
     @Query(value = "INSERT INTO t_type_attr (attribute_id,type_id) values (?1,?2)", nativeQuery = true)
     void setTypeAttribute(Long attributeId, Long typeId);
+
+
+
+    @Query(value = "select * from attribute  where attr_name=?1 ", nativeQuery = true)
+    Attribute findByAttributeName(String name);
+
+
+
+    @Query(value = "select count(*) from t_type_attr  where attribute_id=?1 and type_id=?2  ", nativeQuery = true)
+   Integer findT_Type_att(Long attributeId,Long typId);
 }

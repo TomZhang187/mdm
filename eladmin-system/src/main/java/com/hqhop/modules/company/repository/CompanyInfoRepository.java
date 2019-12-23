@@ -14,7 +14,7 @@ import java.util.List;
 public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long>, JpaSpecificationExecutor {
 
     //通过纳税登记号和所属公司查询客商数据
-    CompanyInfo findByTaxIdAndBelongCompany(String taxId, int belongCompanyId);
+    CompanyInfo findByTaxIdAndBelongCompany(String taxId, String belongCompanyId);
 
     //通过纳税登记号查询客商数据
     List<CompanyInfo> findByTaxId(String taxId);

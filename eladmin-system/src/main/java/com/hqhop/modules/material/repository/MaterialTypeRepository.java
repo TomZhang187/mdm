@@ -17,8 +17,18 @@ public interface MaterialTypeRepository extends JpaRepository<MaterialType, Long
     @Query(value = "select type_name from material_type where type_id = ?1", nativeQuery = true)
     String findNameById(Long id);
     List<MaterialType> findByParentId(Long id);
-    @Query
+
+    @Query(value = "select * from material_type where type_name = ?1", nativeQuery = true)
     MaterialType findByTypeName(String typeName);
+
+
+
     @Query(value = "select * from material_type where type_id = ?1", nativeQuery = true)
     MaterialType getOne(Long id);
+
+    MaterialType findByMaterialTypeCode(String code);
+
+
+
+
 }

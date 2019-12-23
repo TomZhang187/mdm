@@ -22,8 +22,6 @@ public class MaterialQueryCriteria{
     @Query
     private String remark;
 
-    @Query
-    private String originalRemark;
 
     @Query
     private String isTaxable;

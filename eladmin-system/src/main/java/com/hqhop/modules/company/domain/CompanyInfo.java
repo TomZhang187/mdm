@@ -57,16 +57,16 @@ public class CompanyInfo implements Serializable {
     private Timestamp updateTime;
 
     // 所属地区
-    @Column(name = "belong_area", nullable = false)
-    private Integer belongArea;
+    @Column(name = "belong_area")
+    private String belongArea;
 
     // 所属公司
-    @Column(name = "belong_company", nullable = false)
-    private Integer belongCompany;
+    @Column(name = "belong_company")
+    private String belongCompany;
 
     // 公司属性
-    @Column(name = "company_prop", nullable = false)
-    private Integer companyProp;
+    @Column(name = "company_prop")
+    private String companyProp;
 
     // 客商简称
     @Column(name = "company_short_name")
@@ -76,9 +76,15 @@ public class CompanyInfo implements Serializable {
     @Column(name = "company_state", nullable = false)
     private Integer companyState;
 
-    // 客商类型
+    // 公司类型
     @Column(name = "company_type", nullable = false)
-    private Integer companyType;
+    private String companyType;
+
+
+
+    //客商类型
+    @Column(name = "customer_type", nullable = false)
+    private String customerType;
 
     // 客商名称
     @Column(name = "company_name")
@@ -90,7 +96,7 @@ public class CompanyInfo implements Serializable {
 
     // 经济类型
     @Column(name = "economic_type", nullable = false)
-    private Integer economicType;
+    private String economicType;
 
     // 外文名称
     @Column(name = "foreign_name")
@@ -124,13 +130,13 @@ public class CompanyInfo implements Serializable {
     @Column(name = "remark")
     private String remark;
 
-    // 税务登记号
+    // 税务登记号 /客商编码
     @Column(name = "tax_id")
     private String taxId;
 
     // 所属行业
     @Column(name = "trade", nullable = false)
-    private Integer trade;
+    private String trade;
 
 
 
@@ -150,6 +156,20 @@ public class CompanyInfo implements Serializable {
     private Set<Contact> contacts = new HashSet<>();
 
 
+    //专管部门
+    @Column(name = "charge_department")
+    private String chargeDepartment;
+
+    //专管业务员
+    @Column(name = "profession_salesman")
+    private String professionSalesman;
+
+    //默认收款协议
+    @Column(name = "defaulet_payment_agreement")
+    private String defaultPaymentAgreement;
+
+
+
     //添加账户方法
     public void addAccount(Account account){
         if(account != null){
@@ -159,6 +179,38 @@ public class CompanyInfo implements Serializable {
 
     public void copy(CompanyInfo source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
+    }
+
+    public String getChargeDepartment() {
+        return chargeDepartment;
+    }
+
+    public void setChargeDepartment(String chargeDepartment) {
+        this.chargeDepartment = chargeDepartment;
+    }
+
+    public String getProfessionSalesman() {
+        return professionSalesman;
+    }
+
+    public void setProfessionSalesman(String professionSalesman) {
+        this.professionSalesman = professionSalesman;
+    }
+
+    public String getDefaultPaymentAgreement() {
+        return defaultPaymentAgreement;
+    }
+
+    public void setDefaultPaymentAgreement(String defaultPaymentAgreement) {
+        this.defaultPaymentAgreement = defaultPaymentAgreement;
     }
 
     public Long getCompanyKey() {
@@ -183,27 +235,27 @@ public class CompanyInfo implements Serializable {
     }
 
 
-    public Integer getBelongArea() {
+    public String getBelongArea() {
         return belongArea;
     }
 
-    public void setBelongArea(Integer belongArea) {
+    public void setBelongArea(String belongArea) {
         this.belongArea = belongArea;
     }
 
-    public Integer getBelongCompany() {
+    public String getBelongCompany() {
         return belongCompany;
     }
 
-    public void setBelongCompany(Integer belongCompany) {
+    public void setBelongCompany(String belongCompany) {
         this.belongCompany = belongCompany;
     }
 
-    public Integer getCompanyProp() {
+    public String getCompanyProp() {
         return companyProp;
     }
 
-    public void setCompanyProp(Integer companyProp) {
+    public void setCompanyProp(String companyProp) {
         this.companyProp = companyProp;
     }
 
@@ -223,11 +275,11 @@ public class CompanyInfo implements Serializable {
         this.companyState = companyState;
     }
 
-    public Integer getCompanyType() {
+    public String getCompanyType() {
         return companyType;
     }
 
-    public void setCompanyType(Integer companyType) {
+    public void setCompanyType(String companyType) {
         this.companyType = companyType;
     }
 
@@ -247,11 +299,11 @@ public class CompanyInfo implements Serializable {
         this.contactAddress = contactAddress;
     }
 
-    public Integer getEconomicType() {
+    public String getEconomicType() {
         return economicType;
     }
 
-    public void setEconomicType(Integer economicType) {
+    public void setEconomicType(String economicType) {
         this.economicType = economicType;
     }
 
@@ -327,11 +379,11 @@ public class CompanyInfo implements Serializable {
         this.taxId = taxId;
     }
 
-    public Integer getTrade() {
+    public String getTrade() {
         return trade;
     }
 
-    public void setTrade(Integer trade) {
+    public void setTrade(String trade) {
         this.trade = trade;
     }
 

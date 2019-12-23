@@ -326,11 +326,10 @@ public class MaterialServiceImpl implements MaterialService {
             countByTypeId = Math.toIntExact(l);
         }
         Long parentId = one2.getParentId();
-        DecimalFormat df = new DecimalFormat("000");
-        String str2 = df.format(parentId);
-        df = new DecimalFormat("00000");
+        MaterialType materialType = materialTypeRepository.getOne(parentId);
+        DecimalFormat df = new DecimalFormat("00000");
         String str3 = df.format(countByTypeId);
-        return str2 + "." + str3;
+        return materialType.getMaterialTypeCode() + "." + str3;
     }
 
 }

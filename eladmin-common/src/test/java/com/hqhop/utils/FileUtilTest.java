@@ -1,7 +1,5 @@
 package com.hqhop.utils;
 
-import com.alibaba.excel.EasyExcelFactory;
-import org.apache.poi.sl.usermodel.Sheet;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -42,19 +40,6 @@ public class FileUtilTest {
     }
 
 
-    @Test
-    public void contextLoads() {
 
-        // 读取 excel 表格的路径
-        try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream("D:/1.xlsx"));
-            List<Object> data = EasyExcelFactory.read(bis, new com.alibaba.excel.metadata.Sheet(1, 0));
-            data.forEach(System.out::println);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
 }
