@@ -15,8 +15,10 @@ import com.hqhop.easyExcel.model.IncClient;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.DeptRepository;
+import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.service.DeptDingService;
 import com.hqhop.modules.system.service.EmployeeDingService;
+import com.hqhop.modules.system.service.EmployeeService;
 import com.taobao.api.ApiException;
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -45,6 +47,13 @@ public class DeptAndEmployeeImport {
 
     @Autowired
     private DeptRepository deptRepository;
+
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeService employeeService;
 
 
     //部门导入
@@ -97,59 +106,55 @@ public class DeptAndEmployeeImport {
 
 
 
-//    @SneakyThrows
-//    @Test
-//    public void test4() throws
-//            ApiException {
-//        //创建输入流
-//        InputStream inputStream = null;
-//
-//
-//        inputStream = new FileInputStream("D:\\easyExcel\\通讯录.xlsx");
-//        Sheet sheet = new Sheet(1,1,EmployeeModel.class);
-//        List<Object> typeList = EasyExcelFactory.read(inputStream,sheet);
-//        List<EmployeeModel> types = new LinkedList<>();
-//        for (Object student :  typeList){
-//            types.add((EmployeeModel)student);
-//        }
-//
-//        for (EmployeeModel type : types) {
-//
-//
-//
-//        }
-//
-//
-//
-//
-//
-//                    Employee employee2 = employeeRepository.findByDingId(userlist.getUserid());
-//                    Employee employee = new Employee();
-//                    if(employee2!=null){
-//                        employee.setId(employee2.getId());
-//                    }
-//                    employee.getDateByResponse(userlist);
-//                    String pageBelongDepts = employeeService.getDeptsStr(userlist.getDepartment());
-//                    employee.setPageBelongDepts(pageBelongDepts);
-//                    List<Long> list1 = Employee.getDeptListByDing(employee.getDingBelongDepts());
-//                    Set<Dept> deptSet = new HashSet<>();
-//                    for (Long aLong : list1) {
-//                        Dept dept = new Dept();
-//                        dept = deptRepository.findByDingId(aLong.toString());
-//                        deptSet.add(dept);
-//
-//                    }
-//                    employee.setDepts(deptSet);
-////                   employeeRepository.save(employee);
-//                }
-//            }
-//
-//
-//
-//    }
+    @SneakyThrows
+    @Test
+    public void test4() throws
+            ApiException {
+        //创建输入流
+        InputStream inputStream = null;
+
+
+        inputStream = new FileInputStream("D:\\easyExcel\\通讯录.xlsx");
+        Sheet sheet = new Sheet(1,1,EmployeeModel.class);
+        List<Object> typeList = EasyExcelFactory.read(inputStream,sheet);
+        List<EmployeeModel> types = new LinkedList<>();
+        for (Object student :  typeList){
+            types.add((EmployeeModel)student);
+        }
+
+        for (EmployeeModel type : types) {
+
+            OapiUserGetResponse userInfo = DingTalkUtils.getUserInfo(type.getEmployeeId());
+
+            Employee employee2 = employeeRepository.findByDingId(userInfo.getDingId());
+            Employee employee = new Employee();
+            if(employee2!=null){
+                employee.setId(employee2.getId());
+            }
+            employee.getDateByResponse(userInfo);
+            String pageBelongDepts = employeeService.getDeptsStr(userInfo.getDepartment().toString());
+            employee.setPageBelongDepts(pageBelongDepts);
+            List<Long> list1 = Employee.getDeptListByDing(employee.getDingBelongDepts());
+            Set<Dept> deptSet = new HashSet<>();
+            for (Long aLong : list1) {
+                Dept dept = new Dept();
+                dept = deptRepository.findByDingId(aLong.toString());
+                deptSet.add(dept);
+
+            }
+            employee.setDepts(deptSet);
+            employeeRepository.save(employee);
+        }
+    }
+
+
+
+
+
+
 
     @Test
-    public void test5() throws
+    public void test6() throws
             ApiException {
 
 
