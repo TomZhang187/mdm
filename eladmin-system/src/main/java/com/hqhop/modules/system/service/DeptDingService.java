@@ -21,7 +21,7 @@ public interface DeptDingService {
              ApiException;
 
     //获取部门列表
-    List<OapiDepartmentListResponse.Department> getDeptsLists(Dept resource)throws
+    List<OapiDepartmentListResponse.Department> getDeptsLists(String deptId)throws
             ApiException;
 
     //同步钉钉部门到后台部门
@@ -29,6 +29,6 @@ public interface DeptDingService {
             ApiException;
 
     //获取部门详情
-    DingDeptDetailVo getDeptDetails(Dept dept)throws
+    DingDeptDetailVo getDeptDetails(Dept resource)throws
             ApiException;
 }

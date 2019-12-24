@@ -16,7 +16,7 @@ import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.annotation.ExcelProperty;

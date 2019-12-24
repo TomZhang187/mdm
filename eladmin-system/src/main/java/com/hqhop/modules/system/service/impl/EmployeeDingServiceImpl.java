@@ -1,11 +1,13 @@
 package com.hqhop.modules.system.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
+import com.dingtalk.api.request.OapiSmartworkHrmEmployeeQueryonjobRequest;
 import com.dingtalk.api.request.OapiUserGetRequest;
 import com.dingtalk.api.request.OapiUserListbypageRequest;
+import com.dingtalk.api.response.OapiDepartmentListResponse;
+import com.dingtalk.api.response.OapiSmartworkHrmEmployeeQueryonjobResponse;
 import com.dingtalk.api.response.OapiUserGetResponse;
 import com.dingtalk.api.response.OapiUserListbypageResponse;
 import com.hqhop.config.dingtalk.DingTalkUtils;
@@ -13,10 +15,9 @@ import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.DeptRepository;
 import com.hqhop.modules.system.repository.EmployeeRepository;
+import com.hqhop.modules.system.service.DeptDingService;
 import com.hqhop.modules.system.service.EmployeeDingService;
 import com.taobao.api.ApiException;
-import com.taobao.api.internal.util.TaobaoHashMap;
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -46,49 +47,91 @@ public class EmployeeDingServiceImpl implements EmployeeDingService {
     @Autowired
     private EmployeeServiceImpl employeeService;
 
+    @Autowired
+    private DeptDingService deptDingService;
 
 
-    //同步钉钉用户信息到主数据平台
+
+    //部门用户详情同步钉钉用户信息到主数据平台
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void syncDingUser() throws
             ApiException {
-        
-        List<OapiUserListbypageResponse.Userlist> list = getDeptUserDetails(1L);
-        if(!list.isEmpty()){
-            for (OapiUserListbypageResponse.Userlist userlist : list) {
 
-                Employee employee2 = employeeRepository.findByDingId(userlist.getUserid());
-               if(employee2!=null){
-                   continue;
-               }
-                Employee employee = new Employee();
-                employee.getDateByResponse(userlist);
-                String pageBelongDepts = employeeService.getDeptsStr(userlist.getDepartment());
-                employee.setPageBelongDepts(pageBelongDepts);
-                List<Long> list1 = Employee.getDeptListByDing(employee.getDingBelongDepts());
-                Set<Dept> deptSet = new HashSet<>();
-                for (Long aLong : list1) {
-                    Dept dept = new Dept();
-                    dept = deptRepository.findByDingId(aLong.toString());
-                    deptSet.add(dept);
+        int i =0;
 
-                }
-                employee.setDepts(deptSet);
-                employeeRepository.save(employee);;
+        List<OapiDepartmentListResponse.Department> deptsLists = deptDingService.getDeptsLists(null);
+        for (OapiDepartmentListResponse.Department deptsList : deptsLists) {
+
+            List<OapiUserListbypageResponse.Userlist> list = getDeptUserDetails(deptsList.getId());
+            if(list.size()==0){
+                continue;
             }
+            if(!list.isEmpty()){
+                for (OapiUserListbypageResponse.Userlist userlist : list) {
+
+                    Employee employee2 = employeeRepository.findByDingId(userlist.getUserid());
+                    Employee employee = new Employee();
+                    if(employee2!=null){
+                        employee.setId(employee2.getId());
+                    }
+                    employee.getDateByResponse(userlist);
+                    String pageBelongDepts = employeeService.getDeptsStr(userlist.getDepartment());
+                    employee.setPageBelongDepts(pageBelongDepts);
+                    List<Long> list1 = Employee.getDeptListByDing(employee.getDingBelongDepts());
+                    Set<Dept> deptSet = new HashSet<>();
+                    for (Long aLong : list1) {
+                        Dept dept = new Dept();
+                        dept = deptRepository.findByDingId(aLong.toString());
+                        deptSet.add(dept);
+
+                    }
+                    employee.setDepts(deptSet);
+
+                    i++;
+//                    employeeRepository.save(employee);
+                }
+            }
+
         }
 
+
+
+
     }
+//
+//   //获取用户详情 同步钉钉用户数据
+//    public
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     //获取部门用户详情列表
-    public List<OapiUserListbypageResponse.Userlist> getDeptUserDetails (Long deptId)throws
+    @Override
+    public List<OapiUserListbypageResponse.Userlist> getDeptUserDetails(Long deptId)throws
             ApiException {
         DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
         OapiUserListbypageRequest request = new OapiUserListbypageRequest();
-        request.setDepartmentId(1L);
+        if(deptId != null){
+            request.setDepartmentId(deptId);
+        }else {
+            request.setDepartmentId(1L);
+        }
         request.setOffset(0L);
         request.setSize(10L);
         request.setOrder("entry_desc");
@@ -125,6 +168,42 @@ public class EmployeeDingServiceImpl implements EmployeeDingService {
 
         return  employee;
 }
+
+    public List<String> getServiceWorkers() throws ApiException {
+
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob");
+        OapiSmartworkHrmEmployeeQueryonjobRequest req = new OapiSmartworkHrmEmployeeQueryonjobRequest();
+        req.setStatusList("2,3");
+        req.setOffset(15L);
+        req.setSize(5L);
+        OapiSmartworkHrmEmployeeQueryonjobResponse response = client.execute(req , DingTalkUtils.getAccessToken());
+        if(response.getErrcode()==0){
+
+            return response.getResult().getDataList();
+        }
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

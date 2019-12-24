@@ -100,25 +100,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public String getDeptsStr(String depts) {
 
-
-
 //        String str =deptRepository.findByDingId("1").getName()+"/";
 
-        Dept dept2 = deptRepository.findByDingId("1");
-        long rootId = dept2.getId();
 
-        String str ="";
+        long rootId = 1L;
+
+        String str =" ";
        List<Long> list = Employee.getDeptListByDing(depts);
        if(list != null && !list.isEmpty()){
 
-           for (int i=1;i<list.size();i++){
-               String strs = "";
+           for (int i=0;i<list.size();i++){
+               String strs = " ";
                Dept dept = deptRepository.findByDingId(list.get(i).toString());
                strs = dept.getName();
-              while(dept.getPid()!=rootId && dept.getPid()!=null){
+              while(dept!=null && dept.getPid()!=rootId && dept.getPid()!=null){
 
                   String ss = deptRepository.findNameById(dept.getPid());
-                  strs=ss+"-"+strs;
+                  if(ss!=null){
+                      strs=ss+"-"+strs;
+                  }
                   dept =deptRepository.findByKey(dept.getPid());
               }
              str+= strs+" /";

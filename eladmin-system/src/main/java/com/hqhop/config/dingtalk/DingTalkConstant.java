@@ -1,6 +1,7 @@
 package com.hqhop.config.dingtalk;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
@@ -8,6 +9,7 @@ import javax.annotation.PostConstruct;
  * 定义钉钉常量
  * @author chengy
  */
+@Component
 public class DingTalkConstant {
 
     public static String CORPID;
@@ -45,4 +47,35 @@ public class DingTalkConstant {
      * */
     public  static final String PROCESSCODE_MATERIALPRODUCTION_ADD = "PROC-7E6D638F-4D21-4441-AB53-71BB48B86223";
 
+    public String getCorpid() {
+        return corpid;
+    }
+
+    public void setCorpid(String corpid) {
+        this.corpid = corpid;
+    }
+
+    public String getAppkey() {
+        return appkey;
+    }
+
+    public void setAppkey(String appkey) {
+        this.appkey = appkey;
+    }
+
+    public String getAppsecret() {
+        return appsecret;
+    }
+
+    public void setAppsecret(String appsecret) {
+        this.appsecret = appsecret;
+    }
+
+    public String getAgentid() {
+        return agentid;
+    }
+
+    public void setAgentid(String agentid) {
+        this.agentid = agentid;
+    }
 }
