@@ -8,6 +8,8 @@ import org.lionsoul.ip2region.DbSearcher;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -196,5 +198,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             w = 0;
         }
         return weekDays[w];
+    }
+
+    public static String getCurrentTime(){
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String currentTime = df.format(now);
+        return currentTime;
     }
 }

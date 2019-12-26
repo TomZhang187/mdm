@@ -63,4 +63,6 @@ public interface MaterialProductionService {
      */
     //@CacheEvict(allEntries = true)
     void delete(Integer id);
+
+    void sysnToU8Cloud(Integer id);
 }
