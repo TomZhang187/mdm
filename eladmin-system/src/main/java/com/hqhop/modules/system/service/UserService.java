@@ -26,7 +26,7 @@ public interface UserService {
      * @param id
      * @return
      */
-    @Cacheable(key = "#p0")
+//    @Cacheable(key = "#p0")
     UserDTO findById(long id);
 
     /**
@@ -34,14 +34,14 @@ public interface UserService {
      * @param resources
      * @return
      */
-    @CacheEvict(allEntries = true)
+//    @CacheEvict(allEntries = true)
     UserDTO create(User resources);
 
     /**
      * update
      * @param resources
      */
-    @CacheEvict(allEntries = true)
+//    @CacheEvict(allEntries = true)
     void update(User resources);
 
     /**

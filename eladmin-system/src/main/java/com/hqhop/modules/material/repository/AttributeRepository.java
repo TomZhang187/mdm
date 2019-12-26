@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2019-10-30
  * 物料属性dao
  */
-public interface AttributeRepository extends JpaRepository<Attribute, Long>, JpaSpecificationExecutor {
+public interface    AttributeRepository extends JpaRepository<Attribute, Long>, JpaSpecificationExecutor {
 
 
     /**
@@ -79,4 +79,10 @@ public interface AttributeRepository extends JpaRepository<Attribute, Long>, Jpa
 
     @Query(value = "select count(*) from t_type_attr  where attribute_id=?1 and type_id=?2  ", nativeQuery = true)
    Integer findT_Type_att(Long attributeId,Long typId);
+
+
+
+
+    @Query(value = "select MAX (attribute_number) from attribute  ", nativeQuery = true)
+    Integer getMaxAttributeNumber();
 }
