@@ -1,14 +1,15 @@
 package com.hqhop.modules.material.service;
 
+import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.domain.MaterialProduction;
 import com.hqhop.modules.material.service.dto.MaterialProductionDTO;
 import com.hqhop.modules.material.service.dto.MaterialProductionQueryCriteria;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import com.hqhop.modules.system.domain.Dept;
 import org.springframework.data.domain.Pageable;
-import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author wst
@@ -50,6 +51,10 @@ public interface MaterialProductionService {
     //@CacheEvict(allEntries = true)
     MaterialProductionDTO create(MaterialProduction resources);
 
+    //临时保存
+    @Transactional(rollbackFor = Exception.class)
+    MaterialOperationRecord approvalCreate(MaterialProduction resources);
+
     /**
      * 编辑
      * @param resources
@@ -65,4 +70,12 @@ public interface MaterialProductionService {
     void delete(Integer id);
 
     void sysnToU8Cloud(Integer id);
+
+    //加载当前用户可选的默认工厂集合
+    @Transactional(rollbackFor = Exception.class)
+    List<Dept> getUserDefaultFactory();
+
+    //获取当前用户临时修改数据
+    @Transactional(rollbackFor = Exception.class)
+    MaterialProduction getTemporaryData(MaterialProduction resources);
 }

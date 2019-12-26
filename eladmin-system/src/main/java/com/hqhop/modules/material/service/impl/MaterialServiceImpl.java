@@ -1,14 +1,8 @@
 package com.hqhop.modules.material.service.impl;
 
 import com.hqhop.exception.BadRequestException;
-import com.hqhop.modules.material.domain.Attribute;
-import com.hqhop.modules.material.domain.Material;
-import com.hqhop.modules.material.domain.MaterialAttribute;
-import com.hqhop.modules.material.domain.MaterialType;
-import com.hqhop.modules.material.repository.AttributeRepository;
-import com.hqhop.modules.material.repository.MaterialAttributeRepository;
-import com.hqhop.modules.material.repository.MaterialRepository;
-import com.hqhop.modules.material.repository.MaterialTypeRepository;
+import com.hqhop.modules.material.domain.*;
+import com.hqhop.modules.material.repository.*;
 import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.dto.MaterialDTO;
 import com.hqhop.modules.material.service.dto.MaterialQueryCriteria;
@@ -25,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,6 +44,11 @@ public class MaterialServiceImpl implements MaterialService {
     @Autowired
     private AttributeRepository attributeRepository;
 
+    @Autowired
+    private AttributeServiceImpl attributeService;
+
+    @Autowired
+    private MaterialOperationRecordRepository materialOperationRecordRepository;
 
     @Override
     public Map<String, Object> queryAll(MaterialQueryCriteria criteria, Pageable pageable) {
@@ -67,8 +67,10 @@ public class MaterialServiceImpl implements MaterialService {
     public Material findById(Long id) {
         Optional<Material> material = materialRepository.findById(id);
         ValidationUtil.isNull(material, "Material", "id", id);
-
-        return material.get();
+        Material material1 = material.get();
+        List<Attribute> attributes = attributeService.queryAllByMaterialId(material1.getId());
+        material1.setAttributes(attributes.stream().collect(Collectors.toSet()));
+        return material1;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class MaterialServiceImpl implements MaterialService {
         //防止类型不存在
        /* MaterialType byId = materialTypeRepository.getOne(resources.getType().getId());
         resources.setType(byId);*/
-       //查找上一个的获取流水码
+        //查找上一个的获取流水码
         MaterialType one2 = materialTypeRepository.getOne(resources.getType().getId());
         Material material = materialRepository.lastTimeMaterial(one2.getParentId());
         Material save = materialRepository.save(resources);
@@ -89,7 +91,7 @@ public class MaterialServiceImpl implements MaterialService {
         List<Attribute> collect = attributes.stream().collect(Collectors.toList());
         String model = save.getModel();
         String[] split = model.split("，");
-        if(split.length!=attributes.size()){
+        if (split.length != attributes.size()) {
             throw new BadRequestException("型号不对");
         }
         for (Attribute attribute : collect) {
@@ -100,14 +102,16 @@ public class MaterialServiceImpl implements MaterialService {
         for (int j = 0, len = collect.size(); j < len; j++) {
             collect.get(j).setAttributeValue(split[j]);
         }
+
+
         //设置编号
-        Integer countByTypeId=null;
-        if (material==null){
-           countByTypeId=1;
-        }else{
+        Integer countByTypeId = null;
+        if (material == null) {
+            countByTypeId = 1;
+        } else {
             String substring = material.getRemark().substring(4);
-            long l = Long.parseLong(substring)+1;
-            countByTypeId= Math.toIntExact(l);
+            long l = Long.parseLong(substring) + 1;
+            countByTypeId = Math.toIntExact(l);
         }
         Long id = save.getType().getId();
         MaterialType one1 = materialTypeRepository.getOne(id);
@@ -118,10 +122,13 @@ public class MaterialServiceImpl implements MaterialService {
         String str3 = df.format(countByTypeId);
         save.setRemark(str2 + "." + str3);
         //1新建....更多对照字典
-        save.setApprovalState("1");
+        if (save.getApprovalState() == null) {
+            save.setApprovalState("1");
+        }
         //设置当前操作用户的用户名
-        String username = SecurityUtils.getUsername();
+        String username = SecurityUtils.getEmployeeName();
         save.setCreatePerson(username);
+        save.setCreateTime(new Timestamp(new Date().getTime()));
         collect.forEach(attribute -> materialAttributeRepository.save(new MaterialAttribute(save, attribute, attribute.getAttributeValue())));
         return save;
     }
@@ -134,14 +141,45 @@ public class MaterialServiceImpl implements MaterialService {
     public Material update(Material materialEntity) {
         Optional<Material> materialById = materialRepository.findById(materialEntity.getId());
         Set<Attribute> attributes = materialEntity.getAttributes();
-        MaterialType one = materialTypeRepository.getOne(materialEntity.getType().getId());
+        //MaterialType one = materialTypeRepository.getOne(materialEntity.getType().getId());
         List<Attribute> collect = attributes.stream().collect(Collectors.toList());
         attributes.forEach(attribute -> materialAttributeRepository.updateByAttributeId(attribute.getAttributeValue(), attribute.getAttributeId(), materialEntity.getId()));
         ValidationUtil.isNull(materialById, "Material", "id", materialEntity.getId());
         Material material1 = materialById.get();
-       Material material = materialRepository.save(materialEntity);
+        Material material = materialRepository.save(materialEntity);
 
-       return material;
+        return material;
+    }
+
+
+    /**
+     * 审批通过数据，修改临时保存
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Material ApprovalUpdate(Material material) {
+
+
+        if (material.getEnable()) {
+            MaterialOperationRecord record = new MaterialOperationRecord();
+            record.setId(material.getId());
+            material.setId(null);
+            material.setEnable(false);
+            Material material1 = create(material);
+            record.setTemporaryId(material1.getId());
+            record.setCreatePerson(SecurityUtils.getUsername());
+            //7临时保存 .....物料操作字典
+            record.setOperationType("7");
+            materialOperationRecordRepository.save(record);
+            materialRepository.save(material);
+
+            return material;
+        } else {
+            Material material1 = update(material);
+            return material1;
+        }
+
+
     }
 
 
@@ -257,8 +295,41 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Material findByNameAndModel(String name, String model) {
-        return materialRepository.findByNameAndModel(name,model);
+        return materialRepository.findByNameAndModel(name, model);
     }
 
+
+    //查询是否有当前用户临时保存的数据
+    @Override
+    public Material findTemporaryData(Material resources) {
+        //7临时保存 .....物料操作类型字典
+        MaterialOperationRecord record = materialOperationRecordRepository.findByIdAndCreatorAndOperationType(resources.getId(), SecurityUtils.getUsername(), "7");
+        if (record != null) {
+            Material material1 = materialRepository.findByKey(record.getTemporaryId());
+            if (material1 != null) {
+                return material1;
+            }
+        }
+        return null;
+    }
+    //获取流水码
+    @Override
+    public String getWaterCode(Long typeId) {
+        MaterialType one2 = materialTypeRepository.getOne(typeId);
+        Material material = materialRepository.lastTimeMaterial(one2.getParentId());
+        Integer countByTypeId = null;
+        if (material == null) {
+            countByTypeId = 1;
+        } else {
+            String substring = material.getRemark().substring(4);
+            long l = Long.parseLong(substring) + 1;
+            countByTypeId = Math.toIntExact(l);
+        }
+        Long parentId = one2.getParentId();
+        MaterialType materialType = materialTypeRepository.getOne(parentId);
+        DecimalFormat df = new DecimalFormat("00000");
+        String str3 = df.format(countByTypeId);
+        return materialType.getMaterialTypeCode() + "." + str3;
+    }
 
 }

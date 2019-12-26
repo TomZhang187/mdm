@@ -69,4 +69,14 @@ public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSp
     @Query(value="select * from material where id=?1", nativeQuery = true)
    Material findByKey(Long key);
 
+
+    @Query(value="select * from material where original_remark=?1", nativeQuery = true)
+    Material findByOriginalRemark(String code);
+
+
+
+    Material findByRemarkAndModel(String code,String model);
+
+
+
 }

@@ -138,6 +138,8 @@ public class CompanyUpdateServiceImpl implements CompanyUpdateService {
         }else {
             companyUpdate = companyUpdateRepository.findByCompanyKeyAndUserIdAndApproveResult(resources.getCompanyKey(),dingUser.getUserid(),"未知");
         }
+
+
         if(companyUpdate != null){
             String url = companyUpdate.getDingUrl();
             return  url;

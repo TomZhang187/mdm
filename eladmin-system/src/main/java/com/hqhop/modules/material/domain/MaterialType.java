@@ -49,13 +49,18 @@ public class MaterialType implements Serializable {
     @Column(name = "pid", nullable = false)
     @NotNull
     private Long parentId;
-   /* *//**
-     * 物料分类编码
-     *//*
+
+     //物料分类编码
     @Column(name = "material_type_code", nullable = false)
     @NotNull
     private String materialTypeCode;
-    */
+
+
+    //物料分类编码
+    @Column(name = "remark")
+    private String remark;
+
+
     @Column(name = "create_time")
     @CreationTimestamp
     private Timestamp createTime;
@@ -138,5 +143,25 @@ public class MaterialType implements Serializable {
 
     public void setAttributes(Set<Attribute> attributes) {
         this.attributes = attributes;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getMaterialTypeCode() {
+        return materialTypeCode;
+    }
+
+    public void setMaterialTypeCode(String materialTypeCode) {
+        this.materialTypeCode = materialTypeCode;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

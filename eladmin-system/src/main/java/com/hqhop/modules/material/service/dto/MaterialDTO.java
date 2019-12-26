@@ -21,6 +21,8 @@ public class MaterialDTO implements Serializable {
 
     private String remark;
 
+
+
     //存货名称
 
     private String name;

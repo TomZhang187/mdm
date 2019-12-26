@@ -18,6 +18,7 @@ public class MaterialProductionQueryCriteria{
     @Query
     private Boolean outgoingTracking;
 
+
     // 精确
     @Query
     private Boolean isDemand;
@@ -25,6 +26,16 @@ public class MaterialProductionQueryCriteria{
     // 精确
     @Query
     private Boolean isSerial;
+
+
+    // 精确
+    @Query
+    private Boolean enable;
+
+
+    //原物料编码
+    @Query(type = Query.Type.INNER_LIKE)
+    private String originalRemark;
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)

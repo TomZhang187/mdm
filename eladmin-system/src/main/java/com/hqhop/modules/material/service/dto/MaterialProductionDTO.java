@@ -22,6 +22,10 @@ public class MaterialProductionDTO implements Serializable {
     // 需求管理
     private Boolean outgoingTracking;
 
+
+    //原物料编码
+    private String originalRemark;
+
     // 是否需求管理
     private Boolean isDemand;
 

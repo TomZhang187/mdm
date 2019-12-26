@@ -34,6 +34,7 @@ public class Material implements Serializable {
     @Column(name = "remark")
     private String remark;
 
+
     //存货名称
     @Column(name = "name")
     private String name;

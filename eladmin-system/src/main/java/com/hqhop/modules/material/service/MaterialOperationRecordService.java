@@ -1,5 +1,6 @@
 package com.hqhop.modules.material.service;
 
+import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.service.dto.MaterialOperationRecordDTO;
 import com.hqhop.modules.material.service.dto.MaterialOperationRecordQueryCriteria;
@@ -7,6 +8,8 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Map;
 import java.util.List;
 
@@ -63,4 +66,7 @@ public interface MaterialOperationRecordService {
      */
     //@CacheEvict(allEntries = true)
     void delete(Long key);
+
+    @Transactional(rollbackFor = Exception.class)
+    String getDingUrl(Material resources);
 }

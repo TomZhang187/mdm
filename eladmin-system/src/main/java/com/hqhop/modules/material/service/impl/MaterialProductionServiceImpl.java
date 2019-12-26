@@ -1,27 +1,34 @@
 package com.hqhop.modules.material.service.impl;
 
+import com.hqhop.modules.material.domain.Material;
+import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.domain.MaterialProduction;
-import com.hqhop.utils.*;
+import com.hqhop.modules.material.repository.MaterialOperationRecordRepository;
 import com.hqhop.modules.material.repository.MaterialProductionRepository;
 import com.hqhop.modules.material.service.MaterialProductionService;
 import com.hqhop.modules.material.service.dto.MaterialProductionDTO;
 import com.hqhop.modules.material.service.dto.MaterialProductionQueryCriteria;
 import com.hqhop.modules.material.service.mapper.MaterialProductionMapper;
+import com.hqhop.modules.system.domain.Dept;
+import com.hqhop.modules.system.service.UserService;
+import com.hqhop.modules.system.service.dto.UserDTO;
+import com.hqhop.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
-* @author wst
-* @date 2019-11-26
-*/
+ * @author wst
+ * @date 2019-11-26
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class MaterialProductionServiceImpl implements MaterialProductionService {
@@ -32,8 +39,18 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
     @Autowired
     private MaterialProductionMapper materialProductionMapper;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MaterialOperationRecordRepository materialOperationRecordRepository;
+
     @Override
     public Map<String,Object> queryAll(MaterialProductionQueryCriteria criteria, Pageable pageable){
+
+        if(criteria.getEnable() ==null){
+            criteria.setEnable(true);
+        }
         Page<MaterialProduction> page = materialProductionRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
         return PageUtil.toPage(page.map(materialProductionMapper::toDto));
     }
@@ -53,17 +70,51 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public MaterialProductionDTO create(MaterialProduction resources) {
+        resources.setEnable(true);
+        resources.setApprovalState("1");
+        resources.setProductionSalesman(SecurityUtils.getEmployeeName());
         return materialProductionMapper.toDto(materialProductionRepository.save(resources));
     }
+
+
+    //临时保存
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public MaterialOperationRecord approvalCreate(MaterialProduction resources) {
+        //7临时保存 ...更多看字典
+        MaterialOperationRecord record1 = materialOperationRecordRepository.findByIdAndCreatorAndOperationType(resources.getId().longValue(),SecurityUtils.getUsername(),"7");
+        MaterialOperationRecord record2 =null;
+        if(record1 == null){
+            MaterialOperationRecord record = new MaterialOperationRecord();
+            record.getDataByMateriaProduction(resources);
+            //7临时保存 ...更多看字典
+            record.setOperationType("7");
+            record.setCreator(SecurityUtils.getUsername());
+            record.setUserId(SecurityUtils.getDingId());
+            record.setId(resources.getId().longValue());
+            record.setMaterialId(resources.getMaterial().getId());
+            record2 = materialOperationRecordRepository.save(record);
+        }else {
+            record1.getDataByMateriaProduction(resources);
+            record2 = materialOperationRecordRepository.save(record1);
+        }
+        return  record2;
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(MaterialProduction resources) {
-        Optional<MaterialProduction> optionalMaterialProduction = materialProductionRepository.findById(resources.getId());
-        ValidationUtil.isNull( optionalMaterialProduction,"MaterialProduction","id",resources.getId());
-        MaterialProduction materialProduction = optionalMaterialProduction.get();
-        materialProduction.copy(resources);
-        materialProductionRepository.save(materialProduction);
+
+        if("4".equals(resources.getApprovalState())){
+            approvalCreate(resources);
+        }else {
+            Optional<MaterialProduction> optionalMaterialProduction = materialProductionRepository.findById(resources.getId());
+            ValidationUtil.isNull( optionalMaterialProduction,"MaterialProduction","id",resources.getId());
+            MaterialProduction materialProduction = optionalMaterialProduction.get();
+            materialProduction.copy(resources);
+            materialProductionRepository.save(materialProduction);
+        }
     }
 
     @Override
@@ -111,7 +162,7 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
                 // 修改时间,最大长度为64,类型为:String
                 .append("<a_modifytime>").append(currentTime).append("</a_modifytime>")
                 // 存货分类,必填 对应U8C存货分类档案编码 最大长度为64,类型为:String
-                .append("<a_pk_invcl>").append(maDto.getMaterial().getType().get).append("</a_pk_invcl>")
+                .append("<a_pk_invcl>").append(maDto.getMaterial().getType().getRemark()).append("</a_pk_invcl>")
                 // 主计量单位 必填 对应U8C计量档案编码 ,最大长度为64,类型为:String
                 .append("<a_pk_measdoc>").append(maDto.getMaterial().getUnit()).append("</a_pk_measdoc>")
                 // 税目,对应U8C税目档案编码 最大长度为64,类型为:String
@@ -202,24 +253,51 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
                 .append("<c_sealdate></c_sealdate>")
                 // 封存标志,最大长度为64,类型为:String
                 .append("<c_sealflag>N</c_sealflag>")
-            // 是否成本对象,最大长度为64,类型为:String
+                // 是否成本对象,最大长度为64,类型为:String
                 .append("<c_sfcbdx>N</c_sfcbdx>")
-            // 是否批次核算,最大长度为64,类型为:String
+                // 是否批次核算,最大长度为64,类型为:String
                 .append("<c_sfpchs>").append(maDto.getIsBatchesAccount()?"Y":"N").append("</c_sfpchs>")
                 // 是否根据检验结果入库,最大长度为64,类型为:String
                 .append("<c_stockbycheck>N</c_stockbycheck>")
-            // 是否虚项,最大长度为64,类型为:String
+                // 是否虚项,最大长度为64,类型为:String
                 .append("<c_virtualflag>").append(maDto.getIsImaginaryTerm()?"Y":"N").append("</c_virtualflag>")
-            // 再定货点,最大长度为64,类型为:String
+                // 再定货点,最大长度为64,类型为:String
                 .append("<c_zdhd>").append(maDto.getAgainBuyPlace()).append("</c_zdhd>")
-            // 库存组织主键,最大长度为64,类型为:String
+                // 库存组织主键,最大长度为64,类型为:String
                 .append("<c_pk_calbody>").append(maDto.getDefaultFactory()).append("</c_pk_calbody>")
-            // 供应类型,最大长度为64,类型为:String)
+                // 供应类型,最大长度为64,类型为:String)
                 .append("<c_supplytype>0</c_supplytype>")
                 //<!--固定提前期,最大长度为64,类型为:String-->
-            .append("<c_fixedahead>").append(maDto.getFixedAdvanceTime()).append("</c_fixedahead>")
+                .append("<c_fixedahead>").append(maDto.getFixedAdvanceTime()).append("</c_fixedahead>")
                 .append(" </billhead>\n</bill>\n")
                 .append("</ufinterface>");
         return builder.toString();
     }
+
+    //加载当前用户可选的默认工厂集合
+    @Transactional(rollbackFor = Exception.class)
+    public List<Dept> getUserDefaultFactory() {
+        UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
+        List<Dept> list = new ArrayList<>(userDTO.getBelongFiliales());
+
+        return list;
+    }
+
+
+    //获取当前用户临时修改数据
+    @Transactional(rollbackFor = Exception.class)
+    public MaterialProduction getTemporaryData(MaterialProduction resources){
+
+        //7临时保存 ...更多看字典
+        MaterialOperationRecord record = materialOperationRecordRepository.findByIdAndCreatorAndOperationType(resources.getId().longValue(), SecurityUtils.getUsername(), "7");
+        if(record != null){
+            MaterialProduction materialProduction = record.getMaterialProduction();
+            Material material = new Material();
+            material.setId(record.getMaterialId());
+            materialProduction.setMaterial(material);
+            return  materialProduction;
+        }
+        return  null;
+    }
+
 }

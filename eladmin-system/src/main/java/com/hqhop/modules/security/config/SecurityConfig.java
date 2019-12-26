@@ -110,6 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //钉钉回调
                 .antMatchers("/ding/companyCallback").anonymous()
                 .antMatchers("/ding/materialCallback").anonymous()
+                .antMatchers("/ding/materialProductionCallback").anonymous()
                 // swagger start
                 .antMatchers("/swagger-ui.html").anonymous()
                 .antMatchers("/swagger-resources/**").anonymous()

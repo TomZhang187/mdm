@@ -57,6 +57,9 @@ public interface MaterialService {
     //@CacheEvict(allEntries = true)
     Material update(Material resources);
 
+    @Transactional(rollbackFor = Exception.class)
+    Material ApprovalUpdate(Material material);
+
     /**
      * 删除
      * @param id
@@ -96,4 +99,8 @@ public interface MaterialService {
     List<Material> findAll();
     List<Material> queryAllByTypeId(Long id);
     Material findByNameAndModel(String name,String model);
+
+    //查询是否有当前用户临时保存的数据
+    Material findTemporaryData(Material resources);
+    String getWaterCode(Long typeId);
 }

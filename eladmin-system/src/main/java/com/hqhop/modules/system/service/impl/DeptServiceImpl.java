@@ -145,7 +145,7 @@ public class DeptServiceImpl implements DeptService {
     //查询所属分公司集合
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Set<Dept> getBelongSubsidiary(Set<Long> depts){
+    public Set<Dept> getBelongFiliale(Set<Long> depts){
 
         Set<Dept> set = new HashSet<>();
         for (Long dept : depts) {
@@ -156,11 +156,11 @@ public class DeptServiceImpl implements DeptService {
                 dept1= deptRepository.findByKey(dept1.getPid());
             }
             if(dept2!= null){
+                dept2.setEmployees(null);
                 set.add(dept2);
             }
 
         }
         return  set;
     }
-
 }

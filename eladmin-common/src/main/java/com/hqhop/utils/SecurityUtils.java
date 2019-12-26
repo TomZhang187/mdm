@@ -36,6 +36,28 @@ public class SecurityUtils {
         return json.get("username", String.class);
     }
 
+
+    /**
+     * 获取真实员工名称
+     * @return 真实员工名称
+     */
+    public static String getEmployeeName(){
+        Object obj = getUserDetails();
+        JSONObject json = new JSONObject(obj);
+        return json.get("employeeName", String.class);
+    }
+
+
+    /**
+     * 获取当前用户钉钉iD
+     * @return 获取当前用户钉钉iD
+     */
+    public static String getDingId(){
+        Object obj = getUserDetails();
+        JSONObject json = new JSONObject(obj);
+        return json.get("dingId", String.class);
+    }
+
     /**
      * 获取系统用户id
      * @return 系统用户id

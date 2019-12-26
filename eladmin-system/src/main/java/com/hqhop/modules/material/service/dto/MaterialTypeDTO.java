@@ -24,6 +24,10 @@ public class MaterialTypeDTO implements Serializable {
      * 选择框的名字
      */
     private String name;
+
+
+    //物料分类编码
+    private String materialTypeCode;
     /**
      * 上级分类
      */

@@ -13,10 +13,16 @@ import java.sql.Timestamp;
 @Data
 public class MaterialQueryCriteria{
 
+    // 精确
+    @Query
+    private Long id;
+
     @Query(type = Query.Type.INNER_LIKE)
     private String name;
     @Query
     private String remark;
+
+
     @Query
     private String isTaxable;
     @Query

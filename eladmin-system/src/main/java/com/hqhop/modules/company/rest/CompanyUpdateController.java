@@ -93,7 +93,7 @@ public class CompanyUpdateController {
 //    @PreAuthorize("hasAnyRole('ADMIN','COMPANYUPDATE_ALL','COMPANYUPDATE_CREATE')")
     public ResponseEntity getDingUrl(CompanyUpdate resources,DingUser dingUser){
 
-        return new ResponseEntity(companyUpdateService.getDingUrl(resources,dingUser),HttpStatus.CREATED);
+        return new ResponseEntity(companyUpdateService.getDingUrl(resources,dingUser),HttpStatus.OK);
     }
 
 }

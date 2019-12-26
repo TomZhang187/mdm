@@ -1,10 +1,9 @@
 package com.hqhop.modules.material.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hqhop.modules.company.domain.Account;
-import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ import java.sql.Timestamp;
 @Entity
 @Data
 @Table(name = "material_production")
-
 public class MaterialProduction implements Serializable {
 
     // 主键
@@ -26,7 +24,6 @@ public class MaterialProduction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-
 
     //原物料编码
     @Column(name = "original_remark")
@@ -216,6 +213,4 @@ public class MaterialProduction implements Serializable {
     public void copy( MaterialProduction source){
         BeanUtil.copyProperties( source,this, CopyOptions.create().setIgnoreNullValue(true));
     }
-
-
 }
