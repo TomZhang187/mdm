@@ -94,6 +94,8 @@ public class Material implements Serializable {
     @JsonIgnoreProperties(value = {"materials"})// 解决循环查找的问题
     @JoinTable(name = "t_material_company", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "company_id")})
     private Set<Company> companyEntities;
+
+
     //物料属性
     /*@ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"attributes"})// 解决循环查找的问题
