@@ -1,6 +1,7 @@
 package com.hqhop.modules.material.rest;
 
 import com.hqhop.aop.log.Log;
+import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.service.MaterialOperationRecordService;
 import com.hqhop.modules.material.service.dto.MaterialOperationRecordQueryCriteria;
@@ -28,10 +29,11 @@ public class MaterialOperationRecordController {
     @Log("查询MaterialOperationRecord")
     @ApiOperation(value = "查询MaterialOperationRecord")
     @GetMapping(value = "/materialOperationRecord")
-    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_SELECT')")
+//    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_SELECT')")
     public ResponseEntity getMaterialOperationRecords(MaterialOperationRecordQueryCriteria criteria, Pageable pageable){
         return new ResponseEntity(materialOperationRecordService.queryAll(criteria,pageable),HttpStatus.OK);
     }
+
 
     @Log("新增MaterialOperationRecord")
     @ApiOperation(value = "新增MaterialOperationRecord")
@@ -40,6 +42,7 @@ public class MaterialOperationRecordController {
     public ResponseEntity create(@Validated @RequestBody MaterialOperationRecord resources){
         return new ResponseEntity(materialOperationRecordService.create(resources),HttpStatus.CREATED);
     }
+
 
     @Log("修改MaterialOperationRecord")
     @ApiOperation(value = "修改MaterialOperationRecord")
@@ -58,4 +61,16 @@ public class MaterialOperationRecordController {
         materialOperationRecordService.delete(key);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
+    @Log("获取改物料基本档案审批链接getDingUrl")
+    @ApiOperation(value = "获取改物料基本档案审批链接getDingUrl")
+    @GetMapping(value = "/getMaterialDingUrl")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYUPDATE_ALL','COMPANYUPDATE_CREATE')")
+    public ResponseEntity getMaterialDingUrl(Material material){
+
+        return new ResponseEntity(materialOperationRecordService.getDingUrl(material),HttpStatus.OK);
+    }
+
+
 }

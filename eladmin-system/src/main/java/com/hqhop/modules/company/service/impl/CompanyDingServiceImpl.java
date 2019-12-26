@@ -439,13 +439,13 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         }
     }
     //字典值对比
-    public  String getDictChange(String dictName,String update ,Integer now) {
-        Integer value = Integer.parseInt(update);
-        if(value == now){
+    public  String getDictChange(String dictName,String update ,String now) {
+
+        if(update.equals(now)){
             System.out.println("所属公司"+dictDetailService.getDicLabel(dictName,now));
             return  dictDetailService.getDicLabel(dictName,now);
         }else {
-            return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,value);
+            return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,update);
         }
     }
 

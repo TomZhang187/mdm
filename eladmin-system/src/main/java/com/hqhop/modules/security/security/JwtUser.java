@@ -24,6 +24,12 @@ public class JwtUser implements UserDetails {
 
     private final String username;
 
+    private final String employeeName;
+
+
+    //用户的钉钉ID
+    private final String dingId;
+
     @JsonIgnore
     private final String password;
 

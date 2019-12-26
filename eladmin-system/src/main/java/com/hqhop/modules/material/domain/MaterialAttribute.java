@@ -16,13 +16,21 @@ public class MaterialAttribute {
     @Id //在表中的名称
     @GeneratedValue(strategy = GenerationType.AUTO) //自动增长
     private Integer id;
+
+
     @ManyToOne
     @JoinColumn(name = "material_id")
     private Material material;
+
+
     @ManyToOne
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;
+
+
     private String attributeValue;
+
+
     public void copy(Attribute source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }

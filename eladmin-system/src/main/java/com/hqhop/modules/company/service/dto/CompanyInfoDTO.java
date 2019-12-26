@@ -35,10 +35,10 @@ public class CompanyInfoDTO implements Serializable {
     private Timestamp approveTime;
 
     // 所属地区
-    private Integer belongArea;
+    private String belongArea;
 
     // 所属公司
-    private Integer belongCompany;
+    private String belongCompany;
 
     // 公司属性
     private Integer companyProp;
@@ -50,7 +50,7 @@ public class CompanyInfoDTO implements Serializable {
     private Integer companyState;
 
     // 客商类型
-    private Integer companyType;
+    private String companyType;
 
     // 客商名称
     private String compayName;
@@ -59,7 +59,7 @@ public class CompanyInfoDTO implements Serializable {
     private String contactAddress;
 
     // 经济类型
-    private Integer economicType;
+    private String economicType;
 
     // 外文名称
     private String foreignName;

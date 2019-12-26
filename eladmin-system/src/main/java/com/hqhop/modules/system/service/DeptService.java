@@ -78,7 +78,8 @@ public interface DeptService {
 
     Set<Dept> findByRoleIds(Long id);
 
-    //查询所属分公司
+
+    //查询所属分公司集合
     @Transactional(rollbackFor = Exception.class)
-    Set<Dept> getBelongSubsidiary(Set<Long> depts);
+    Set<Dept> getBelongFiliale(Set<Long> depts);
 }

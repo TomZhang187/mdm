@@ -83,11 +83,14 @@ public class DeptDingServiceImpl implements DeptDingService {
 
     //获取部门列表
     @Override
-    public List<OapiDepartmentListResponse.Department> getDeptsLists(Dept resource)throws
+    public List<OapiDepartmentListResponse.Department> getDeptsLists(String deptId)throws
             ApiException {
         DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
         OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-        request.setId(resource.getDingId());
+        if(deptId!=null){
+            request.setId(deptId);
+        }
+
         request.setFetchChild(true);
         request.setHttpMethod("GET");
         OapiDepartmentListResponse response = client.execute(request, DingTalkUtils.getAccessToken());
@@ -95,7 +98,7 @@ public class DeptDingServiceImpl implements DeptDingService {
         return  list;
     }
 
-    //同步钉钉部门到后台部门
+    //同步钉钉部门到主数据平台部门
     @Override
     public void syncDeptToDingDept()throws
             ApiException {
@@ -103,8 +106,7 @@ public class DeptDingServiceImpl implements DeptDingService {
         deptRepository.deleteAll();
 
          //拿到钉钉数据载入数据库
-        Dept dept = new Dept();
-        List<OapiDepartmentListResponse.Department> list = getDeptsLists(dept);
+        List<OapiDepartmentListResponse.Department> list = getDeptsLists(null);
         List<Dept> depts = deptRepository.findAll();
         for (OapiDepartmentListResponse.Department department : list) {
             Dept dept1 = new Dept();
@@ -129,6 +131,7 @@ public class DeptDingServiceImpl implements DeptDingService {
         }
 
     }
+
 
     //获取部门详情
     @Override

@@ -27,6 +27,15 @@ public class MaterialProduction implements Serializable {
     @Column(name = "id")
     private Integer id;
 
+
+    //原物料编码
+    @Column(name = "original_remark")
+    private String originalRemark;
+
+    //出库跟踪入库
+    @Column(name = "is_out_track_warehousing")
+    private Boolean isOutTrackWarehousing;
+
     // 需求管理
     @Column(name = "outgoing_tracking")
     private Boolean outgoingTracking;
@@ -39,9 +48,15 @@ public class MaterialProduction implements Serializable {
     @Column(name = "is_serial")
     private Boolean isSerial;
 
+    //是否批次管理
+    @Column(name = "is_batch_management")
+    private Boolean IsBatchManagement;
+
     // 默认工厂
     @Column(name = "default_factory")
     private String defaultFactory;
+
+
 
     // 自定义项
     @Column(name = "custom")
@@ -91,6 +106,11 @@ public class MaterialProduction implements Serializable {
     @Column(name = "is_outgoing_warehousing")
     private Boolean isOutgoingWarehousing;
 
+
+    //是否批次核算
+    @Column(name = "is_batches_account")
+    private Boolean isBatchesAccount;
+
     // 计价方式
     @Column(name = "valuation_method")
     private String valuationMethod;
@@ -106,11 +126,7 @@ public class MaterialProduction implements Serializable {
     // 计划属性
     @Column(name = "planning_attribute")
     private String planningAttribute;
-    // 对应物料
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "material_id")
-    @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-    private Material material;
+
 
     //创建者
     @Column(name = "create_person")
@@ -155,9 +171,7 @@ public class MaterialProduction implements Serializable {
     @Column(name = "seal_person")
     private String sealPerson;
 
-   //是否批准次核算
-   @Column(name = "is_batches_account")
-    private Boolean isBatchesAccount;
+
 
     //安全库存
     @Column(name = "safety_stock")
@@ -188,6 +202,13 @@ public class MaterialProduction implements Serializable {
     private String approvalState;
 
 
+    // 对应物料
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "material_id")
+    @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+    private Material material;
+
+
    /* public void copy(MaterialProduction source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }*/
@@ -195,7 +216,6 @@ public class MaterialProduction implements Serializable {
     public void copy( MaterialProduction source){
         BeanUtil.copyProperties( source,this, CopyOptions.create().setIgnoreNullValue(true));
     }
-
 
 
 }

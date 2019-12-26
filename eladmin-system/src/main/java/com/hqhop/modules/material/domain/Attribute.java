@@ -52,6 +52,11 @@ public class Attribute implements Serializable , Comparable<Attribute>{
     @JoinTable(name = "t_material_attribute", joinColumns = {@JoinColumn(name = "attribute_id")}, inverseJoinColumns = {@JoinColumn(name = "material_id")})*/
     @Transient
     private Set<Material> materials;
+
+
+
+
+
     @Transient
     private String attributeValue;
 
@@ -68,4 +73,7 @@ public class Attribute implements Serializable , Comparable<Attribute>{
     public int compareTo(Attribute o) {
         return (this.getAttributeNumber()-o.getAttributeNumber());
     }
+
 }
+
+

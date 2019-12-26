@@ -9,6 +9,7 @@ import com.hqhop.modules.system.domain.UserAvatar;
 import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.repository.UserAvatarRepository;
 import com.hqhop.modules.system.repository.UserRepository;
+import com.hqhop.modules.system.service.DeptService;
 import com.hqhop.modules.system.service.EmployeeService;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.RoleSmallDTO;
@@ -53,6 +54,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserAvatarRepository userAvatarRepository;
+
+    @Autowired
+    private DeptService deptService;
 
 
 
@@ -162,23 +166,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findByName(String userName) {
         User user = null;
-        if(ValidationUtil.isEmail(userName)){
-            user = userRepository.findByEmail(userName);
-        } else {
-            user = userRepository.findByEmpnum(userName);
-            if(user == null){
-                user = userRepository.findByUsername(userName);
-            }
-        }
+        user = userRepository.findByUsername(userName);
+
         if (user == null) {
             throw new EntityNotFoundException(User.class, "name", userName);
         } else {
 
             UserDTO userDTO = userMapper.toDto(user);
             Employee employee = employeeRepository.findByDingId(userDTO.getEmployee().getDingId());
-
             userDTO.setDepts(employee.getDeptsSet());
-
+            userDTO.setBelongFiliales(deptService.getBelongFiliale(employee.getDeptsSet()));
             return userDTO;
         }
     }

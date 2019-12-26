@@ -53,6 +53,11 @@ public class DingTalkController {
         OapiUserGetResponse userInfo = null;
         userInfo  = DingTalkUtils.getUserInfo(userId);
 
+        System.out.println(DingTalkConstant.AGENTID);
+        System.out.println(DingTalkConstant.APPKEY);
+        System.out.println(DingTalkConstant.APPSECRET);
+
+
         ResultVO resultVO = ResultUtil.success(userInfo);
 
         // 授权当前用户具有附件的上传权限
