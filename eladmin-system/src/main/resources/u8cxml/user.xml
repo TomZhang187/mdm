@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<ufinterface billtype="User" filename="" isexchange="Y" proc="add" receiver="0001" replace="Y" roottag="bill" sender="Test">
+	
+    <bill id="">
+        <billhead>
+            <!--ableDate,生效日期,类型为:Date 格式为 YYYY-MM-DD -->
+            <ableDate>2019-11-29</ableDate>
+            <!--cuserid,用户主键,类型为:String-->
+            <cuserid></cuserid>
+            <!--pkCorp,用户所属公司,类型为:String-->
+            <pkCorp>0001</pkCorp>
+            <!--userName,用户名称,类型为:String-->
+            <userName>测试1</userName>
+            <!--userNote,备注,类型为:String-->
+            <userNote>aaa</userNote>
+            <!--userPassword,用户密码,类型为:String-->
+            <userPassword>1</userPassword>
+            <!--usercode,用户编码,类型为:String-->
+            <usercode>zym</usercode>
+        </billhead>
+        <billbody>
+            <entry>
+                <!--pk_corp,角色所属公司,类型为:String-->
+                <pk_corp>0001</pk_corp>
+                <!--role_code,角色编码,类型为:String-->
+                <role_code>00101</role_code>
+            </entry>
+        </billbody>
+    </bill>
+</ufinterface>

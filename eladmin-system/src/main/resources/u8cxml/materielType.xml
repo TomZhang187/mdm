@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding='UTF-8'?>
+<ufinterface billtype="bsinvcl" filename="存货分类样本数据文件.xml" isexchange="Y" proc="add" receiver="0001" replace="Y" roottag="basdoc" sender="Test">
+    <basdoc id="1231560101">
+        <basdoc_head>
+            <!--存货分类主键，20位，可为空，由外系统指定或U8 cloud系统自动生成,要保证唯一-->
+            <pk_invcl></pk_invcl>
+            <!--存货分类编码,不能为空-->
+            <invclasscode>ceshi</invclasscode>
+            <!--存货分类名称,不能为空-->
+            <invclassname>普通存货yk</invclassname>
+            <!--公司主键,不能为空,集团填写0001-->
+            <pk_corp>0001</pk_corp>
+            <!--编码级次,不能为空-->
+            <invclasslev>1</invclasslev>
+            <!--末级标志, 可以为空-->
+            <endflag></endflag>
+            <!--平均单价, 可以为空-->
+            <avgprice></avgprice>
+            <!--平均成本, 可以为空-->
+            <averagecost></averagecost>
+            <!--平均生产提前期, 可以为空-->
+            <averagemmahead></averagemmahead>
+            <!--平均采购提前期, 可以为空-->
+            <averagepurahead></averagepurahead>
+        </basdoc_head>
+    </basdoc>
+</ufinterface>

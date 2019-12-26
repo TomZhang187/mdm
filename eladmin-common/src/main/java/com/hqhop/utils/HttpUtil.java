@@ -4,7 +4,17 @@ import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -26,7 +36,6 @@ public class HttpUtil {
     }
 
     /**
-     *
      * @param url
      * @param params
      * @return
@@ -41,6 +50,55 @@ public class HttpUtil {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
         //执行HTTP请求，将返回的结构使用String 类格式化
         ResponseEntity<String> response = client.exchange(url, method, requestEntity, String.class);
+        return response.getBody();
+    }
+
+    /**
+     * 发送xml格式的post请求
+     * @param url
+     * @param xmlString
+     * @return
+     */
+    public static String xmlPostRequest( String url,String xmlString) {
+
+        RestTemplate client = new RestTemplate();
+        //新建Http头，add方法可以添加参数
+        HttpHeaders headers = new HttpHeaders();
+        //设置请求发送方式
+        HttpMethod method = HttpMethod.POST;
+        // 以表单的方式提交
+        headers.setContentType(MediaType.APPLICATION_XML);
+        //将请求头部和参数合成一个请求
+        HttpEntity<String> requestEntity = new HttpEntity<>(xmlString, headers);
+        //执行HTTP请求，将返回的结构使用String 类格式化（可设置为对应返回值格式的类）
+        ResponseEntity<String> response = client.exchange(url, method, requestEntity, String.class);
+        System.out.println(response.getBody());
+
+        try {
+            StringReader sr = new StringReader(response.getBody());
+
+            InputSource is = new InputSource(sr);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(is);
+            Element documentElement = doc.getDocumentElement();
+
+            String resultcode = documentElement.getAttribute("resultcode");
+            String successful = documentElement.getAttribute("successful");
+
+            NodeList resultdescription = documentElement.getElementsByTagName("resultdescription");
+            String nodeValue = resultdescription.item(0).getNodeValue();
+            System.out.println(nodeValue);
+            NodeList resultcode1 = documentElement.getElementsByTagName("resultcode");
+            System.out.println(resultcode1);
+            System.out.println(resultdescription);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
         return response.getBody();
     }
 
@@ -61,4 +119,5 @@ public class HttpUtil {
         map.add("modifytime", df.format(LocalDateTime.now()));
         HttpUtil.postRequest(url, map);
     }
+
 }

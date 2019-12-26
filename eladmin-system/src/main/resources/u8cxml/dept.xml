@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding='UTF-8'?>
+<ufinterface billtype="bsdept" filename="部门样本数据文件.xml" isexchange="Y" proc="add" receiver="yy" replace="Y" roottag="basdoc" sender="1101">
+    <basdoc id="1231560102">
+        <basdoc_head>
+            <!--部门档案主键，20位，可为空，由外系统指定或U8 cloud系统自动生成,要保证唯一-->
+            <pk_deptdoc></pk_deptdoc>
+            <!--公司主键,不能为空,需要参照基础数据(公司目录)-->
+            <pk_corp>yk</pk_corp>
+            <!--部门编码,不能为空-->
+            <deptcode>yk</deptcode>
+            <!--部门名称,不能为空-->
+            <deptname>部门yk</deptname>
+            <!--上级部门, 可以为空,需要参照基础数据(部门档案)-->
+            <pk_fathedept></pk_fathedept>
+            <!--部门属性,不能为空-->
+            <deptattr>2</deptattr>
+            <!--负责人, 可以为空,需要参照基础数据(人员档案)-->
+            <pk_psndoc></pk_psndoc>
+            <!--电话, 可以为空-->
+            <phone>62986688</phone>
+            <!--地址, 可以为空-->
+            <addr>北京上地五街</addr>
+            <!--备注, 可以为空-->
+            <memo></memo>
+            <!--库存组织, 可以为空,需要参照基础数据(库存组织)-->
+            <pk_calbody></pk_calbody>
+            <!--组织类型属性, 可以为空-->
+            <orgtype/>
+            <!--部门职责属性, 可以为空-->
+            <deptduty></deptduty>
+            <!--部门是否封存, 可以为空-->
+            <canceled></canceled>
+            <!--部门封存时间, 可以为空-->
+            <canceldate></canceldate>
+            <!--部门成立时间, 可以为空-->
+            <createdate>2005-04-20</createdate>
+            <!--外系统来源标示,默认0，1表示u8-->
+            <xtersysflag>0</xtersysflag>
+        </basdoc_head>
+    </basdoc>
+</ufinterface>

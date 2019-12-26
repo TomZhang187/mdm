@@ -27,6 +27,10 @@ public class MaterialProductionDTO implements Serializable {
 
     // 是否进行序列号管理
     private Boolean isSerial;
+    /**
+     * 是否批次号管理
+     */
+    private Boolean isBatchManagement;
 
     // 默认工厂
     private String defaultFactory;
@@ -82,7 +86,7 @@ public class MaterialProductionDTO implements Serializable {
     //关联物料
     @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
     private Material material;
-    
+
     //物料级别
     private String materialLevel;
 

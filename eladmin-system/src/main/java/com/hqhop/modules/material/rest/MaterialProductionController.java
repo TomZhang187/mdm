@@ -58,4 +58,13 @@ public class MaterialProductionController {
         materialProductionService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @Log("同步物料数据")
+    @ApiOperation(value = "同步物料数据")
+    @GetMapping(value = "/materialProduction/sync/{id}")
+//    @PreAuthorize("hasAnyRole('ADMIN','MATERIALPRODUCTION_ALL','MATERIALPRODUCTION_SYNC')")
+    public ResponseEntity sysnToU8Cloud(@PathVariable Integer id){
+        materialProductionService.sysnToU8Cloud(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
