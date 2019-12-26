@@ -53,10 +53,15 @@ public class EmployeeDingServiceImpl implements EmployeeDingService {
     @Transactional(rollbackFor = Exception.class)
     public void syncDingUser() throws
             ApiException {
+        
         List<OapiUserListbypageResponse.Userlist> list = getDeptUserDetails(1L);
         if(!list.isEmpty()){
-               employeeRepository.deleteAllInBatch();
             for (OapiUserListbypageResponse.Userlist userlist : list) {
+
+                Employee employee2 = employeeRepository.findByDingId(userlist.getUserid());
+               if(employee2!=null){
+                   continue;
+               }
                 Employee employee = new Employee();
                 employee.getDateByResponse(userlist);
                 String pageBelongDepts = employeeService.getDeptsStr(userlist.getDepartment());

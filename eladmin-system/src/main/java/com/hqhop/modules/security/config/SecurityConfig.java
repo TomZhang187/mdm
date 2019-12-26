@@ -109,6 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/aliPay/notify").anonymous()
                 //钉钉回调
                 .antMatchers("/ding/companyCallback").anonymous()
+                .antMatchers("/ding/materialCallback").anonymous()
                 // swagger start
                 .antMatchers("/swagger-ui.html").anonymous()
                 .antMatchers("/swagger-resources/**").anonymous()

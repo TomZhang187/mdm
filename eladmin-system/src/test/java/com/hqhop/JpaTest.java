@@ -1,6 +1,12 @@
 package com.hqhop;
 
 import com.alipay.api.domain.ItemDiagnoseType;
+import com.hqhop.modules.material.domain.Attribute;
+import com.hqhop.modules.material.domain.Material;
+import com.hqhop.modules.material.domain.MaterialOperationRecord;
+import com.hqhop.modules.material.repository.MaterialRepository;
+import com.hqhop.modules.material.service.MaterialDingService;
+import com.hqhop.modules.material.service.impl.AttributeServiceImpl;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.domain.Role;
@@ -12,6 +18,7 @@ import com.hqhop.modules.system.repository.UserRepository;
 import com.hqhop.modules.system.service.DeptService;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.UserDTO;
+import com.taobao.api.ApiException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -46,38 +54,36 @@ public class JpaTest {
     @Autowired
     private DeptService deptService;
 
-   @Transactional
-   @Test
-   public  void contextLoads() {
 
+    @Autowired
+    private MaterialDingService materialDingService;
 
-    Employee employee = employeeRepository.findByDingId("223704406424012457");
+    @Autowired
+    private MaterialRepository materialRepository;
 
-
-       Set<Dept> list = new HashSet<>();
-       list = deptService.getBelongSubsidiary(employee.getDeptsSet());
-//       for (Long dept : employee.getDeptsSet()) {
-//           Dept dept1 = deptRepository.findByKey(dept);
-//           Dept dept2 = null;
-//           while (dept1.getPid() !=0){
-//               dept2 = dept1;
-//               dept1= deptRepository.findByKey(dept1.getPid());
-//           }
-//           if(dept2!= null){
-//               list.add(dept2);
-//           }
-//
-//       }
-       for (Dept dept : list) {
-           System.out.println(dept.getName());
-       }
+    @Autowired
+    private AttributeServiceImpl attributeService;
 
 
 
-//
-//       Set<Role> set = roleRepository.findByUsers_Id(1L);
-//       System.out.println(set.toString());
-//
-////        System.out.println(user);
-    }
+    @Test
+   public  void contextLoads() throws
+           ApiException {
+
+       Material material = materialRepository.findByKey(95L);
+
+
+        Set<Attribute> collect = attributeService.queryAllByMaterialId(material.getId()).stream().collect(Collectors.toSet());
+        material.setAttributes( collect);
+
+        material.setId(null);
+//       MaterialOperationRecord materialOperationRecord = new MaterialOperationRecord();
+//       materialOperationRecord.getDataByMaterial(material);
+       materialDingService.addApprovel( material);
+
+   }
+
+
+
+
 }

@@ -33,6 +33,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSp
     @Query(value = "select * from material m inner join material_type mt on m.type_id=mt.type_id" +
             " where m.type_id " +
             " in (select mt.type_id from material_type mt where mt.pid=?1)" +
+            "and m.enable='true'"+
             " ORDER BY m.create_time DESC " +
             " limit ?3 offset ?2", nativeQuery = true)
     List<Material> findAllBySecondaryType(Long typeId, Integer pageNo, Integer pageSize);
@@ -45,6 +46,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSp
     @Query(value = "select * from material m inner join material_type mt on m.type_id=mt.type_id" +
             " where mt.pid " +
             " in (select mt.type_id from material_type mt where mt.pid=?1)" +
+            "and m.enable='true'"+
             " ORDER BY m.create_time DESC " +
             " limit ?3 offset ?2", nativeQuery = true)
     List<Material> findAllByTopType(Long typeId, Integer pageNo, Integer pageSize);
@@ -59,9 +61,12 @@ public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSp
     @Query(value = "select * from material  where type_id=?1",nativeQuery = true)
     List<Material> queryAllByTypeId(Long id);
 
-    @Query(value = "select * from material where type_id=?1 order by create_time DESC limit 1",nativeQuery = true)
+    @Query(value = "select * from material m inner join material_type mt on m.type_id=mt.type_id where mt.type_id in (select mt.type_id from material_type mt where mt.pid=?1) order by m.create_time DESC limit 1",nativeQuery = true)
     Material lastTimeMaterial(Long id);
     @Query
     Material findByNameAndModel(String name,String model);
+
+    @Query(value="select * from material where id=?1", nativeQuery = true)
+   Material findByKey(Long key);
 
 }

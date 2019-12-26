@@ -2,10 +2,14 @@ package com.hqhop.config.dingtalk.rest;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
+import com.dingtalk.api.request.OapiCspaceGrantCustomSpaceRequest;
 import com.dingtalk.api.request.OapiProcessinstanceCspaceInfoRequest;
+import com.dingtalk.api.response.OapiCspaceGetCustomSpaceResponse;
+import com.dingtalk.api.response.OapiCspaceGrantCustomSpaceResponse;
 import com.dingtalk.api.response.OapiProcessinstanceCspaceInfoResponse;
 import com.dingtalk.api.response.OapiUserGetResponse;
 import com.hqhop.aop.log.Log;
+import com.hqhop.config.dingtalk.DingTalkConstant;
 import com.hqhop.config.dingtalk.DingTalkUtils;
 import com.hqhop.config.dingtalk.dingtalkVo.ResultVO;
 import com.hqhop.config.dingtalk.utils.ResultUtil;
@@ -19,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.ServletContextPropertyUtils;
 
 /**
@@ -64,28 +65,43 @@ public class DingTalkController {
         return resultVO;
     }
 
-    @Log("获取空间ID")
+    @Log("获取审批钉盘空间ID")
     @ApiOperation(value = "获取审批钉盘空间ID")
     @GetMapping(value = "/getApprovalSpaceId")
-    public ResponseEntity getSpaceId() {
+    public ResponseEntity getSpaceId() throws ApiException{
 
         UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
-        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/cspace/info");
-        OapiProcessinstanceCspaceInfoRequest req = new OapiProcessinstanceCspaceInfoRequest();
-        req.setUserId(userDTO.getEmployee().getDingId());
-        OapiProcessinstanceCspaceInfoResponse rsp = null;
-        try {
-            rsp = client.execute(req, DingTalkUtils.getAccessToken());
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-        System.out.println(rsp.getBody());
-        return new ResponseEntity(HttpStatus.OK);
+        OapiProcessinstanceCspaceInfoResponse rsp = DingTalkUtils.getProcessSpace(userDTO.getEmployee().getDingId());
+        return new ResponseEntity(rsp.getResult().getSpaceId(),HttpStatus.OK);
     }
 
 
 
+    @Log("授权用户 上传和下载自定义空间权限 默认为/contract路径")
+    @ApiOperation(value = "授权用户空间权限")
+    @GetMapping(value = "/getSpacePermission")
+    public ResponseEntity grantCustomSpace(@RequestParam( value="type")String type,@RequestParam( value="fileids") String fileids) throws ApiException {
+          String type2 = null;
+        UserDTO userDTO = userService.findByName(SecurityUtils.getUsername());
+        if(",add".equals(type)){
+            type2 = "add";
+        }else {
+            type2 = "download ";
+        }
+        OapiCspaceGrantCustomSpaceResponse response = DingTalkUtils.grantCustomSpace(userDTO.getEmployee().getDingId(),type2,fileids);
+       return new ResponseEntity(response.getErrmsg(),HttpStatus.OK);
+    }
 
+
+
+    @Log("获取企业自定义空间ID")
+    @ApiOperation(value = "获取企业自定义空间ID")
+    @GetMapping(value = "/getCustomSpaceId")
+    public ResponseEntity getCustomSpace() throws ApiException{
+
+        OapiCspaceGetCustomSpaceResponse response = DingTalkUtils.getCustomSpace();
+        return new ResponseEntity(response.getSpaceid(),HttpStatus.OK);
+    }
 
 
 }

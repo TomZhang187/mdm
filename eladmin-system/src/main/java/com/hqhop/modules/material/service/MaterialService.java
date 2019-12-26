@@ -5,6 +5,7 @@ import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.service.dto.MaterialDTO;
 import com.hqhop.modules.material.service.dto.MaterialQueryCriteria;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public interface MaterialService {
      * @param resources
      */
     //@CacheEvict(allEntries = true)
-    void update(Material resources);
+    Material update(Material resources);
 
     /**
      * 删除
@@ -62,6 +63,9 @@ public interface MaterialService {
      */
     //@CacheEvict(allEntries = true)
     void delete(Long id);
+
+    @Transactional(rollbackFor = Exception.class)
+    void deleteMaterial(Material material);
 
     /**
      * 通过物料类型查询相关的物料
