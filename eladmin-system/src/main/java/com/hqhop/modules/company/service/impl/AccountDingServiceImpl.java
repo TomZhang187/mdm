@@ -353,13 +353,13 @@ public class AccountDingServiceImpl implements AccountDingService {
             }
         }
         //字典值对比
-        public  String getDictChange(String dictName,Integer update ,Integer now) {
-            Integer value = update;
-            if(value == now){
+        public  String getDictChange(String dictName,String update ,String now) {
+
+            if(update.equals(now)){
                 System.out.println("所属公司"+dictDetailService.getDicLabel(dictName,now));
                 return  dictDetailService.getDicLabel(dictName,now);
             }else {
-                return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,value);
+                return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,update);
             }
         }
 

@@ -1,5 +1,6 @@
 package com.hqhop.utils;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -11,17 +12,26 @@ import java.time.format.DateTimeFormatter;
 
 public class HttpUtil {
     public static String postRequest(String url, MultiValueMap params) {
+
+
         RestTemplate client = new RestTemplate();
         //新建Http头，add方法可以添加参数
         HttpHeaders headers = new HttpHeaders();
         //设置请求发送方式
         HttpMethod method = HttpMethod.POST;
+
+
+//        method.setRequestHeader("content-type", "application/json;charset=utf-8");
         // 以表单的方式提交
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         //将请求头部和参数合成一个请求
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
+        HttpEntity<MultiValueMap> requestEntity= new HttpEntity<>(params, headers);
+
         //执行HTTP请求，将返回的结构使用String 类格式化（可设置为对应返回值格式的类）
         ResponseEntity<String> response = client.exchange(url, method, requestEntity, String.class);
+
+
+
         return response.getBody();
     }
 
@@ -44,6 +54,7 @@ public class HttpUtil {
         return response.getBody();
     }
 
+
     public static void main(String[] args) {
         String url = "http://119.6.33.92:8087/service/AddCubasdocData";
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -61,4 +72,8 @@ public class HttpUtil {
         map.add("modifytime", df.format(LocalDateTime.now()));
         HttpUtil.postRequest(url, map);
     }
+
+
+
+
 }

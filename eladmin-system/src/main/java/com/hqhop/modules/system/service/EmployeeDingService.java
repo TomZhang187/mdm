@@ -23,6 +23,12 @@ public interface EmployeeDingService {
             ApiException;
 
 
+    //
+    //   //获取用户详情 同步钉钉用户数据
+         @Transactional(rollbackFor = Exception.class)
+         void syncDingUser(String fileName) throws
+                 ApiException;
+
     //获取部门用户详情列表
     List<OapiUserListbypageResponse.Userlist> getDeptUserDetails(Long deptId)throws
             ApiException;

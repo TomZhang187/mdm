@@ -166,14 +166,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findByName(String userName) {
         User user = null;
-        if(ValidationUtil.isEmail(userName)){
-            user = userRepository.findByEmail(userName);
-        } else {
-            user = userRepository.findByEmpnum(userName);
-            if(user == null){
-                user = userRepository.findByUsername(userName);
-            }
-        }
+        user = userRepository.findByUsername(userName);
+
         if (user == null) {
             throw new EntityNotFoundException(User.class, "name", userName);
         } else {

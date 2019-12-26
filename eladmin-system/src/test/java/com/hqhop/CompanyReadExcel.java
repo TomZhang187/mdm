@@ -72,7 +72,7 @@ public class CompanyReadExcel {
             companyInfo.setRemark(incClient.getRemark());
             companyInfo.setContactAddress(incClient.getContactAddress());
                //2 客户
-                companyInfo.setCompanyType("2");
+                companyInfo.setCompanyType("1");
                 //1 启用
                 companyInfo.setIsDisable(1);
                 //4 审批通过
@@ -81,12 +81,10 @@ public class CompanyReadExcel {
 
         }
 
+
+        Test2();
+
     }
-
-
-
-
-
 
 
     //供应商档案读取
@@ -121,12 +119,9 @@ public class CompanyReadExcel {
             if(dictDetail1!=null ){
                 companyInfo.setBelongArea(dictDetail1.getValue());
             }
+            //供应商
+                companyInfo.setCompanyType("2");
 
-
-            DictDetail dictDetail2 = dictDetailRepository.findByLabelAndDict_Id(incSupplier.getCustomerProperty(),3L);
-            if(dictDetail2!=null){
-                companyInfo.setCompanyType(dictDetail2.getValue());
-            }
 
             companyInfo.setContactAddress(incSupplier.getContactAddress());
             companyInfo.setChargeDepartment(incSupplier.getChargeDepartment());
@@ -140,6 +135,7 @@ public class CompanyReadExcel {
                 Contact contact = new Contact();
                 contact.setPhone(incSupplier.getPhoneOne());
                 contact.setContactName(incSupplier.getContactOne());
+                contact.setDeliveryAddress(companyInfo.getContactAddress());
                 contact.setCompanyKey(companyInfo1.getCompanyKey());
                 if(companyInfo1.getCompanyType()!=null){
                     contact.setContactType(Integer.parseInt(companyInfo1.getCompanyType()));
@@ -154,6 +150,7 @@ public class CompanyReadExcel {
                     Contact contact2 = new Contact();
                     contact2.setPhone(incSupplier.getPhone());
                     contact2.setContactName(incSupplier.getPager());
+                    contact2.setDeliveryAddress(companyInfo.getContactAddress());
                     contact2.setCompanyKey(companyInfo1.getCompanyKey());
                     if(companyInfo1.getCompanyType()!=null){
                         contact2.setContactType(Integer.parseInt(companyInfo1.getCompanyType()));
@@ -164,6 +161,7 @@ public class CompanyReadExcel {
                     Contact contact2 = new Contact();
                     contact2.setPhone(incSupplier.getPhone());
                     contact2.setContactName(incSupplier.getContactOne());
+                    contact2.setDeliveryAddress(companyInfo.getContactAddress());
                     contact2.setCompanyKey(companyInfo1.getCompanyKey());
                     if(companyInfo1.getCompanyType()!=null){
                         contact2.setContactType(Integer.parseInt(companyInfo1.getCompanyType()));

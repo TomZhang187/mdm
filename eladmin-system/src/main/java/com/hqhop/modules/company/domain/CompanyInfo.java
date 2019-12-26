@@ -95,7 +95,7 @@ public class CompanyInfo implements Serializable {
     private String contactAddress;
 
     // 经济类型
-    @Column(name = "economic_type", nullable = false)
+    @Column(name = "economic_type")
     private String economicType;
 
     // 外文名称
@@ -103,11 +103,11 @@ public class CompanyInfo implements Serializable {
     private String foreignName;
 
     // 是否禁用
-    @Column(name = "is_disable", nullable = false)
+    @Column(name = "is_disable")
     private Integer isDisable;
 
     // 是否散户
-    @Column(name = "is_retai", nullable = false)
+    @Column(name = "is_retai")
     private Integer isRetai;
 
     // 法人
@@ -135,7 +135,7 @@ public class CompanyInfo implements Serializable {
     private String taxId;
 
     // 所属行业
-    @Column(name = "trade", nullable = false)
+    @Column(name = "trade")
     private String trade;
 
 
@@ -164,17 +164,64 @@ public class CompanyInfo implements Serializable {
     @Column(name = "profession_salesman")
     private String professionSalesman;
 
+   //信用等级
+   @Column(name = "credit_rating")
+    private String creditRating;
+
     //默认收款协议
     @Column(name = "defaulet_payment_agreement")
     private String defaultPaymentAgreement;
 
 
+    @Override
+    public String toString() {
+        return "CompanyInfo{" +
+                "companyKey=" + companyKey +
+                ", createMan='" + createMan + '\'' +
+                ", createTime=" + createTime +
+                ", approveTime=" + approveTime +
+                ", updateMan='" + updateMan + '\'' +
+                ", updateTime=" + updateTime +
+                ", belongArea='" + belongArea + '\'' +
+                ", belongCompany='" + belongCompany + '\'' +
+                ", companyProp='" + companyProp + '\'' +
+                ", companyShortName='" + companyShortName + '\'' +
+                ", companyState=" + companyState +
+                ", companyType='" + companyType + '\'' +
+                ", customerType='" + customerType + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", contactAddress='" + contactAddress + '\'' +
+                ", economicType='" + economicType + '\'' +
+                ", foreignName='" + foreignName + '\'' +
+                ", isDisable=" + isDisable +
+                ", isRetai=" + isRetai +
+                ", legalbody='" + legalbody + '\'' +
+                ", parentCompanyId=" + parentCompanyId +
+                ", postalCode='" + postalCode + '\'' +
+                ", registerfund=" + registerfund +
+                ", remark='" + remark + '\'' +
+                ", taxId='" + taxId + '\'' +
+                ", trade='" + trade + '\'' +
+                ", isSynergyPay=" + isSynergyPay +
+                ", chargeDepartment='" + chargeDepartment + '\'' +
+                ", professionSalesman='" + professionSalesman + '\'' +
+                ", defaultPaymentAgreement='" + defaultPaymentAgreement + '\'' +
+                '}';
+    }
 
     //添加账户方法
     public void addAccount(Account account){
         if(account != null){
             accounts.add(account);
         }
+    }
+
+    public String getCreditRating() {
+        return creditRating;
+    }
+
+    public void setCreditRating(String creditRating) {
+        this.creditRating = creditRating;
     }
 
     public void copy(CompanyInfo source) {
@@ -440,36 +487,4 @@ public class CompanyInfo implements Serializable {
         this.accounts = accounts;
     }
 
-    @Override
-    public String toString() {
-        return "CompanyInfo{" +
-                "companyKey=" + companyKey +
-                ", createMan='" + createMan + '\'' +
-                ", approveTime=" + approveTime +
-                ", belongArea=" + belongArea +
-                ", belongCompany=" + belongCompany +
-                ", companyProp=" + companyProp +
-                ", companyShortName='" + companyShortName + '\'' +
-                ", companyState=" + companyState +
-                ", companyType=" + companyType +
-                ", companyName='" + companyName + '\'' +
-                ", contactAddress='" + contactAddress + '\'' +
-                ", economicType=" + economicType +
-                ", foreignName='" + foreignName + '\'' +
-                ", isDisable=" + isDisable +
-                ", isRetai=" + isRetai +
-                ", legalbody='" + legalbody + '\'' +
-                ", parentCompanyId=" + parentCompanyId +
-                ", postalCode='" + postalCode + '\'' +
-                ", registerfund=" + registerfund +
-                ", remark='" + remark + '\'' +
-                ", taxId='" + taxId + '\'' +
-                ", trade=" + trade +
-                ", updateMan='" + updateMan + '\'' +
-                ", updateTime=" + updateTime +
-                ", isSynergyPay=" + isSynergyPay +
-                ", accounts=" + accounts +
-                ", contacts=" + contacts +
-                '}';
-    }
 }

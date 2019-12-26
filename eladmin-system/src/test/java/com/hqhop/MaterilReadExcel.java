@@ -102,7 +102,7 @@ public class MaterilReadExcel {
     public  void excelTest() throws
             ApiException {
 
-        List<IncMaterialType> list = MaterialExcelUtils.readMaterialTypeExcel("D:\\easyExcel\\test.xlsx");
+        List<IncMaterialType> list = MaterialExcelUtils.readMaterialTypeExcel("D:\\easyExcel\\存货分类.xlsx");
         for (IncMaterialType incMaterialType : list) {
             if(!incMaterialType.getMaterialTypeCode().contains(".")){
                 MaterialType materialType = new MaterialType();
@@ -127,7 +127,7 @@ public class MaterilReadExcel {
                    if(str[1].length()==2){
                        str[1] = str[1]+"0";
                    }
-                   materialType.setMaterialTypeCode(materialType1.getMaterialTypeCode()+"."+str[1]);
+                   materialType.setMaterialTypeCode(materialType1.getMaterialTypeCode()+str[1]);
                    materialType.setRemark(incMaterialType.getRemark());
                    materialTypeRepository.save(materialType);
                }
@@ -143,7 +143,7 @@ public class MaterilReadExcel {
     public  void excelTest3() throws
             ApiException {
 
-        List<IncMaterialSort> list = MaterialExcelUtils.readMaterialSortExcel("D:\\easyExcel\\分类.xlsx");
+        List<IncMaterialSort> list = MaterialExcelUtils.readMaterialSortExcel("D:\\easyExcel\\分类属性.xlsx");
         int i=1;
         for (IncMaterialSort object  : list) {
 
@@ -280,7 +280,7 @@ public class MaterilReadExcel {
     public  void excelTest4() throws
             ApiException {
 
-        List<IncMaterialSort> list = MaterialExcelUtils.readMaterialSortExcel("D:\\easyExcel\\分类.xlsx");
+        List<IncMaterialSort> list = MaterialExcelUtils.readMaterialSortExcel("D:\\easyExcel\\分类属性.xlsx");
         for (IncMaterialSort object : list) {
 
 

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author zf
@@ -36,5 +37,5 @@ public interface ContactRepository extends JpaRepository<Contact, Long>, JpaSpec
     @Query(value = "select DISTINCT company_key from contact where name like CONCAT('%',?1,'%')", nativeQuery = true)
     List<BigInteger> findCompany_keyByLikeName(String name);
 
-
+   Set<Contact> findByCompanyKey(Long key);
 }
