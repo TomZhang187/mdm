@@ -4,6 +4,7 @@ import com.alipay.api.domain.ItemDiagnoseType;
 import com.hqhop.easyExcel.excelRead.MaterialExcelUtils;
 import com.hqhop.easyExcel.model.IncMaterial;
 import com.hqhop.easyExcel.model.IncMaterialSort;
+import com.hqhop.easyExcel.model.IncMaterialSort2;
 import com.hqhop.easyExcel.model.IncMaterialType;
 import com.hqhop.modules.material.domain.*;
 import com.hqhop.modules.material.repository.AttributeRepository;
@@ -425,7 +426,7 @@ public class MaterilReadExcel {
                 if (type != null){
                     material.setType(type);
                      }
-            if(object.getIdentification()!=null && object.getIdentification().contains(".")) {
+            if(object.getIdentification()!=null && object.getIdentification().contains(".") &&  type!=null) {
                 Material material1 =  materialRepository.save(material);
                 //导入生产档案
                 saveMaterialProduction(object,material);
@@ -447,8 +448,6 @@ public class MaterilReadExcel {
         for (Material material : allByTopType) {
             System.out.println(material);
         }
-
-
 
       }
 
@@ -501,56 +500,279 @@ public class MaterilReadExcel {
         }
 
 
-    //读取物料  生成物料生产档案
+    //读取物料整理.xlsx  读取属性
     @Test
-    public  void excelTest6() throws
+    public  void excelTest61() throws
             ApiException {
-        List<IncMaterial> list = MaterialExcelUtils.readMaterialExcel("D:\\easyExcel\\科瑞尔物料属性整理表.xlsx");
-        for (IncMaterial object : list) {
+
+        int i = attributeRepository.getMaxAttributeNumber();
+
+        List<IncMaterialSort2> list = MaterialExcelUtils.readMaterialSort2Excel("D:\\easyExcel\\物料整理.xlsx");
+        for (IncMaterialSort2 object : list) {
 
 
-            Material material = materialRepository.findByRemarkAndModel(object.getOldCinvcode(),object.getModel());
+            if (object.getProperty01() != null && !"-".equals(object.getProperty01())) {
+                Attribute attribute = attributeRepository.findByAttributeName(object.getProperty01().trim());
+                if (attribute == null && object.getProperty01() != null) {
 
-            MaterialProduction materialProduction = new MaterialProduction();
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty01().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
 
-            materialProduction.setIsOutTrackWarehousing(false);
-            materialProduction.setOutgoingTracking(true);
-            materialProduction.setIsDemand(true);
+                }
 
-            materialProduction.setIsBatchManagement("是".equals(object.getIsBatchManagement())?true:false);
-            materialProduction.setIsImaginaryTerm("是".equals(object.getIsImaginaryTerm())?true:false);
-
-            materialProduction.setMaterialType(object.getMaterialType());
-            materialProduction.setOutsourcingType(object.getOutsourcingType());
-            materialProduction.setMaterialKenel(object.getMaterialKenel());
-
-            materialProduction.setIsDemandConsolidation(true);
-            materialProduction.setIsCostObject("是".equals(object.getIsCostObject())?true:false);
-            materialProduction.setIsHairFeed(true);
-
-            materialProduction.setIsInspectionWarehousing("是".equals(object.getIsInspectionWarehousing())?true:false);
-            materialProduction.setIsInspect("是".equals(object.getIsInspect())?true:false);
-            materialProduction.setIsOrderCost("是".equals(object.getIsOrderCost())?true:false);
-            materialProduction.setIsCenterStatistics(true);
-
-            materialProduction.setIsOutgoingWarehousing("是".equals(object.getIsOutgoingWarehousing())?true:false);
-            materialProduction.setIsBatchesAccount("是".equals(object.getIsBatchesAccount())?true:false);
-            materialProduction.setValuationMethod("移动平均");
-            materialProduction.setPlanningAttribute(object.getPlanningAttribute());
-            materialProduction.setFixedAdvanceTime(object.getFixedAdvanceTime());
-
-            materialProduction.setEnable(true);
-            materialProduction.setApprovalState("4");
-            if(material != null){
-                materialProduction.setMaterial(material);
             }
 
-            materialProduction.setDefaultFactory("成都科瑞尔低温设备有限公司");
-            materialProductionRepository.save(materialProduction);
+
+            if (object.getProperty02() != null && !"-".equals(object.getProperty02())) {
+                Attribute attribute1 = attributeRepository.findByAttributeName(object.getProperty02().trim());
+                if (attribute1 == null && object.getProperty02() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty02().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+            }
+
+
+            if (object.getProperty3() != null && !"-".equals(object.getProperty3())) {
+
+                Attribute attribute2 = attributeRepository.findByAttributeName(object.getProperty3().trim());
+                if (attribute2 == null && object.getProperty3() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty3().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+
+            }
+
+            if (object.getProperty4() != null && !"-".equals(object.getProperty4())) {
+
+                Attribute attribute3 = attributeRepository.findByAttributeName(object.getProperty4().trim());
+                if (attribute3 == null && object.getProperty4() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty4().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+
+            }
+
+
+            if (object.getProperty5() != null && !"-".equals(object.getProperty5())) {
+
+                Attribute attribute4 = attributeRepository.findByAttributeName(object.getProperty5().trim());
+                if (attribute4 == null && object.getProperty5() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty5().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+
+            }
+
+            if (object.getProperty6() != null && !"-".equals(object.getProperty6())) {
+
+                System.out.println(object.getProperty6());
+                Attribute attribute5 = attributeRepository.findByAttributeName(object.getProperty6().trim());
+                if (attribute5 == null && object.getProperty6() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty6().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+
+            }
+
+
+            if (object.getProperty7() != null && !"-".equals(object.getProperty7())) {
+                Attribute attribute6 = attributeRepository.findByAttributeName(object.getProperty7().trim());
+                if (attribute6 != null && object.getProperty7() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty7().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+            }
+
+            if (object.getProperty8() != null && !"-".equals(object.getProperty8())) {
+
+                Attribute attribute7 = attributeRepository.findByAttributeName(object.getProperty8().trim());
+                if (attribute7 != null && object.getProperty8() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty8().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+            }
+
+            if (object.getProperty9() != null && !"-".equals(object.getProperty9())) {
+
+                Attribute attribute8 = attributeRepository.findByAttributeName(object.getProperty9().trim());
+                if (attribute8 == null && object.getProperty9() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty9().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+            }
+
+
+            if (object.getProperty1() != null && !"-".equals(object.getProperty1())) {
+                Attribute attribute9 = attributeRepository.findByAttributeName(object.getProperty1().trim());
+                if (attribute9 != null && object.getProperty1() != null) {
+
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setAttributeName(object.getProperty1().trim());
+                    newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
+                    newAttribute.setAttributeNumber(i++);
+                    attributeRepository.save(newAttribute);
+
+                }
+            }
 
         }
     }
 
 
+
+
+
+    //读取物料整理.xlsx  读取属性与物料类型建立关系
+    @Test
+    public  void excelTest6() throws
+            ApiException {
+
+
+        List<IncMaterialSort2> list = MaterialExcelUtils.readMaterialSort2Excel("D:\\easyExcel\\物料整理.xlsx");
+        for (IncMaterialSort2 object : list) {
+            String[] strs = object.getIdentification().split("\\.");
+            System.out.println(strs[1]);
+            MaterialType type = materialTypeRepository.findByMaterialTypeCode(strs[1]);
+
+            if (type != null) {
+
+
+                Attribute attribute = attributeRepository.findByAttributeName(object.getProperty01() != null ? object.getProperty01() : "无");
+                if (attribute != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute.getAttributeId(), type.getId());
+                    }
+
+                }
+
+
+                Attribute attribute1 = attributeRepository.findByAttributeName(object.getProperty02()  != null ? object.getProperty02() : "无");
+                if (attribute1 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute1.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute1.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute2 = attributeRepository.findByAttributeName(object.getProperty3() != null ? object.getProperty3()  : "无");
+                if (attribute2 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute2.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute2.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute3 = attributeRepository.findByAttributeName(object.getProperty4()!= null ? object.getProperty4() : "无");
+                if (attribute3 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute3.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute3.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute4 = attributeRepository.findByAttributeName(object.getProperty5() != null ? object.getProperty5() : "无");
+                if (attribute4 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute4.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute4.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute5 = attributeRepository.findByAttributeName(object.getProperty6() != null ? object.getProperty6() : "无");
+                if (attribute5 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute5.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute5.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute6 = attributeRepository.findByAttributeName(object.getProperty7() != null ? object.getProperty7() : "无");
+                if (attribute6 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute6.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute6.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute7 = attributeRepository.findByAttributeName(object.getProperty8() != null ? object.getProperty8() : "无");
+                if (attribute7 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute7.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute7.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute8 = attributeRepository.findByAttributeName(object.getProperty9() != null ? object.getProperty9() : "无");
+                if (attribute8 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute8.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute8.getAttributeId(), type.getId());
+                    }
+
+                }
+
+                Attribute attribute9 = attributeRepository.findByAttributeName(object.getProperty1() != null ?object.getProperty1() : "无");
+                if (attribute9 != null) {
+
+                    if (attributeRepository.findT_Type_att(attribute9.getAttributeId(), type.getId()) == 0) {
+                        attributeRepository.setTypeAttribute(attribute9.getAttributeId(), type.getId());
+                    }
+
+                }
+            }
+
+
+        }}
 
 }
