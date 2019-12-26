@@ -56,6 +56,8 @@ public class MaterialProduction implements Serializable {
     @Column(name = "default_factory")
     private String defaultFactory;
 
+
+
     // 自定义项
     @Column(name = "custom")
     private String custom;
