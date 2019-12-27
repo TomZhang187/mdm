@@ -1,9 +1,8 @@
 package com.hqhop.modules.company.service.impl;
 
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.domain.CompanyUpdate;
-import com.hqhop.modules.company.domain.Contact;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.company.repository.AccountRepository;
@@ -16,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.hqhop.utils.PageUtil;

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -125,11 +126,12 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
 
     @Override
     public void sysnToU8Cloud(Integer id) {
-        String url = "http://119.6.33.92:8087/service/XChangeServlet?account=U8cloud&receiver=0001";
+        String url = "http://119.6.33.92:8087/service/XChangeServlet";
         Optional<MaterialProduction> materialProduction = materialProductionRepository.findById(id);
         ValidationUtil.isNull(materialProduction, "MaterialProduction", "id", id);
         MaterialProductionDTO materialProductionDTO = materialProductionMapper.toDto(materialProduction.get());
         String xmlParam = buildSyncXml(materialProductionDTO);
+        System.out.println(xmlParam);
         String s = HttpUtil.xmlPostRequest(url, xmlParam);
         System.out.println(s);
     }
@@ -137,8 +139,10 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
     private String buildSyncXml(MaterialProductionDTO maDto) {
         StringBuilder builder = new StringBuilder();
         String currentTime = StringUtils.getCurrentTime();
+
+        System.out.println(Optional.ofNullable(maDto.getMaxStock()).orElse("111"));
         builder.append("<?xml version=\"1.0\" encoding='UTF-8'?>\n" +
-                "<ufinterface account=\"U8cloud\" billtype=\"defStock\" isexchange=\"Y\" proc=\"add\" receiver=\"0001\" replace=\"Y\" roottag=\"\" sender=\"Test\" subbilltype=\"\">")
+                "<ufinterface account=\"U8cloud\" billtype=\"defStock\" isexchange=\"Y\" proc=\"add\" receiver=\"").append(maDto.getDefaultFactory()).append("\" replace=\"Y\" roottag=\"\" sender=\"Test\" subbilltype=\"\">")
                 .append("  <bill id=\"\">\n <billhead>\n")
                 // 存货基本档案（集团）
                 // 来源,主数据单据id(若要传存货基本档案 则必填)最大长度为64,类型为:String
@@ -162,7 +166,7 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
                 // 修改时间,最大长度为64,类型为:String
                 .append("<a_modifytime>").append(currentTime).append("</a_modifytime>")
                 // 存货分类,必填 对应U8C存货分类档案编码 最大长度为64,类型为:String
-                .append("<a_pk_invcl>").append(maDto.getMaterial().getType().getRemark()).append("</a_pk_invcl>")
+                .append("<a_pk_invcl>").append(maDto.getMaterial().getType().getMaterialTypeCode()).append("</a_pk_invcl>")
                 // 主计量单位 必填 对应U8C计量档案编码 ,最大长度为64,类型为:String
                 .append("<a_pk_measdoc>").append(maDto.getMaterial().getUnit()).append("</a_pk_measdoc>")
                 // 税目,对应U8C税目档案编码 最大长度为64,类型为:String
@@ -175,11 +179,12 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
                 // 创建人,最大长度为64,类型为:String
                 .append("<b_creator>").append("主数据平台").append("</b_creator>")
                 // 自定义项（物料类型）,最大长度为64,类型为:String
-                .append("<b_free1>").append(maDto.getMaterialKenel()).append("</b_free1>")
+                .append("<b_free1>").append(Optional.ofNullable(maDto.getCustom()).orElse("")).append("</b_free1>")
+//                .append("<b_free1>").append(maDto.getMaterialKenel()).append("</b_free1>")
                 // 自定义项（采购员）,最大长度为64,类型为:String
-                .append("<b_free2>").append(maDto.getBuyer()).append("</b_free2>")
+                .append("<b_free2>").append(Optional.ofNullable(maDto.getBuyer()).orElse("")).append("</b_free2>")
                 // 自定义项（货位）,最大长度为64,类型为:String
-                .append("<b_free3>").append(maDto.getZhy()).append("</b_free3>")
+                .append("<b_free3>").append(Optional.ofNullable(maDto.getZhy()).orElse("")).append("</b_free3>")
                 // 需求管理,最大长度为64,类型为:String
                 .append("<b_issalable>").append(maDto.getIsDemand()?"Y":"N").append("</b_issalable>")
                 // 是否虚项,最大长度为64,类型为:String
@@ -189,7 +194,7 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
                 // 修改时间,最大长度为64,类型为:String
                 .append("<b_modifytime></b_modifytime>")
                 // 出库跟踪入库,最大长度为64,类型为:String
-                .append("<b_outtrackin>").append(maDto.getOutgoingTracking()?"Y":"N").append("</b_outtrackin>")
+                .append("<b_outtrackin>").append("N").append("</b_outtrackin>")
                 // 公司,必填 对应U8C公司目录档案编码 最大长度为64,类型为:String
                 .append("<b_pk_corp>").append(maDto.getDefaultFactory()).append("</b_pk_corp>")
                 // 默认工厂,最大长度为64,类型为:String
@@ -197,11 +202,11 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
                 // 封存时间,最大长度为64,类型为:String
                 .append("<b_sealdate></b_sealdate>")
                 // 是否封存,最大长度为64,类型为:String
-                .append("<b_sealflag>").append("N").append("</b_sealflag>")
+                .append("<b_sealflag>").append(maDto.getEnable()?"N":"").append("</b_sealflag>")
                 // 是否进行序列号管理,最大长度为64,类型为:String
-                .append("<b_serialmanaflag>").append(maDto.getIsSerial() != null && maDto.getIsSerial() ?"Y":"N").append("</b_serialmanaflag>")
+                .append("<b_serialmanaflag>").append(Optional.ofNullable(maDto.getIsSerial()).orElse(false)?"Y":"N").append("</b_serialmanaflag>")
                 // 是否批次管理,最大长度为64,类型为:String
-                .append("<b_wholemanaflag>").append(maDto.getIsBatchManagement()?"Y":"N").append("</b_wholemanaflag>")
+                .append("<b_wholemanaflag>").append(Optional.ofNullable(maDto.getIsBatchManagement()).orElse(false)?"Y":"N").append("</b_wholemanaflag>")
                 // 物料生产档案（公司）案
                 // 来源id,主数据单据id (若要传物料生产档案 则必填)最大长度为64,类型为:String
                 .append("<c_lyid>").append(maDto.getId()).append("</c_lyid>")
@@ -214,61 +219,61 @@ public class MaterialProductionServiceImpl implements MaterialProductionService 
                 // 创建人,最大长度为64,类型为:String
                 .append("<c_creator>HLLO</c_creator>")
                 // 是否按生产订单核算成本,最大长度为64,类型为:String
-                .append("<c_iscostbyorder>N</c_iscostbyorder>")
+                .append("<c_iscostbyorder>").append(maDto.getIsOrderCost()?"Y":"N").append("</c_iscostbyorder>")
                 // c_isctoutput,最大长度为64,类型为:String
                 .append("<c_isctoutput>N</c_isctoutput>")
                 // 是否发料,最大长度为64,类型为:String
-                .append("<c_issend>N</c_issend>")
+                .append("<c_issend>").append(maDto.getIsHairFeed()?"Y":"N").append("</c_issend>")
                 // 是否出入库,最大长度为64,类型为:String
-                .append("<c_isused>N</c_isused>")
+                .append("<c_isused>").append(maDto.getIsOutgoingWarehousing()?"Y":"N").append("</c_isused>")
                 // 最低库存,最大长度为64,类型为:String
-                .append("<c_lowstocknum>").append(maDto.getMaxStock()).append("</c_lowstocknum>")
+                .append("<c_lowstocknum>").append(Optional.ofNullable(maDto.getMaxStock()).orElse("")).append("</c_lowstocknum>")
                 // 物料型态,最大长度为64,类型为:String
-                .append("<c_materstate>").append(maDto.getMaxStock()).append("</c_materstate>")
+                .append("<c_materstate>").append(Optional.ofNullable(maDto.getMaterialKenel()).orElse("")).append("</c_materstate>")
                 // 物料类型,最大长度为64,类型为:String
-                .append("<c_matertyp>").append(maDto.getMaxStock()).append("</c_matertyp>")
+                .append("<c_matertyp>").append(Optional.ofNullable(maDto.getMaterialType()).orElse("")).append("</c_matertyp>")
                 // 最高库存,最大长度为64,类型为:String
-                .append("<c_maxstornum>").append(maDto.getMaxStock()).append("</c_maxstornum>")
+                .append("<c_maxstornum>").append(Optional.ofNullable(maDto.getMaxStock()).orElse("")).append("</c_maxstornum>")
                 // 修改人,最大长度为64,类型为:String
                 .append("<c_modifier></c_modifier>")
                 // 修改时间,最大长度为64,类型为:String
                 .append("<c_modifytime></c_modifytime>")
-                // 委外类型,最大长度为64,类型为:String
-                .append("<c_outtype>1</c_outtype>")
+                // 委外类型,最大长度为64,类型为:String  OA不委外  OB为带料委外
+                .append("<c_outtype>").append(Optional.ofNullable(maDto.getOutsourcingType()).orElse("")).append("</c_outtype>")
                 // 公司,必填 对应U8C公司目录档案编码 最大长度为64,类型为:String
                 .append("<c_pk_corp>").append(maDto.getDefaultFactory()).append("</c_pk_corp>")
                 // 生产部门,最大长度为64,类型为:String
-                .append("<c_pk_deptdoc3>01</c_pk_deptdoc3>")
+                .append("<c_pk_deptdoc3>").append(Optional.ofNullable(maDto.getProductionDepts()).orElse("")).append("</c_pk_deptdoc3>")
                 // 生产业务员,最大长度为64,类型为:String
-                .append("<c_pk_psndoc3c></c_pk_psndoc3c>")
+                .append("<c_pk_psndoc3c>").append(Optional.ofNullable(maDto.getProductionSalesman()).orElse("")).append("</c_pk_psndoc3c>")
                 // 封存人,最大长度为64,类型为:String
                 .append("<c_pk_sealuser></c_pk_sealuser>")
                 // 计价方式,最大长度为64,类型为:String
                 .append("<c_pricemethod>").append(maDto.getValuationMethod()).append("</c_pricemethod>")
                 // 安全库存,最大长度为64,类型为:String
-                .append("<c_safetystocknum>").append(maDto.getSafetyStock()).append("</c_safetystocknum>")
+                .append("<c_safetystocknum>").append(Optional.ofNullable(maDto.getSafetyStock()).orElse("")).append("</c_safetystocknum>")
                 // 计划属性,最大长度为64,类型为:String
                 .append("<c_scheattr>").append(maDto.getPlanningAttribute()).append("</c_scheattr>")
                 // 封存时间,最大长度为64,类型为:String
                 .append("<c_sealdate></c_sealdate>")
                 // 封存标志,最大长度为64,类型为:String
-                .append("<c_sealflag>N</c_sealflag>")
+                .append("<c_sealflag>").append(maDto.getEnable()?"N":"Y").append("</c_sealflag>")
                 // 是否成本对象,最大长度为64,类型为:String
-                .append("<c_sfcbdx>N</c_sfcbdx>")
+                .append("<c_sfcbdx>").append(maDto.getIsCostObject()?"Y":"N").append("</c_sfcbdx>")
                 // 是否批次核算,最大长度为64,类型为:String
                 .append("<c_sfpchs>").append(maDto.getIsBatchesAccount()?"Y":"N").append("</c_sfpchs>")
                 // 是否根据检验结果入库,最大长度为64,类型为:String
-                .append("<c_stockbycheck>N</c_stockbycheck>")
+                .append("<c_stockbycheck>").append(maDto.getIsInspectionWarehousing()?"Y":"N").append("</c_stockbycheck>")
                 // 是否虚项,最大长度为64,类型为:String
                 .append("<c_virtualflag>").append(maDto.getIsImaginaryTerm()?"Y":"N").append("</c_virtualflag>")
                 // 再定货点,最大长度为64,类型为:String
-                .append("<c_zdhd>").append(maDto.getAgainBuyPlace()).append("</c_zdhd>")
+                .append("<c_zdhd>").append(Optional.ofNullable(maDto.getAgainBuyPlace()).orElse("")).append("</c_zdhd>")
                 // 库存组织主键,最大长度为64,类型为:String
                 .append("<c_pk_calbody>").append(maDto.getDefaultFactory()).append("</c_pk_calbody>")
                 // 供应类型,最大长度为64,类型为:String)
                 .append("<c_supplytype>0</c_supplytype>")
                 //<!--固定提前期,最大长度为64,类型为:String-->
-                .append("<c_fixedahead>").append(maDto.getFixedAdvanceTime()).append("</c_fixedahead>")
+                .append("<c_fixedahead>").append(Optional.ofNullable(maDto.getFixedAdvanceTime()).orElse("")).append("</c_fixedahead>")
                 .append(" </billhead>\n</bill>\n")
                 .append("</ufinterface>");
         return builder.toString();

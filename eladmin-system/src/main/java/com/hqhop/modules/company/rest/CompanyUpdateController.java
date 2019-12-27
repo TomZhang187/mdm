@@ -1,7 +1,7 @@
 package com.hqhop.modules.company.rest;
 
 import com.hqhop.aop.log.Log;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.service.CompanyUpdateService;
 import com.hqhop.modules.company.service.dto.CompanyUpdateQueryCriteria;
@@ -13,8 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
-
-import java.util.List;
 
 /**
 * @author zf

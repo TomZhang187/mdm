@@ -1,4 +1,4 @@
-package com.hqhop.config.dingtalk;
+package com.hqhop.common.dingtalk;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

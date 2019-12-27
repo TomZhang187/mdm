@@ -1,4 +1,4 @@
-package com.hqhop.config.dingtalk;
+package com.hqhop.common.dingtalk;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.OapiMessageCorpconversationAsyncsendV2Request;

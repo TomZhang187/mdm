@@ -4,7 +4,7 @@ import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.*;
 import com.dingtalk.api.response.*;
-import com.hqhop.config.dingtalk.DingTalkUtils;
+import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.modules.system.domain.dingVo.deptVo.DingDeptDetailVo;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.repository.DeptRepository;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.midi.Soundbank;
 import java.util.List;
 
 /**

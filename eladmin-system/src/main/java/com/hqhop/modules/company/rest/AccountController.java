@@ -1,7 +1,7 @@
 package com.hqhop.modules.company.rest;
 
 import com.hqhop.aop.log.Log;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.repository.AccountRepository;
 import com.hqhop.modules.company.service.AccountDingService;

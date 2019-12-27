@@ -1,7 +1,7 @@
 package com.hqhop.modules.company.rest;
 
 import com.hqhop.aop.log.Log;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
@@ -21,10 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
 
-import javax.sound.midi.Soundbank;
 ;
-import java.sql.Date;
-import java.sql.Timestamp;
 
 
 /**

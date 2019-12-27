@@ -1,4 +1,4 @@
-package com.hqhop.config.dingtalk.dingtalkVo;
+package com.hqhop.common.dingtalk.dingtalkVo;
 
 import java.util.List;
 

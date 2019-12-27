@@ -4,10 +4,9 @@ import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.dingtalk.api.response.OapiProcessinstanceGetResponse;
-import com.hqhop.config.dingtalk.DingTalkConstant;
-import com.hqhop.config.dingtalk.DingTalkUtils;
-import com.hqhop.config.dingtalk.URLConstant;
-import com.hqhop.modules.company.domain.CompanyUpdate;
+import com.hqhop.common.dingtalk.DingTalkConstant;
+import com.hqhop.common.dingtalk.DingTalkUtils;
+import com.hqhop.common.dingtalk.URLConstant;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.domain.MaterialProduction;
@@ -30,7 +29,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * @author ：张丰

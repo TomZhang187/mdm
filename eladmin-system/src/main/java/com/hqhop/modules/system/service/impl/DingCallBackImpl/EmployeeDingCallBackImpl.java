@@ -1,19 +1,15 @@
 package com.hqhop.modules.system.service.impl.DingCallBackImpl;
 
-import cn.hutool.json.JSONObject;
-import com.hqhop.config.dingtalk.dingtalkVo.ApprovalCallbackVo;
+import com.hqhop.common.dingtalk.dingtalkVo.ApprovalCallbackVo;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.service.EmployeeDingCallBackService;
 import com.hqhop.modules.system.service.EmployeeDingService;
 import com.taobao.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author ：张丰

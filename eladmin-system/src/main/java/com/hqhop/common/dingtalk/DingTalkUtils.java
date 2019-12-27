@@ -1,4 +1,4 @@
-package com.hqhop.config.dingtalk;
+package com.hqhop.common.dingtalk;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
@@ -6,15 +6,12 @@ import com.dingtalk.api.request.*;
 import com.dingtalk.api.response.*;
 import com.dingtalk.oapi.lib.aes.DingTalkEncryptException;
 import com.dingtalk.oapi.lib.aes.DingTalkJsApiSingnature;
-import com.hqhop.config.dingtalk.dingtalkVo.ResultVO;
-import com.hqhop.config.dingtalk.utils.ResultUtil;
 import com.taobao.api.ApiException;
 import com.taobao.api.FileItem;
 import com.taobao.api.internal.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 

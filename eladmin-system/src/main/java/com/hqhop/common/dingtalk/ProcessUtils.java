@@ -1,6 +1,5 @@
-package com.hqhop.config.dingtalk;
+package com.hqhop.common.dingtalk;
 
-import com.alibaba.fastjson.JSONArray;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
@@ -8,10 +7,7 @@ import com.hqhop.exception.BadRequestException;
 import com.taobao.api.ApiException;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 对接工作流工具类

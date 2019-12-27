@@ -74,6 +74,8 @@ public class MaterialProductionController {
         materialProductionService.sysnToU8Cloud(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
     @Log("加载当前用户可选的默认工厂集合getUserDefaultFactory")
     @ApiOperation(value = "加载当前用户可选的默认工厂集合getUserDefaultFactory")
     @PostMapping(value = "/getUserDefaultFactory")
@@ -81,10 +83,6 @@ public class MaterialProductionController {
     public ResponseEntity getUserDefaultFactory(){
         return new ResponseEntity(materialProductionService.getUserDefaultFactory(),HttpStatus.OK);
     }
-
-
-
-
 
     @Log("物料生产档案审批接口")
     @ApiOperation(value = "物料生产档案审批接口")

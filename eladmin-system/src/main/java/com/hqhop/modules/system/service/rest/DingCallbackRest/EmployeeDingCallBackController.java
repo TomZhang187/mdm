@@ -2,9 +2,8 @@ package com.hqhop.modules.system.service.rest.DingCallbackRest;
 
 import cn.hutool.json.JSONObject;
 import com.hqhop.aop.log.Log;
-import com.hqhop.config.dingtalk.dingtalkVo.ApprovalCallbackVo;
+import com.hqhop.common.dingtalk.dingtalkVo.ApprovalCallbackVo;
 import com.hqhop.modules.system.service.EmployeeDingCallBackService;
-import com.hqhop.modules.system.service.impl.DingCallBackImpl.EmployeeDingCallBackImpl;
 import com.taobao.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

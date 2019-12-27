@@ -1,28 +1,16 @@
 package com.hqhop.modules.material.service.impl;
-import cn.hutool.json.JSONObject;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.dingtalk.api.DefaultDingTalkClient;
-import com.dingtalk.api.DingTalkClient;
-import com.dingtalk.api.request.OapiProcessSaveRequest;
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
-import com.dingtalk.api.response.OapiProcessSaveResponse;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
-import com.google.common.collect.Lists;
-import com.hqhop.config.dingtalk.DingTalkConstant;
-import com.hqhop.config.dingtalk.DingTalkUtils;
-import com.hqhop.config.dingtalk.URLConstant;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
-import com.hqhop.modules.company.domain.CompanyInfo;
-import com.hqhop.modules.company.domain.CompanyUpdate;
-import com.hqhop.modules.material.domain.Accessory;
+import com.hqhop.common.dingtalk.DingTalkConstant;
+import com.hqhop.common.dingtalk.DingTalkUtils;
+import com.hqhop.common.dingtalk.URLConstant;
 import com.hqhop.modules.material.domain.Attribute;
 import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.repository.MaterialOperationRecordRepository;
 import com.hqhop.modules.material.repository.MaterialRepository;
 import com.hqhop.modules.material.service.MaterialDingService;
-import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.system.service.DictDetailService;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.UserDTO;
@@ -35,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author ：张丰

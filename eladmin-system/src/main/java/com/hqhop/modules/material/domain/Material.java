@@ -81,10 +81,8 @@ public class Material implements Serializable {
     @Column(name="enable")
     private Boolean enable=true;
 
-
-
     //物料类型(物料种类小类型)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = {"materials"})
     @JoinColumn(name = "type_id")
     private MaterialType type;

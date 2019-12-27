@@ -1,7 +1,7 @@
-package com.hqhop.config.dingtalk.utils;
+package com.hqhop.common.dingtalk.utils;
 
 
-import com.hqhop.config.dingtalk.dingtalkVo.ResultVO;
+import com.hqhop.common.dingtalk.dingtalkVo.ResultVO;
 
 /**
  *

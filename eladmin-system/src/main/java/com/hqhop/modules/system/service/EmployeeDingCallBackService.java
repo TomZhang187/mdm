@@ -1,7 +1,6 @@
 package com.hqhop.modules.system.service;
 
-import cn.hutool.json.JSONObject;
-import com.hqhop.config.dingtalk.dingtalkVo.ApprovalCallbackVo;
+import com.hqhop.common.dingtalk.dingtalkVo.ApprovalCallbackVo;
 import com.taobao.api.ApiException;
 
 public interface EmployeeDingCallBackService {

@@ -1,18 +1,14 @@
-package com.hqhop.config.dingtalk.rest;
+package com.hqhop.common.dingtalk.rest;
 
-import com.dingtalk.api.DefaultDingTalkClient;
-import com.dingtalk.api.DingTalkClient;
-import com.dingtalk.api.request.OapiCspaceGrantCustomSpaceRequest;
-import com.dingtalk.api.request.OapiProcessinstanceCspaceInfoRequest;
 import com.dingtalk.api.response.OapiCspaceGetCustomSpaceResponse;
 import com.dingtalk.api.response.OapiCspaceGrantCustomSpaceResponse;
 import com.dingtalk.api.response.OapiProcessinstanceCspaceInfoResponse;
 import com.dingtalk.api.response.OapiUserGetResponse;
 import com.hqhop.aop.log.Log;
-import com.hqhop.config.dingtalk.DingTalkConstant;
-import com.hqhop.config.dingtalk.DingTalkUtils;
-import com.hqhop.config.dingtalk.dingtalkVo.ResultVO;
-import com.hqhop.config.dingtalk.utils.ResultUtil;
+import com.hqhop.common.dingtalk.DingTalkConstant;
+import com.hqhop.common.dingtalk.DingTalkUtils;
+import com.hqhop.common.dingtalk.dingtalkVo.ResultVO;
+import com.hqhop.common.dingtalk.utils.ResultUtil;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.UserDTO;
 import com.hqhop.utils.SecurityUtils;
@@ -20,11 +16,9 @@ import com.taobao.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.ServletContextPropertyUtils;
 
 /**
  * @author ：张丰

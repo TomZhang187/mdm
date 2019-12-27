@@ -2,6 +2,8 @@ package com.hqhop.utils;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -16,20 +18,20 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 public class HttpUtil {
     public static String postRequest(String url, MultiValueMap params) {
 
-
-        RestTemplate client = new RestTemplate();
+        RestTemplate client = getRestTemplate("UTF-8");
         //新建Http头，add方法可以添加参数
         HttpHeaders headers = new HttpHeaders();
         //设置请求发送方式
         HttpMethod method = HttpMethod.POST;
-
 
 //        method.setRequestHeader("content-type", "application/json;charset=utf-8");
         // 以表单的方式提交
@@ -51,7 +53,8 @@ public class HttpUtil {
      * @return
      */
     public static String getRequest(String url, MultiValueMap<String, String> params) {
-        RestTemplate client = new RestTemplate();
+        RestTemplate client = getRestTemplate("UTF-8");
+
         HttpMethod method = HttpMethod.GET;
         HttpHeaders headers = new HttpHeaders();
         // 以表单的方式提交
@@ -63,6 +66,19 @@ public class HttpUtil {
         return response.getBody();
     }
 
+
+    public static RestTemplate getRestTemplate(String charset){
+        RestTemplate restTemplate = new RestTemplate();
+        List<HttpMessageConverter<?>> list = restTemplate.getMessageConverters();
+        for (HttpMessageConverter<?> httpMessageConverter : list) {
+            if (httpMessageConverter instanceof StringHttpMessageConverter) {
+                ((StringHttpMessageConverter) httpMessageConverter).setDefaultCharset(Charset.forName(charset));
+                break;
+            }
+        }
+        return restTemplate;
+    }
+
     /**
      * 发送xml格式的post请求
      * @param url
@@ -71,7 +87,7 @@ public class HttpUtil {
      */
     public static String xmlPostRequest( String url,String xmlString) {
 
-        RestTemplate client = new RestTemplate();
+        RestTemplate client = getRestTemplate("UTF-8");
         //新建Http头，add方法可以添加参数
         HttpHeaders headers = new HttpHeaders();
         //设置请求发送方式

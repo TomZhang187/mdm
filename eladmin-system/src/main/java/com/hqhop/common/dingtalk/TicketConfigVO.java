@@ -1,4 +1,4 @@
-package com.hqhop.config.dingtalk;
+package com.hqhop.common.dingtalk;
 
 /**
  * 鉴权用到的数据对象

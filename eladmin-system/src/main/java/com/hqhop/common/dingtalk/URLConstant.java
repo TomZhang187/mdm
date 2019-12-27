@@ -1,4 +1,4 @@
-package com.hqhop.config.dingtalk;
+package com.hqhop.common.dingtalk;
 
 public class URLConstant {
     /**

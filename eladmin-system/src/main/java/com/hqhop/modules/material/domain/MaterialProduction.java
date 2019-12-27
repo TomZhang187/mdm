@@ -200,7 +200,7 @@ public class MaterialProduction implements Serializable {
 
 
     // 对应物料
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "material_id")
     @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
     private Material material;
