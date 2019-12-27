@@ -21,4 +21,7 @@ public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long>,
 
     //通过主键获取数据
     CompanyInfo findByCompanyKey(Long key);
+
+
+
 }

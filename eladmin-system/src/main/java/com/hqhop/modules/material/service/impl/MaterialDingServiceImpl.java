@@ -227,7 +227,7 @@ public class MaterialDingServiceImpl implements MaterialDingService  {
          Material material2 = new Material();
          material2.copy(temporyary);
          material2.setType(temporyary.getType());
-         material2.setCompanyEntities(temporyary.getCompanyEntities());
+//         material2.setCompanyEntities(temporyary.getCompanyEntities());
          material2.setId(material.getId());
          material2.setRemark(material.getRemark());
             //1新增 2审批中 3驳回 4审核通过
