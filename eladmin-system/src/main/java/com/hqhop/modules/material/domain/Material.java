@@ -87,11 +87,11 @@ public class Material implements Serializable {
     @JoinColumn(name = "type_id")
     private MaterialType type;
 
-    //物料所关联的公司
-    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"materials"})// 解决循环查找的问题
-    @JoinTable(name = "t_material_company", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "company_id")})
-    private Set<Company> companyEntities;
+//    //物料所关联的公司
+//    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+//    @JsonIgnoreProperties(value = {"materials"})// 解决循环查找的问题
+//    @JoinTable(name = "t_material_company", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "company_id")})
+//    private Set<Company> companyEntities;
 
 
     //物料属性

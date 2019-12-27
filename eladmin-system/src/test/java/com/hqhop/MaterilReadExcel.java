@@ -2,10 +2,7 @@ package com.hqhop;
 
 import com.alipay.api.domain.ItemDiagnoseType;
 import com.hqhop.easyExcel.excelRead.MaterialExcelUtils;
-import com.hqhop.easyExcel.model.IncMaterial;
-import com.hqhop.easyExcel.model.IncMaterialSort;
-import com.hqhop.easyExcel.model.IncMaterialSort2;
-import com.hqhop.easyExcel.model.IncMaterialType;
+import com.hqhop.easyExcel.model.*;
 import com.hqhop.modules.material.domain.*;
 import com.hqhop.modules.material.repository.AttributeRepository;
 import com.hqhop.modules.material.repository.MaterialProductionRepository;
@@ -14,14 +11,8 @@ import com.hqhop.modules.material.repository.MaterialTypeRepository;
 import com.hqhop.modules.material.service.MaterialDingService;
 import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.impl.AttributeServiceImpl;
-import com.hqhop.modules.system.domain.Dept;
-import com.hqhop.modules.system.domain.Employee;
-import com.hqhop.modules.system.domain.Role;
-import com.hqhop.modules.system.domain.User;
-import com.hqhop.modules.system.repository.DeptRepository;
-import com.hqhop.modules.system.repository.EmployeeRepository;
-import com.hqhop.modules.system.repository.RoleRepository;
-import com.hqhop.modules.system.repository.UserRepository;
+import com.hqhop.modules.system.domain.*;
+import com.hqhop.modules.system.repository.*;
 import com.hqhop.modules.system.service.DeptService;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.UserDTO;
@@ -82,6 +73,9 @@ public class MaterilReadExcel {
 
     @Autowired
     private AttributeRepository attributeRepository;
+
+    @Autowired
+    private DictDetailRepository dictDetailRepository;
 
     @Test
    public  void contextLoads() throws
@@ -145,7 +139,7 @@ public class MaterilReadExcel {
             ApiException {
 
         List<IncMaterialSort> list = MaterialExcelUtils.readMaterialSortExcel("D:\\easyExcel\\分类属性.xlsx");
-        int i=1;
+        int i = 1;
         for (IncMaterialSort object  : list) {
 
             if(object.getPorperty01() != null &&  !"0".equals(object.getPorperty01())) {
@@ -396,6 +390,17 @@ public class MaterilReadExcel {
         List<IncMaterial> list = MaterialExcelUtils.readMaterialExcel("D:\\easyExcel\\科瑞尔物料属性整理表.xlsx");
         for (IncMaterial object : list) {
 
+            Material byNameAndModel = null;
+            if(object.getStockName() !=null && object.getModel()!=null){
+               byNameAndModel = materialRepository.findByNameAndModel(object.getStockName(), object.getModel());
+
+
+            }
+            if (byNameAndModel != null){
+                saveMaterialProduction(object, byNameAndModel);
+                continue;
+            }
+
 
             MaterialType type = null;
 
@@ -501,19 +506,29 @@ public class MaterilReadExcel {
 
 
     //读取物料整理.xlsx  读取属性
+
     @Test
     public  void excelTest61() throws
             ApiException {
 
-        int i = attributeRepository.getMaxAttributeNumber();
+        int i = 1;
+        int j=attributeRepository.getMaxAttributeNumber();
+
 
         List<IncMaterialSort2> list = MaterialExcelUtils.readMaterialSort2Excel("D:\\easyExcel\\物料整理.xlsx");
         for (IncMaterialSort2 object : list) {
 
 
             if (object.getProperty01() != null && !"-".equals(object.getProperty01())) {
+
+//                if(object.getProperty01().equals("高真空")){
+//                    j=j++;
+//                    System.out.println("第几次保存1");
+//                }
+
+
                 Attribute attribute = attributeRepository.findByAttributeName(object.getProperty01().trim());
-                if (attribute == null && object.getProperty01() != null) {
+                if (attribute == null) {
 
                     Attribute newAttribute = new Attribute();
                     newAttribute.setAttributeName(object.getProperty01().trim());
@@ -527,6 +542,12 @@ public class MaterilReadExcel {
 
 
             if (object.getProperty02() != null && !"-".equals(object.getProperty02())) {
+
+//                if(object.getProperty02().equals("高真空")){
+//                    j=j++;
+//                    System.out.println("第几次保存2");
+//                }
+
                 Attribute attribute1 = attributeRepository.findByAttributeName(object.getProperty02().trim());
                 if (attribute1 == null && object.getProperty02() != null) {
 
@@ -542,6 +563,11 @@ public class MaterilReadExcel {
 
             if (object.getProperty3() != null && !"-".equals(object.getProperty3())) {
 
+//                if(object.getProperty3().equals("高真空")){
+//                    j=j++;
+//                    System.out.println("第几次保存3");
+//                }
+
                 Attribute attribute2 = attributeRepository.findByAttributeName(object.getProperty3().trim());
                 if (attribute2 == null && object.getProperty3() != null) {
 
@@ -556,6 +582,12 @@ public class MaterilReadExcel {
             }
 
             if (object.getProperty4() != null && !"-".equals(object.getProperty4())) {
+
+
+//                if(object.getProperty4().equals("高真空")){
+//                    j=j++;
+//                    System.out.println("第几次保存4");
+//                }
 
                 Attribute attribute3 = attributeRepository.findByAttributeName(object.getProperty4().trim());
                 if (attribute3 == null && object.getProperty4() != null) {
@@ -573,6 +605,12 @@ public class MaterilReadExcel {
 
             if (object.getProperty5() != null && !"-".equals(object.getProperty5())) {
 
+
+//                if(object.getProperty5().equals("高真空")){
+//                    j=j++;
+//                    System.out.println("第几次保存5");
+//                }
+
                 Attribute attribute4 = attributeRepository.findByAttributeName(object.getProperty5().trim());
                 if (attribute4 == null && object.getProperty5() != null) {
 
@@ -586,7 +624,13 @@ public class MaterilReadExcel {
 
             }
 
-            if (object.getProperty6() != null && !"-".equals(object.getProperty6())) {
+            if (object.getProperty6() != null && !"-".equals(object.getProperty6() )) {
+
+
+//                if(object.getProperty6().equals("高真空")){
+//                    j=j++;
+//                    System.out.println("第几次保存6");
+//                }
 
                 System.out.println(object.getProperty6());
                 Attribute attribute5 = attributeRepository.findByAttributeName(object.getProperty6().trim());
@@ -604,11 +648,17 @@ public class MaterilReadExcel {
 
 
             if (object.getProperty7() != null && !"-".equals(object.getProperty7())) {
-                Attribute attribute6 = attributeRepository.findByAttributeName(object.getProperty7().trim());
-                if (attribute6 != null && object.getProperty7() != null) {
+
+//                if(object.getProperty7().equals("高真空")){
+//                    j=j++;
+//                    System.out.println("第几次保存7");
+//                }
+
+                Attribute attribute6 = attributeRepository.findByAttributeName(object.getProperty7());
+                if (attribute6 == null && object.getProperty7() != null) {
 
                     Attribute newAttribute = new Attribute();
-                    newAttribute.setAttributeName(object.getProperty7().trim());
+                    newAttribute.setAttributeName(object.getProperty7());
                     newAttribute.setCreateTime(new Timestamp(new Date().getTime()));
                     newAttribute.setAttributeNumber(i++);
                     attributeRepository.save(newAttribute);
@@ -618,8 +668,14 @@ public class MaterilReadExcel {
 
             if (object.getProperty8() != null && !"-".equals(object.getProperty8())) {
 
+
+//                if(object.getProperty8().equals("高真空")) {
+//                    j = j++;
+//                    System.out.println("第几次保存8" );
+//                }
+
                 Attribute attribute7 = attributeRepository.findByAttributeName(object.getProperty8().trim());
-                if (attribute7 != null && object.getProperty8() != null) {
+                if (attribute7 == null && object.getProperty8() != null) {
 
                     Attribute newAttribute = new Attribute();
                     newAttribute.setAttributeName(object.getProperty8().trim());
@@ -631,6 +687,13 @@ public class MaterilReadExcel {
             }
 
             if (object.getProperty9() != null && !"-".equals(object.getProperty9())) {
+
+
+//                if(object.getProperty9().equals("高真空")) {
+//                    j = j++;
+//                    System.out.println("第几次保存9");
+//                }
+
 
                 Attribute attribute8 = attributeRepository.findByAttributeName(object.getProperty9().trim());
                 if (attribute8 == null && object.getProperty9() != null) {
@@ -646,8 +709,15 @@ public class MaterilReadExcel {
 
 
             if (object.getProperty1() != null && !"-".equals(object.getProperty1())) {
+
+
+//                if(object.getProperty1().equals("高真空")) {
+//                    j = j++;
+//                    System.out.println("第几次保存1" + j);
+//                }
+
                 Attribute attribute9 = attributeRepository.findByAttributeName(object.getProperty1().trim());
-                if (attribute9 != null && object.getProperty1() != null) {
+                if (attribute9 == null && object.getProperty1() != null) {
 
                     Attribute newAttribute = new Attribute();
                     newAttribute.setAttributeName(object.getProperty1().trim());
@@ -667,7 +737,7 @@ public class MaterilReadExcel {
 
     //读取物料整理.xlsx  读取属性与物料类型建立关系
     @Test
-    public  void excelTest6() throws
+    public  void excelTest62() throws
             ApiException {
 
 
@@ -679,8 +749,10 @@ public class MaterilReadExcel {
 
             if (type != null) {
 
+                  if(object.getProperty01() !=null){
 
-                Attribute attribute = attributeRepository.findByAttributeName(object.getProperty01() != null ? object.getProperty01() : "无");
+
+                Attribute attribute = attributeRepository.findByAttributeName(object.getProperty01());
                 if (attribute != null) {
 
                     if (attributeRepository.findT_Type_att(attribute.getAttributeId(), type.getId()) == 0) {
@@ -689,80 +761,108 @@ public class MaterilReadExcel {
 
                 }
 
+                  }
 
-                Attribute attribute1 = attributeRepository.findByAttributeName(object.getProperty02()  != null ? object.getProperty02() : "无");
-                if (attribute1 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute1.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute1.getAttributeId(), type.getId());
+                if(object.getProperty02() !=null) {
+                    Attribute attribute1 = attributeRepository.findByAttributeName(object.getProperty02());
+                    if (attribute1 != null) {
+
+                        if (attributeRepository.findT_Type_att(attribute1.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute1.getAttributeId(), type.getId());
+                        }
+
+                    }
+                }
+
+
+                if(object.getProperty3() !=null) {
+                    Attribute attribute2 = attributeRepository.findByAttributeName(object.getProperty3());
+                    if (attribute2 != null) {
+
+                        if (attributeRepository.findT_Type_att(attribute2.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute2.getAttributeId(), type.getId());
+                        }
+
                     }
 
                 }
 
-                Attribute attribute2 = attributeRepository.findByAttributeName(object.getProperty3() != null ? object.getProperty3()  : "无");
-                if (attribute2 != null) {
+                if(object.getProperty4() !=null) {
+                    Attribute attribute3 = attributeRepository.findByAttributeName(object.getProperty4());
+                    if (attribute3 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute2.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute2.getAttributeId(), type.getId());
+                        if (attributeRepository.findT_Type_att(attribute3.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute3.getAttributeId(), type.getId());
+                        }
+
                     }
-
                 }
 
-                Attribute attribute3 = attributeRepository.findByAttributeName(object.getProperty4()!= null ? object.getProperty4() : "无");
-                if (attribute3 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute3.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute3.getAttributeId(), type.getId());
+                if(object.getProperty5() !=null) {
+                    Attribute attribute4 = attributeRepository.findByAttributeName(object.getProperty5());
+                    if (attribute4 != null) {
+
+                        if (attributeRepository.findT_Type_att(attribute4.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute4.getAttributeId(), type.getId());
+                        }
+
                     }
-
                 }
 
-                Attribute attribute4 = attributeRepository.findByAttributeName(object.getProperty5() != null ? object.getProperty5() : "无");
-                if (attribute4 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute4.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute4.getAttributeId(), type.getId());
+                if(object.getProperty6() !=null) {
+                    Attribute attribute5 = attributeRepository.findByAttributeName(object.getProperty6() != null ? object.getProperty6() : "无");
+                    if (attribute5 != null) {
+
+                        if (attributeRepository.findT_Type_att(attribute5.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute5.getAttributeId(), type.getId());
+                        }
+
                     }
-
                 }
 
-                Attribute attribute5 = attributeRepository.findByAttributeName(object.getProperty6() != null ? object.getProperty6() : "无");
-                if (attribute5 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute5.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute5.getAttributeId(), type.getId());
+                if(object.getProperty7() !=null) {
+                    Attribute attribute6 = attributeRepository.findByAttributeName(object.getProperty7());
+                    if (attribute6 != null) {
+
+                        if (attributeRepository.findT_Type_att(attribute6.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute6.getAttributeId(), type.getId());
+                        }
+
                     }
-
                 }
 
-                Attribute attribute6 = attributeRepository.findByAttributeName(object.getProperty7() != null ? object.getProperty7() : "无");
-                if (attribute6 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute6.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute6.getAttributeId(), type.getId());
+                if(object.getProperty8() !=null) {
+                    Attribute attribute7 = attributeRepository.findByAttributeName(object.getProperty8());
+                    if (attribute7 != null) {
+
+                        if (attributeRepository.findT_Type_att(attribute7.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute7.getAttributeId(), type.getId());
+                        }
+
                     }
-
                 }
 
-                Attribute attribute7 = attributeRepository.findByAttributeName(object.getProperty8() != null ? object.getProperty8() : "无");
-                if (attribute7 != null) {
+                if(object.getProperty9() != null) {
+                    Attribute attribute8 = attributeRepository.findByAttributeName(object.getProperty9());
+                    if (attribute8 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute7.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute7.getAttributeId(), type.getId());
+                        if (attributeRepository.findT_Type_att(attribute8.getAttributeId(), type.getId()) == 0) {
+                            attributeRepository.setTypeAttribute(attribute8.getAttributeId(), type.getId());
+                        }
+
                     }
-
                 }
 
-                Attribute attribute8 = attributeRepository.findByAttributeName(object.getProperty9() != null ? object.getProperty9() : "无");
-                if (attribute8 != null) {
 
-                    if (attributeRepository.findT_Type_att(attribute8.getAttributeId(), type.getId()) == 0) {
-                        attributeRepository.setTypeAttribute(attribute8.getAttributeId(), type.getId());
-                    }
+                if(object.getProperty1()!=null){
 
-                }
 
-                Attribute attribute9 = attributeRepository.findByAttributeName(object.getProperty1() != null ?object.getProperty1() : "无");
+                Attribute attribute9 = attributeRepository.findByAttributeName(object.getProperty1());
                 if (attribute9 != null) {
 
                     if (attributeRepository.findT_Type_att(attribute9.getAttributeId(), type.getId()) == 0) {
@@ -771,8 +871,200 @@ public class MaterilReadExcel {
 
                 }
             }
+            }
 
 
-        }}
+        }
+    }
+
+
+
+
+    @Test
+    public  void test7(){
+
+        String reges = "[0-9.]{9}";
+
+        List<IncMateril2> incMateril2s = MaterialExcelUtils.readMaterial2Sort2Excel("D:\\easyExcel\\物料整理总表2019-12-26-20-52.xlsx");
+        for (IncMateril2 object : incMateril2s) {
+
+
+                MaterialType type = null;
+                if(object.getLine3()!=null && object.getLine3().contains(".")){
+                    String[] strs = object.getLine3().split("\\.");
+                    String typeCode = strs[1];
+                    type = materialTypeRepository.findByMaterialTypeCode(typeCode);
+                }
+
+            if(type == null){
+                continue;
+            }
+
+
+            Material byNameAndModel = null;
+
+            if(object.getLine12()!=null && object.getLine13()!=null){
+                 byNameAndModel = materialRepository.findByNameAndModels(object.getLine12(), object.getLine13());
+             }
+
+                if(byNameAndModel !=null) {
+                    saveMaterialProduction2(object,byNameAndModel );
+                    continue;
+                }
+
+
+
+
+            Material material = new Material();
+                material.setApprovalState("4");
+                if(type != null){
+
+                    if(object.getLine6()!=null && object.getLine6().matches(reges)){
+                        material.setRemark(object.getLine6());
+                    } else {
+                        material.setRemark(materialService.getWaterCode(type.getId()));
+                    }
+
+                }
+                material.setName(object.getLine12());
+                material.setModel(object.getLine13());
+                material.setUnit(object.getLine14());
+                material.setTaxRating(object.getLine15());
+                material.setIsTaxable("是".equals(object.getLine16()) ? true : false);
+                material.setEnable(true);
+                if (type != null){
+                    material.setType(type);
+                    Material material1 =  materialRepository.save(material);
+                    //导入生产档案
+                    saveMaterialProduction2(object,material);
+                }
+
+                }
+            }
+
+
+
+
+
+
+//导入生产档案
+       public void  saveMaterialProduction2(IncMateril2 object,Material materia) {
+
+
+           MaterialProduction byOriginalRemark = materialProductionRepository.findByOriginalRemark(object.getLine6());
+           if(byOriginalRemark == null){
+
+
+
+
+
+           MaterialProduction materialProduction = new MaterialProduction();
+
+           if (object.getLine11() != null && object.getLine11().contains(".")) {
+               materialProduction.setOriginalRemark(object.getLine11());
+           }
+           //出库跟踪入库
+           materialProduction.setIsOutTrackWarehousing("是".equals(object.getLine17()) ? true : false);
+           // 需求管理
+           materialProduction.setOutgoingTracking("是".equals(object.getLine18()) ? true : false);
+           // 是否需求管理
+           materialProduction.setIsDemand("是".equals(object.getLine19()) ? true : false);
+
+           // 是否进行序列号管理
+           materialProduction.setIsSerial("是".equals(object.getLine20()) ? true : false);
+
+
+           //是否批次管理
+           materialProduction.setIsBatchManagement("是".equals(object.getLine12()) ? true : false);
+           // 是否虚项
+           materialProduction.setIsImaginaryTerm("是".equals(object.getLine22()) ? true : false);
+
+           //采购员
+               if(object.getLine24()!=null){
+
+                   Employee employee = employeeRepository.findByEmployeeName(object.getLine24());
+                   if(employee!=null && employee.getEmployeeCode() != null){
+                       materialProduction.setBuyer(employee.getEmployeeCode());
+                   }
+
+               }
+
+           materialProduction.setMaterialType(object.getLine25());
+               //是否成本对象
+               //  是否发料
+               //    是否根据检验结果入库
+               //   是否免检
+               //     是否按生产订单核算成本
+               //  是否按成本中心统计产量
+               //      是否出入库
+               //  是否批次核算
+               //委外类型
+               materialProduction.setOutsourcingType(object.getLine26());
+               materialProduction.setMaterialKenel(object.getLine27());
+               // 是否需求合并
+               materialProduction.setIsDemandConsolidation("是".equals(object.getLine28()) ? true : false);
+               materialProduction.setIsCostObject("是".equals(object.getLine30()) ? true : false);
+               materialProduction.setIsHairFeed("是".equals(object.getLine31()) ? true : false);
+
+               materialProduction.setIsInspectionWarehousing("是".equals(object.getLine32()) ? true : false);
+               materialProduction.setIsInspect("是".equals(object.getLine33()) ? true : false);
+               materialProduction.setIsOrderCost("是".equals(object.getLine34()) ? true : false);
+               materialProduction.setIsCenterStatistics("是".equals(object.getLine35()) ? true : false);
+
+               materialProduction.setIsOutgoingWarehousing("是".equals(object.getLine36()) ? true : false);
+               materialProduction.setIsBatchesAccount("是".equals(object.getLine37()) ? true : false);
+
+               //计价方式
+               materialProduction.setValuationMethod(object.getLine38());
+               //最低库存
+               materialProduction.setMinStock(object.getLine40());
+               //最高库存
+               materialProduction.setMaxStock(object.getLine41());
+               //在购点
+               materialProduction.setAgainBuyPlace(object.getLine42());
+
+               //固定提前日期
+               materialProduction.setFixedAdvanceTime(object.getLine44());
+               //计划属性
+               materialProduction.setPlanningAttribute(object.getLine43());
+
+               //货位
+               materialProduction.setZhy(object.getLine45());
+
+
+               materialProduction.setEnable(true);
+               materialProduction.setApprovalState("4");
+               if (materia != null) {
+                   materialProduction.setMaterial(materia);
+               }
+
+
+
+               if (object.getLine0() != null) {
+                   materialProduction.setDefaultFactory(object.getLine0());
+                   materialProductionRepository.save(materialProduction);
+               }
+
+
+           }
+
+
+
+
+       }
+
+
+       @Test
+       public  void test8(){
+
+
+
+
+
+       }
+
+
+
+
 
 }

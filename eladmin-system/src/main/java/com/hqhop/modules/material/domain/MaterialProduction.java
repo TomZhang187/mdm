@@ -143,7 +143,6 @@ public class MaterialProduction implements Serializable {
     @CreationTimestamp
     private Timestamp updateTime;
 
-
     //采购员
     @Column(name = "buyer")
     private String buyer;

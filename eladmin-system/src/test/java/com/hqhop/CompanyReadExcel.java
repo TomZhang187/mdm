@@ -46,6 +46,10 @@ public class CompanyReadExcel {
     public void Test1(){
         List<IncClient> incClients = CustomerExcelUtils.readClitentExcel("D:\\easyExcel\\客商档案读取.xlsx");
         for (IncClient incClient : incClients) {
+
+            if(incClient.getCustomerCode() == null){
+                continue;
+            }
             CompanyInfo companyInfo =new  CompanyInfo();
             DictDetail dictDetail = dictDetailRepository.findByLabelAndDict_Id(incClient.getBelongCompany()!=null?incClient.getBelongCompany():"无",8L);
             if(dictDetail !=null){
@@ -67,16 +71,43 @@ public class CompanyReadExcel {
             if(dictDetail2!=null){
                 companyInfo.setCompanyProp(dictDetail2.getValue());
             }
+
+
+
+
+
             //4 外部单位
             companyInfo.setCustomerType("4");
+
             companyInfo.setRemark(incClient.getRemark());
             companyInfo.setContactAddress(incClient.getContactAddress());
-               //2 客户
-                companyInfo.setCompanyType("1");
+
+
+
+
+            if(companyInfo.getBelongCompany()!=null ){
+                CompanyInfo companyInfo1 = companyInfoRepository.findByTaxIdAndBelongCompany(incClient.getCustomerCode(), companyInfo.getBelongCompany());
+
+                if(companyInfo1 != null && companyInfo.getCompanyType().equals("2") ){
+                    //客商
+                    companyInfo.setCompanyType("3");
+                }else if(companyInfo1 == null ) {
+                    //供应商
+                    companyInfo.setCompanyType("2");
+                }
+            }
+
+            if(companyInfo.getCompanyType() == null){
+                continue;
+            }
+
+
                 //1 启用
                 companyInfo.setIsDisable(1);
                 //4 审批通过
                 companyInfo.setCompanyState(4);
+
+
                 companyInfoRepository.save(companyInfo);
 
         }
@@ -119,9 +150,24 @@ public class CompanyReadExcel {
             if(dictDetail1!=null ){
                 companyInfo.setBelongArea(dictDetail1.getValue());
             }
-            //供应商
-                companyInfo.setCompanyType("2");
 
+
+            if(companyInfo.getBelongCompany()!=null ){
+                CompanyInfo companyInfo1 = companyInfoRepository.findByTaxIdAndBelongCompany(incSupplier.getCustomerCode(), companyInfo.getBelongCompany());
+
+                if(companyInfo1 != null && companyInfo.getCompanyType().equals("1") ){
+                    //客商
+                    companyInfo.setCompanyType("3");
+                }else if(companyInfo1 == null ) {
+                    //供应商
+                    companyInfo.setCompanyType("2");
+                }
+            }
+
+
+            if(companyInfo.getCompanyType() == null){
+                continue;
+            }
 
             companyInfo.setContactAddress(incSupplier.getContactAddress());
             companyInfo.setChargeDepartment(incSupplier.getChargeDepartment());

@@ -3,6 +3,7 @@ package com.hqhop.easyExcel.excelRead;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
 import com.hqhop.easyExcel.model.IncClient;
+import com.hqhop.easyExcel.model.IncCustomer;
 import com.hqhop.easyExcel.model.IncSupplier;
 
 import java.io.FileInputStream;
@@ -54,5 +55,28 @@ public class CustomerExcelUtils {
         }
         return  types;
     }
+
+
+
+    //客商档案读取工具
+    public static List<IncCustomer> readIncCustomer(String fileName) {
+
+        //创建输入流
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Sheet sheet = new Sheet(1,3,IncCustomer .class);
+        List<Object> typeList = EasyExcelFactory.read(inputStream,sheet);
+        List<IncCustomer > types = new LinkedList<>();
+        for (Object student :  typeList){
+            types.add((IncCustomer )student);
+        }
+        return  types;
+    }
+
 
 }

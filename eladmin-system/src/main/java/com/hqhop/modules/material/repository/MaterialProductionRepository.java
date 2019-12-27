@@ -13,4 +13,8 @@ public interface MaterialProductionRepository extends JpaRepository<MaterialProd
 
         @Query(value="select * from material_production where id=?1", nativeQuery = true)
          MaterialProduction findByKey(Integer id);
+
+
+
+        MaterialProduction findByOriginalRemark(String remark);
 }

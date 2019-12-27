@@ -108,4 +108,25 @@ public class MaterialExcelUtils {
     }
 
 
+    //物料基本档案读取   物料整理总表2019-12-26-19-36(1).xlsx
+    public static List<IncMateril2 > readMaterial2Sort2Excel(String fileName) {
+
+        //创建输入流
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Sheet sheet = new Sheet(1,1,IncMateril2.class);
+        List<Object> typeList = EasyExcelFactory.read(inputStream,sheet);
+        List<IncMateril2 > types = new LinkedList<>();
+        for (Object student :  typeList){
+            types.add((IncMateril2 )student);
+        }
+        return  types;
+    }
+
+
 }
