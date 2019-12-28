@@ -3,8 +3,8 @@ package com.hqhop.modules.security.rest;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.IdUtil;
 import com.dingtalk.api.response.OapiUserGetResponse;
-import com.hqhop.config.dingtalk.DingTalkConstant;
-import com.hqhop.config.dingtalk.DingTalkUtils;
+import com.hqhop.common.dingtalk.DingTalkConstant;
+import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.exception.BadRequestException;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,6 @@ import com.hqhop.modules.security.security.ImgResult;
 import com.hqhop.modules.security.security.JwtUser;
 import com.hqhop.modules.security.utils.JwtTokenUtil;
 import com.hqhop.modules.security.utils.VerifyCodeUtils;
-import com.hqhop.utils.EncryptUtils;
 import com.hqhop.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -139,5 +139,19 @@ public class AuthenticationController {
         } finally {
             stream.close();
         }
+    }
+
+    /**
+     * 鉴权
+     */
+    @GetMapping(value = "dingAuth")
+    public ResponseEntity getDingAuth(String url) throws IOException {
+        HttpServletRequest request = null;
+        try {
+            return ResponseEntity.ok(DingTalkUtils.getConfig(url));
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

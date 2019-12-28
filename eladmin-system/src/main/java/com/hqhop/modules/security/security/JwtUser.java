@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +24,12 @@ public class JwtUser implements UserDetails {
 
     private final String username;
 
+    private final String employeeName;
+
+
+    //用户的钉钉ID
+    private final String dingId;
+
     @JsonIgnore
     private final String password;
 
@@ -32,7 +39,9 @@ public class JwtUser implements UserDetails {
 
     private final String phone;
 
-    private final String dept;
+    private final String employee;
+
+    private final Set<Long> deptIds;
 
     private final String job;
 
@@ -50,12 +59,14 @@ public class JwtUser implements UserDetails {
     @JsonIgnore
     private final Date lastPasswordResetDate;
 
+    //账户是否过期
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    //账户是否未锁
     @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<ufinterface account="U8cloud" billtype="defStock" filename="存货档案样本数据.xml" isexchange="Y" proc="add" receiver="0001" replace="Y" roottag="" sender="Test" subbilltype="">
+    <bill id="">
+        <billhead>
+		<!--存货基本档案（集团）-->
+            <!--来源,主数据单据id(若要传存货基本档案 则必填)最大长度为64,类型为:String-->
+            <a_lyid>mdm1232114</a_lyid>
+			<!--公司,固定为集团编码 最大长度为64,类型为:String-->
+			<a_pk_corp>0001</a_pk_corp>
+            <!--创建时间,格式（YYYY-MM-DD HH:mm:ss）最大长度为64,类型为:String-->
+            <a_createtime>2019-12-25 15:01:00</a_createtime>
+            <!--创建人,最大长度为64,类型为:String-->
+            <a_creator>你猜我是谁11</a_creator>
+            <!--存货编码,必填唯一 最大长度为64,类型为:String-->
+            <a_invcode>001.79999</a_invcode>
+            <!--存货名称,必填 最大长度为64,类型为:String-->
+            <a_invname>我是物料，但是我不入库,,d-sdsd</a_invname>
+            <!--型号,最大长度为64,类型为:String-->
+            <a_invtype>我是型号,我可以有很多逗号，还有各种符号</a_invtype>
+            <!--是否应税劳务（Y/N）,最大长度为64,类型为:String-->
+            <a_laborflag>N</a_laborflag>
+            <!--修改人,最大长度为64,类型为:String-->
+            <a_modifier></a_modifier>
+            <!--修改时间,最大长度为64,类型为:String-->
+            <a_modifytime></a_modifytime>
+            <!--存货分类,必填 对应U8C存货分类档案编码 最大长度为64,类型为:String-->
+            <a_pk_invcl>001001</a_pk_invcl>
+            <!--主计量单位 必填 对应U8C计量档案编码 ,最大长度为64,类型为:String-->
+            <a_pk_measdoc>01</a_pk_measdoc>
+            <!--税目,对应U8C税目档案编码 最大长度为64,类型为:String-->
+            <a_pk_taxitems></a_pk_taxitems>
+		<!--存货管理档案-->
+            <!--来源id,主数据单据id (若要传存货管理档案 则必填)最大长度为64,类型为:String-->
+            <b_lyid>mdm1232114</b_lyid>
+            <!--创建时间,格式（YYYY-MM-DD HH:mm:ss）最大长度为64,类型为:String-->
+            <b_createtime>2019-12-24 19:01:00</b_createtime>
+            <!--创建人,最大长度为64,类型为:String-->
+            <b_creator>demo1</b_creator>
+            <!--自定义项（物料类型）,最大长度为64,类型为:String-->
+            <b_free1></b_free1>
+            <!--自定义项（采购员）,最大长度为64,类型为:String-->
+            <b_free2></b_free2>
+            <!--自定义项（货位）,最大长度为64,类型为:String-->
+            <b_free3></b_free3>
+            <!--需求管理,最大长度为64,类型为:String-->
+            <b_issalable>N</b_issalable>
+            <!--是否虚项,最大长度为64,类型为:String-->
+            <b_isvirtual>N</b_isvirtual>
+            <!--修改人,最大长度为64,类型为:String-->
+            <b_modifier></b_modifier>
+            <!--修改时间,最大长度为64,类型为:String-->
+            <b_modifytime></b_modifytime>
+            <!--出库跟踪入库,最大长度为64,类型为:String-->
+            <b_outtrackin>1</b_outtrackin>
+            <!--公司,必填 对应U8C公司目录档案编码 最大长度为64,类型为:String-->
+            <b_pk_corp>1002</b_pk_corp>
+            <!--默认工厂,最大长度为64,类型为:String-->
+            <b_pk_dftfactory></b_pk_dftfactory>
+            <!--封存时间,最大长度为64,类型为:String-->
+            <b_sealdate></b_sealdate>
+            <!--是否封存,最大长度为64,类型为:String-->
+            <b_sealflag>N</b_sealflag>
+            <!--是否进行序列号管理,最大长度为64,类型为:String-->
+            <b_serialmanaflag>N</b_serialmanaflag>
+            <!--是否批次管理,最大长度为64,类型为:String-->
+            <b_wholemanaflag>N</b_wholemanaflag>
+	<!--物料生产档案（公司）案-->
+            <!--来源id,主数据单据id (若要传物料生产档案 则必填)最大长度为64,类型为:String-->
+            <c_lyid>mdm1232114</c_lyid>
+            <!--是否免检,最大长度为64,类型为:String-->
+            <c_chkfreeflag>N</c_chkfreeflag>
+            <!--是否需求合并,最大长度为64,类型为:String-->
+            <c_combineflagc>N</c_combineflagc>
+            <!--创建日期,最大长度为64,类型为:String-->
+            <c_createtimec></c_createtimec>
+            <!--创建人,最大长度为64,类型为:String-->
+            <c_creator>demo1</c_creator>
+            <!--是否按生产订单核算成本,最大长度为64,类型为:String-->
+            <c_iscostbyorder>N</c_iscostbyorder>
+            <!--c_isctoutput,最大长度为64,类型为:String-->
+            <c_isctoutput>N</c_isctoutput>
+            <!--是否发料,最大长度为64,类型为:String-->
+            <c_issend>N</c_issend>
+            <!--是否出入库,最大长度为64,类型为:String-->
+            <c_isused>N</c_isused>
+            <!--最低库存,最大长度为64,类型为:String-->
+            <c_lowstocknum>2</c_lowstocknum>
+            <!--物料型态,最大长度为64,类型为:String-->
+            <c_materstate>1</c_materstate>
+            <!--物料类型,最大长度为64,类型为:String-->
+            <c_matertyp>1</c_matertyp>
+            <!--最高库存,最大长度为64,类型为:String-->
+            <c_maxstornum>3</c_maxstornum>
+            <!--修改人,最大长度为64,类型为:String-->
+            <c_modifier></c_modifier>
+            <!--修改时间,最大长度为64,类型为:String-->
+            <c_modifytime></c_modifytime>
+            <!--委外类型,最大长度为64,类型为:String-->
+            <c_outtype>1</c_outtype>
+			<!--公司,必填 对应U8C公司目录档案编码 最大长度为64,类型为:String-->
+            <c_pk_corp>1002</c_pk_corp>
+            <!--生产部门,最大长度为64,类型为:String-->
+            <c_pk_deptdoc3>01</c_pk_deptdoc3>
+            <!--生产业务员,最大长度为64,类型为:String-->
+            <c_pk_psndoc3c></c_pk_psndoc3c>
+            <!--封存人,最大长度为64,类型为:String-->
+            <c_pk_sealuser></c_pk_sealuser>
+            <!--计价方式,最大长度为64,类型为:String-->
+            <c_pricemethod>1</c_pricemethod>
+            <!--安全库存,最大长度为64,类型为:String-->
+            <c_safetystocknum>1</c_safetystocknum>
+            <!--计划属性,最大长度为64,类型为:String-->
+            <c_scheattr></c_scheattr>
+            <!--封存时间,最大长度为64,类型为:String-->
+            <c_sealdate></c_sealdate>
+            <!--封存标志,最大长度为64,类型为:String-->
+            <c_sealflag>N</c_sealflag>
+            <!--是否成本对象,最大长度为64,类型为:String-->
+            <c_sfcbdx>N</c_sfcbdx>
+            <!--是否批次核算,最大长度为64,类型为:String-->
+            <c_sfpchs>N</c_sfpchs>
+            <!--是否根据检验结果入库,最大长度为64,类型为:String-->
+            <c_stockbycheck>N</c_stockbycheck>
+            <!--是否虚项,最大长度为64,类型为:String-->
+            <c_virtualflag>N</c_virtualflag>
+            <!--再定货点,最大长度为64,类型为:String-->
+            <c_zdhd>1</c_zdhd>
+			<!--库存组织主键,最大长度为64,类型为:String-->
+            <c_pk_calbody>1002</c_pk_calbody>
+			<!--供应类型,最大长度为64,类型为:String-->
+            <c_supplytype>0</c_supplytype>
+        </billhead>
+    </bill>
+</ufinterface>

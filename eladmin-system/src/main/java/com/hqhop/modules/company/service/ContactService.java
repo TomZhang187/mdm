@@ -1,7 +1,7 @@
 package com.hqhop.modules.company.service;
 
 
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Contact;
 import com.hqhop.modules.company.service.dto.ContactDTO;
 import com.hqhop.modules.company.service.dto.ContactQueryCriteria;
@@ -49,7 +49,7 @@ public interface ContactService {
      * @return
      */
     //@CacheEvict(allEntries = true)
-    ContactDTO create(Contact resources);
+    Contact create(Contact resources);
 
     /**
      * 编辑

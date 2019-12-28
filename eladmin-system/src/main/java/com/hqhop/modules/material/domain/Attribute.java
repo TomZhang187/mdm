@@ -17,9 +17,10 @@ import java.util.Set;
  * @date 2019-10-30
  * 物料属性类
  */
+@Data
 @Entity
-@Table(name="attribute")
-public class Attribute implements Serializable {
+@Table(name = "attribute")
+public class Attribute implements Serializable , Comparable<Attribute>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,66 +31,49 @@ public class Attribute implements Serializable {
     */
     @Column(name = "attr_name")
     private String attributeName;
-
     /*
-     属性值
+    属性编号
      */
-    @Column(name = "attr_value")
-    private String attributeValue;
+    @Column(name="attribute_number")
+    private Integer attributeNumber;
 
     @Column(name = "create_time")
     @CreationTimestamp
     private Timestamp createTime;
 
 
-    @ManyToMany(cascade = { CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "attributes","materialTypes" })// 解决循环查找的问题
-    @JoinTable(name = "t_type_attr", joinColumns = { @JoinColumn(name = "attribute_id") }, inverseJoinColumns = { @JoinColumn(name = "type_id") })
+    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"attributes", "materialTypes"})// 解决循环查找的问题
+    @JoinTable(name = "t_type_attr", joinColumns = {@JoinColumn(name = "attribute_id")}, inverseJoinColumns = {@JoinColumn(name = "type_id")})
     private Set<MaterialType> materialTypes;
+    //物料属性
+    /*@ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"materials"})// 解决循环查找的问题
+    @JoinTable(name = "t_material_attribute", joinColumns = {@JoinColumn(name = "attribute_id")}, inverseJoinColumns = {@JoinColumn(name = "material_id")})*/
+    @Transient
+    private Set<Material> materials;
 
 
 
-    public void copy(Attribute source){
-        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
+
+
+    @Transient
+    private String attributeValue;
+
+    public void copy(Attribute source) {
+        BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }
 
-    public Long getAttributeId() {
-        return attributeId;
+    /**
+     * 对属性进行排序
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Attribute o) {
+        return (this.getAttributeNumber()-o.getAttributeNumber());
     }
 
-    public void setAttributeId(Long attributeId) {
-        this.attributeId = attributeId;
-    }
-
-    public String getAttributeName() {
-        return attributeName;
-    }
-
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
-    }
-
-    public String getAttributeValue() {
-        return attributeValue;
-    }
-
-    public void setAttributeValue(String attributeValue) {
-        this.attributeValue = attributeValue;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    public Set<MaterialType> getMaterialTypes() {
-        return materialTypes;
-    }
-
-    public void setMaterialTypes(Set<MaterialType> materialTypes) {
-        this.materialTypes = materialTypes;
-    }
 }
+
+

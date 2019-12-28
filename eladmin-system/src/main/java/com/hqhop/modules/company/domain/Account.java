@@ -17,6 +17,7 @@ public class Account implements Serializable {
 
     // 账户主键
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_key")
     private Long accountKey;
 
@@ -30,14 +31,14 @@ public class Account implements Serializable {
 
     // 银行类型
     @Column(name = "blank_class",nullable = false)
-    private Integer blankClass;
+    private String blankClass;
 
     // 币种
     @Column(name = "currency")
-    private Integer currency;
+    private String currency;
 
     // 是否默认
-    @Column(name = "is_defalut",nullable = false)
+    @Column(name = "is_defalut")
     private Integer isDefalut;
 
     // 账户名
@@ -123,19 +124,19 @@ public class Account implements Serializable {
         this.accountBlank = accountBlank;
     }
 
-    public Integer getBlankClass() {
+    public String getBlankClass() {
         return blankClass;
     }
 
-    public void setBlankClass(Integer blankClass) {
+    public void setBlankClass(String blankClass) {
         this.blankClass = blankClass;
     }
 
-    public Integer getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Integer currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

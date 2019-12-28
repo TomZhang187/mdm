@@ -9,6 +9,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author zf
@@ -32,6 +33,7 @@ public class CompanyInfoQueryCriteria {
     // 精确
     @Query
     private Integer belongCompany;
+
 
     // 精确
     @Query

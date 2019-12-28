@@ -57,16 +57,16 @@ public class CompanyInfo implements Serializable {
     private Timestamp updateTime;
 
     // 所属地区
-    @Column(name = "belong_area", nullable = false)
-    private Integer belongArea;
+    @Column(name = "belong_area")
+    private String belongArea;
 
     // 所属公司
-    @Column(name = "belong_company", nullable = false)
-    private Integer belongCompany;
+    @Column(name = "belong_company")
+    private String belongCompany;
 
     // 公司属性
-    @Column(name = "company_prop", nullable = false)
-    private Integer companyProp;
+    @Column(name = "company_prop")
+    private String companyProp;
 
     // 客商简称
     @Column(name = "company_short_name")
@@ -76,9 +76,15 @@ public class CompanyInfo implements Serializable {
     @Column(name = "company_state", nullable = false)
     private Integer companyState;
 
-    // 客商类型
+    // 公司类型
     @Column(name = "company_type", nullable = false)
-    private Integer companyType;
+    private String companyType;
+
+
+
+    //客商类型
+    @Column(name = "customer_type", nullable = false)
+    private String customerType;
 
     // 客商名称
     @Column(name = "company_name")
@@ -89,19 +95,19 @@ public class CompanyInfo implements Serializable {
     private String contactAddress;
 
     // 经济类型
-    @Column(name = "economic_type", nullable = false)
-    private Integer economicType;
+    @Column(name = "economic_type")
+    private String economicType;
 
     // 外文名称
     @Column(name = "foreign_name")
     private String foreignName;
 
     // 是否禁用
-    @Column(name = "is_disable", nullable = false)
+    @Column(name = "is_disable")
     private Integer isDisable;
 
     // 是否散户
-    @Column(name = "is_retai", nullable = false)
+    @Column(name = "is_retai")
     private Integer isRetai;
 
     // 法人
@@ -124,13 +130,13 @@ public class CompanyInfo implements Serializable {
     @Column(name = "remark")
     private String remark;
 
-    // 税务登记号
+    // 税务登记号 /客商编码
     @Column(name = "tax_id")
     private String taxId;
 
     // 所属行业
-    @Column(name = "trade", nullable = false)
-    private Integer trade;
+    @Column(name = "trade")
+    private String trade;
 
 
 
@@ -139,19 +145,119 @@ public class CompanyInfo implements Serializable {
     private Integer isSynergyPay;
 
     //账户
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Account.class, cascade = CascadeType.REFRESH )
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Account.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_key")
     private Set<Account > accounts  = new HashSet<>();
 
 
     //联系人
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.REFRESH )
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.PERSIST )
     @JoinColumn(name = "company_key")
     private Set<Contact> contacts = new HashSet<>();
 
 
+    //专管部门
+    @Column(name = "charge_department")
+    private String chargeDepartment;
+
+    //专管业务员
+    @Column(name = "profession_salesman")
+    private String professionSalesman;
+
+   //信用等级
+   @Column(name = "credit_rating")
+    private String creditRating;
+
+    //默认收款协议
+    @Column(name = "defaulet_payment_agreement")
+    private String defaultPaymentAgreement;
+
+
+    @Override
+    public String toString() {
+        return "CompanyInfo{" +
+                "companyKey=" + companyKey +
+                ", createMan='" + createMan + '\'' +
+                ", createTime=" + createTime +
+                ", approveTime=" + approveTime +
+                ", updateMan='" + updateMan + '\'' +
+                ", updateTime=" + updateTime +
+                ", belongArea='" + belongArea + '\'' +
+                ", belongCompany='" + belongCompany + '\'' +
+                ", companyProp='" + companyProp + '\'' +
+                ", companyShortName='" + companyShortName + '\'' +
+                ", companyState=" + companyState +
+                ", companyType='" + companyType + '\'' +
+                ", customerType='" + customerType + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", contactAddress='" + contactAddress + '\'' +
+                ", economicType='" + economicType + '\'' +
+                ", foreignName='" + foreignName + '\'' +
+                ", isDisable=" + isDisable +
+                ", isRetai=" + isRetai +
+                ", legalbody='" + legalbody + '\'' +
+                ", parentCompanyId=" + parentCompanyId +
+                ", postalCode='" + postalCode + '\'' +
+                ", registerfund=" + registerfund +
+                ", remark='" + remark + '\'' +
+                ", taxId='" + taxId + '\'' +
+                ", trade='" + trade + '\'' +
+                ", isSynergyPay=" + isSynergyPay +
+                ", chargeDepartment='" + chargeDepartment + '\'' +
+                ", professionSalesman='" + professionSalesman + '\'' +
+                ", defaultPaymentAgreement='" + defaultPaymentAgreement + '\'' +
+                '}';
+    }
+
+    //添加账户方法
+    public void addAccount(Account account){
+        if(account != null){
+            accounts.add(account);
+        }
+    }
+
+    public String getCreditRating() {
+        return creditRating;
+    }
+
+    public void setCreditRating(String creditRating) {
+        this.creditRating = creditRating;
+    }
+
     public void copy(CompanyInfo source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
+    }
+
+    public String getChargeDepartment() {
+        return chargeDepartment;
+    }
+
+    public void setChargeDepartment(String chargeDepartment) {
+        this.chargeDepartment = chargeDepartment;
+    }
+
+    public String getProfessionSalesman() {
+        return professionSalesman;
+    }
+
+    public void setProfessionSalesman(String professionSalesman) {
+        this.professionSalesman = professionSalesman;
+    }
+
+    public String getDefaultPaymentAgreement() {
+        return defaultPaymentAgreement;
+    }
+
+    public void setDefaultPaymentAgreement(String defaultPaymentAgreement) {
+        this.defaultPaymentAgreement = defaultPaymentAgreement;
     }
 
     public Long getCompanyKey() {
@@ -176,27 +282,27 @@ public class CompanyInfo implements Serializable {
     }
 
 
-    public Integer getBelongArea() {
+    public String getBelongArea() {
         return belongArea;
     }
 
-    public void setBelongArea(Integer belongArea) {
+    public void setBelongArea(String belongArea) {
         this.belongArea = belongArea;
     }
 
-    public Integer getBelongCompany() {
+    public String getBelongCompany() {
         return belongCompany;
     }
 
-    public void setBelongCompany(Integer belongCompany) {
+    public void setBelongCompany(String belongCompany) {
         this.belongCompany = belongCompany;
     }
 
-    public Integer getCompanyProp() {
+    public String getCompanyProp() {
         return companyProp;
     }
 
-    public void setCompanyProp(Integer companyProp) {
+    public void setCompanyProp(String companyProp) {
         this.companyProp = companyProp;
     }
 
@@ -216,11 +322,11 @@ public class CompanyInfo implements Serializable {
         this.companyState = companyState;
     }
 
-    public Integer getCompanyType() {
+    public String getCompanyType() {
         return companyType;
     }
 
-    public void setCompanyType(Integer companyType) {
+    public void setCompanyType(String companyType) {
         this.companyType = companyType;
     }
 
@@ -240,11 +346,11 @@ public class CompanyInfo implements Serializable {
         this.contactAddress = contactAddress;
     }
 
-    public Integer getEconomicType() {
+    public String getEconomicType() {
         return economicType;
     }
 
-    public void setEconomicType(Integer economicType) {
+    public void setEconomicType(String economicType) {
         this.economicType = economicType;
     }
 
@@ -320,11 +426,11 @@ public class CompanyInfo implements Serializable {
         this.taxId = taxId;
     }
 
-    public Integer getTrade() {
+    public String getTrade() {
         return trade;
     }
 
-    public void setTrade(Integer trade) {
+    public void setTrade(String trade) {
         this.trade = trade;
     }
 
@@ -381,36 +487,4 @@ public class CompanyInfo implements Serializable {
         this.accounts = accounts;
     }
 
-    @Override
-    public String toString() {
-        return "CompanyInfo{" +
-                "companyKey=" + companyKey +
-                ", createMan='" + createMan + '\'' +
-                ", approveTime=" + approveTime +
-                ", belongArea=" + belongArea +
-                ", belongCompany=" + belongCompany +
-                ", companyProp=" + companyProp +
-                ", companyShortName='" + companyShortName + '\'' +
-                ", companyState=" + companyState +
-                ", companyType=" + companyType +
-                ", companyName='" + companyName + '\'' +
-                ", contactAddress='" + contactAddress + '\'' +
-                ", economicType=" + economicType +
-                ", foreignName='" + foreignName + '\'' +
-                ", isDisable=" + isDisable +
-                ", isRetai=" + isRetai +
-                ", legalbody='" + legalbody + '\'' +
-                ", parentCompanyId=" + parentCompanyId +
-                ", postalCode='" + postalCode + '\'' +
-                ", registerfund=" + registerfund +
-                ", remark='" + remark + '\'' +
-                ", taxId='" + taxId + '\'' +
-                ", trade=" + trade +
-                ", updateMan='" + updateMan + '\'' +
-                ", updateTime=" + updateTime +
-                ", isSynergyPay=" + isSynergyPay +
-                ", accounts=" + accounts +
-                ", contacts=" + contacts +
-                '}';
-    }
 }

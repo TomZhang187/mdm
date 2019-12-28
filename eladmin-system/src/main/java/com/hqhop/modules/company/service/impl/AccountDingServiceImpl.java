@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
-import com.hqhop.config.dingtalk.DingTalkUtils;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.DingTalkUtils;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
@@ -132,8 +132,12 @@ public class AccountDingServiceImpl implements AccountDingService {
                 Account account = accountRepository.getOne(companyUpdate.getAccountKey());
                 //1新增 2审批中 3驳回 4审核通过
                 account.setAccountState(4);
-                account.setCompanyKey(account.getBelongCompany());
-                accountRepository.save(account);
+
+                Account account1 = accountRepository.save(account);
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                companyInfo.getAccounts().add(account1);
+                companyInfoRepository.save(companyInfo);
+
             }
 
 
@@ -268,6 +272,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             companyUpdate.setOperationType("8");
             //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批中
             resouces.setAccountState(5);
+            resouces.setCompanyKey(null);
             Account account1 = accountRepository.save(resouces);
             companyUpdate.setAccountKey(account1.getAccountKey());
             companyUpdateRepository.save( companyUpdate);
@@ -290,8 +295,11 @@ public class AccountDingServiceImpl implements AccountDingService {
                 Account account = accountRepository.getOne(companyUpdate.getAccountKey());
                 //1新增 2审批中 3驳回 4审核通过
                 account.setAccountState(4);
-                account.setCompanyKey(account.getBelongCompany());
-                accountRepository.save(account);
+//                account.setCompanyKey(account.getBelongCompany());
+                Account account1 = accountRepository.save(account);
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                companyInfo.getAccounts().add(account1);
+                companyInfoRepository.save(companyInfo);
 
             }
         }
@@ -329,7 +337,7 @@ public class AccountDingServiceImpl implements AccountDingService {
                 Account account = accountRepository.getOne(companyUpdate.getAccountKey());
                 //1新增 2审批中 3驳回 4审核通过
                 account.setAccountState(1);
-                account.setCompanyKey(null);
+               account.setCompanyKey(null);
                 accountRepository.save(account);
                 companyUpdateRepository.deleteById(companyUpdate.getOperateKey());
             }
@@ -345,13 +353,13 @@ public class AccountDingServiceImpl implements AccountDingService {
             }
         }
         //字典值对比
-        public  String getDictChange(String dictName,Integer update ,Integer now) {
-            Integer value = update;
-            if(value == now){
+        public  String getDictChange(String dictName,String update ,String now) {
+
+            if(update.equals(now)){
                 System.out.println("所属公司"+dictDetailService.getDicLabel(dictName,now));
                 return  dictDetailService.getDicLabel(dictName,now);
             }else {
-                return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,value);
+                return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,update);
             }
         }
 
@@ -399,6 +407,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             companyUpdate.setOperationType("11");
             //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批中
             resouces.setAccountState(5);
+            resouces.setCompanyKey(null);
             Account account1 = accountRepository.save(resouces);
             companyUpdate.setAccountKey(account.getAccountKey());
             companyUpdateRepository.save( companyUpdate);
@@ -442,7 +451,10 @@ public class AccountDingServiceImpl implements AccountDingService {
                 Account account = accountRepository.getOne(companyUpdate.getAccountKey());
                 //1新增 2审批中 3驳回 4审核通过
                 account.setAccountState(4);
-                accountRepository.save(account);
+                Account account1 = accountRepository.save(account);
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                companyInfo.getAccounts().add(account1);
+                companyInfoRepository.save(companyInfo);
 
             }
 
@@ -459,7 +471,10 @@ public class AccountDingServiceImpl implements AccountDingService {
                 Account account = accountRepository.getOne(companyUpdate.getAccountKey());
                 //1新增 2审批中 3驳回 4审核通过
                 account.setAccountState(4);
-                accountRepository.save(account);
+                Account account1 = accountRepository.save(account);
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                companyInfo.getAccounts().add(account1);
+                companyInfoRepository.save(companyInfo);
                 companyUpdateRepository.deleteById(companyUpdate.getOperateKey());
             }
 

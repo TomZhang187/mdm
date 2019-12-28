@@ -1,12 +1,11 @@
 package com.hqhop.modules.company.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
-import com.hqhop.config.dingtalk.DingTalkUtils;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.DingTalkUtils;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
@@ -16,16 +15,12 @@ import com.hqhop.modules.company.service.CompanyInfoService;
 import com.hqhop.modules.company.utils.CompanyUtils;
 import com.hqhop.modules.system.service.DictDetailService;
 import com.taobao.api.ApiException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -439,13 +434,13 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         }
     }
     //字典值对比
-    public  String getDictChange(String dictName,String update ,Integer now) {
-        Integer value = Integer.parseInt(update);
-        if(value == now){
+    public  String getDictChange(String dictName,String update ,String now) {
+
+        if(update.equals(now)){
             System.out.println("所属公司"+dictDetailService.getDicLabel(dictName,now));
             return  dictDetailService.getDicLabel(dictName,now);
         }else {
-            return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,value);
+            return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,update);
         }
     }
 

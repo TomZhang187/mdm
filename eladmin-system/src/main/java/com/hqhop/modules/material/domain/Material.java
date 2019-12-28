@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name="material")
+@Table(name = "material")
 public class Material implements Serializable {
 
 
@@ -29,46 +30,27 @@ public class Material implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    //标识
+    //标识存货编码
     @Column(name = "remark")
     private String remark;
 
 
-    //大分类
-    @Column(name = "big_type")
-    private String bigType;
-
-    //是否应税劳务
-    private Boolean isTaxable;
-
-    //流水码
-    @Column(name = "flow_code")
-    private String flowCode;
-
-    //新物料代码
-    @Column(name = "new_code",nullable = false)
-    private String newCode;
-
-    //原物料代码1
-    @Column(name = "old_code_one",nullable = false)
-    private String oldCode1;
-
-    //原物料代码2
-    @Column(name = "old_code_two",nullable = false)
-    private String oldCode2;
-
-    //原物料代码3
-    @Column(name = "old_code_three",nullable = false)
-    private String oldCode3;
-
-    // 名称(图纸明细栏名称)
-    @Column(name = "material_name",nullable = false)
+    //存货名称
+    @Column(name = "name")
     private String name;
 
+    //是否应税劳务
+    @Column(name = "is_taxable")
+    private Boolean isTaxable;
 
-    //规格型号(图纸明细栏规格型号)
-    @Column(name = "specifications")
-    private String specifications;
+    //规格型号
+    @Column(name = "model")
+    private String model;
+
+    //税目
+    @Column(name = "tax_rating")
+    private String taxRating;
+
     //创建者
     @Column(name = "creator")
     private String createPerson;
@@ -78,36 +60,54 @@ public class Material implements Serializable {
     private Timestamp createTime;
 
     //修改者
-    @Column(name = "modifier")
-    private String modifier;
+    @Column(name = "update_person")
+    private String updatePerson;
 
-    //修改时间
-    @Column(name = "modified_time")
+    //修改日期
+    @Column(name = "update_time")
     @CreationTimestamp
-    private Timestamp modifiedTime;
-
-    //数量
-    @Column(name = "count")
-    private Integer count;
+    private Timestamp updateTime;
 
     //单位
     @Column(name = "unit")
     private String unit;
 
+    //审批状态
+    @Column(name = "approval_state")
+    private String approvalState;
+
+
+    //使用状态
+    @Column(name="enable")
+    private Boolean enable=true;
+
     //物料类型(物料种类小类型)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = {"materials"})
     @JoinColumn(name = "type_id")
     private MaterialType type;
 
-    //物料所关联的公司
-    @ManyToMany(cascade = { CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "materials" })// 解决循环查找的问题
-    @JoinTable(name = "t_material_company", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = { @JoinColumn(name = "company_id") })
-    private Set<Company> companyEntities;
+//    //物料所关联的公司
+//    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+//    @JsonIgnoreProperties(value = {"materials"})// 解决循环查找的问题
+//    @JoinTable(name = "t_material_company", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "company_id")})
+//    private Set<Company> companyEntities;
 
-    public void copy(Material source){
-        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
+
+    //物料属性
+    /*@ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"attributes"})// 解决循环查找的问题
+    @JoinTable(name = "t_material_attribute", joinColumns = {@JoinColumn(name = "material_id")}, inverseJoinColumns = {@JoinColumn(name = "attribute_id")})*/
+    @Transient
+    private Set<Attribute> attributes;
+
+
+    @Transient
+    private List<MaterialAttribute> materialAttributes;
+
+
+    public void copy(Material source) {
+        BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }
 
 

@@ -1,7 +1,6 @@
 package com.hqhop.modules.company.service.impl;
 
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
-import com.hqhop.modules.company.domain.CompanyInfo;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.utils.CompanyUpdateHelp;
@@ -138,6 +137,8 @@ public class CompanyUpdateServiceImpl implements CompanyUpdateService {
         }else {
             companyUpdate = companyUpdateRepository.findByCompanyKeyAndUserIdAndApproveResult(resources.getCompanyKey(),dingUser.getUserid(),"未知");
         }
+
+
         if(companyUpdate != null){
             String url = companyUpdate.getDingUrl();
             return  url;

@@ -1,12 +1,9 @@
 package com.hqhop.modules.company.service;
 
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.service.dto.AccountDTO;
 import com.hqhop.modules.company.service.dto.AccountQueryCriteria;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +48,7 @@ public interface AccountService {
      * @return
      */
     //@CacheEvict(allEntries = true)
-    AccountDTO create(Account resources);
+    Account create(Account resources);
 
     /**
      * 编辑

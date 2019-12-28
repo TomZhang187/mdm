@@ -1,6 +1,6 @@
 package com.hqhop.modules.company.service;
 
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.taobao.api.ApiException;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,9 +1,7 @@
 package com.hqhop.modules.company.rest;
 
 import com.hqhop.aop.log.Log;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
-import com.hqhop.modules.company.domain.CompanyInfo;
-import com.hqhop.modules.company.domain.CompanyUpdate;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Contact;
 import com.hqhop.modules.company.repository.ContactRepository;
 import com.hqhop.modules.company.service.ContactDingService;

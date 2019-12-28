@@ -1,9 +1,8 @@
 package com.hqhop.modules.company.service.impl;
 
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.domain.CompanyUpdate;
-import com.hqhop.modules.company.domain.Contact;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.company.repository.AccountRepository;
@@ -16,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.hqhop.utils.PageUtil;
@@ -61,12 +59,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AccountDTO create(Account resources) {
-        Snowflake snowflake = IdUtil.createSnowflake(1, 1);
-        resources.setAccountKey(snowflake.nextId());
-        //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批  字典为准
-        resources.setAccountState(1);
-        return accountMapper.toDto(accountRepository.save(resources));
+    public Account create(Account resources) {
+
+           //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批  字典为准
+           resources.setAccountState(1);
+           resources.setAccountKey(null);
+           return accountRepository.save(resources);
+
+
     }
 
     @Override

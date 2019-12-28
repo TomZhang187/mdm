@@ -23,4 +23,10 @@ public interface DictDetailRepository extends JpaRepository<DictDetail, Long>, J
    DictDetail findByValueAndDict_Id(String value,Long dictId);
 
     DictDetail findByLabelAndDict_Id(String label,Long dictId);
+
+    DictDetail findByLabel(String label);
+
+    @Query(value = "select * from  sys_dict_detail where label like %?1% and dict_id =?2", nativeQuery = true)
+    DictDetail findLikeLabelAndDict_Id(String label,Long dicId);
+
 }

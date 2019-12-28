@@ -18,15 +18,18 @@ public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
     private Clock clock = DefaultClock.INSTANCE;
 
+    //密匙
     @Value("${jwt.secret}")
     private String secret;
 
+    //过期时间
     @Value("${jwt.expiration}")
     private Long expiration;
 
     @Value("${jwt.header}")
     private String tokenHeader;
 
+    //通过令牌拿用户名
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -39,6 +42,9 @@ public class JwtTokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
+    /*
+    * 从令牌中获取数据申明
+    * */
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
@@ -51,6 +57,7 @@ public class JwtTokenUtil implements Serializable {
                 .getBody();
     }
 
+    //判断令牌是否过期
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(clock.now());
@@ -65,6 +72,7 @@ public class JwtTokenUtil implements Serializable {
         return false;
     }
 
+    //生成令牌
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
@@ -88,7 +96,7 @@ public class JwtTokenUtil implements Serializable {
         return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset)
                 && (!isTokenExpired(token) || ignoreTokenExpiration(token));
     }
-
+    //刷新令牌
     public String refreshToken(String token) {
         final Date createdDate = clock.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
@@ -103,6 +111,7 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
+    //验证令牌
     public Boolean validateToken(String token, UserDetails userDetails) {
         JwtUser user = (JwtUser) userDetails;
         final Date created = getIssuedAtDateFromToken(token);

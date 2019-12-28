@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding='UTF-8'?>
+<ufinterface roottag="basdoc" billtype="bscubas" replace="Y" receiver="0001" sender="1101" isexchange="Y" filename="客商档案样本数据文件.xml" proc="add">
+<basdoc id="1239560101">
+		<basdoc_head>
+			<!--客商基本档案主键,20位，可为空，由外系统指定或U8 cloud系统自动生成,要保证唯一-->
+			<pk_cubasdoc></pk_cubasdoc>			
+			<!--公司，不能为空，需要对照基础数据（公司目录），集团填写0001-->
+			<pk_corp>0001</pk_corp>			
+			<!--地区分类,不能为空，需要对照基础数据（地区分类）-->
+			<pk_areacl>华北地区yk</pk_areacl>			
+			<!--对应公司编码,可以为空，需要对照基础数据（公司目录）-->
+			<pk_corp1></pk_corp1>			
+			<!--客商编号，不能为空,不能重复-->
+			<custcode>yk</custcode>				
+			<!--客商名称，不能为空,不能重复-->
+			<custname>公司yk</custname>			
+			<!--客商简称，不能为空,必须输入-->
+			<custshortname>公司yk</custshortname>			
+			<!--外文名称，可以为空-->
+			<engname></engname>			
+			<!--助记码,可以为空-->
+			<mnecode></mnecode>			
+			<!--所属行业,可以为空，需要对照基础数据（经济行业）-->
+			<trade></trade>			
+			<!--是否散户(不能为空,必须填写Y/N)，默认N-->
+			<freecustflag>N</freecustflag>			
+			<!--是否DRP结点(不能为空，必须填写Y/N），默认N-->
+			<drpnodeflag>N</drpnodeflag>			
+			<!--是否渠道成员(不能为空，必须填写,Y/N），默认N-->
+			<isconnflag>N</isconnflag>			
+			<!--客商总公司编码,可以为空，需要对照基础数据（客商基本档案）-->
+			<pk_cubasdoc1></pk_cubasdoc1>			
+			<!--客商类型(不能为空，缺省为0, 0：外部单位 1：内部核算单位 2：内部法人单位 3：内部渠道成员)-->
+			<custprop>0</custprop>                        
+            <!--客商属性（只有“新增”时有效。不能为空，缺省为2，0：客户 1：供应商 2：客商）-->
+            <custtype>2</custtype>			
+			<!--纳税人登记号，可以为空-->
+			<taxpayerid></taxpayerid>			
+			<!--法人，可以为空-->
+			<legalbody></legalbody>			
+			<!--信用额度, 可以为空-->
+			<creditmny></creditmny>			
+			<!--经济类型，可以为空，需要对照基础数据（经济类型）-->
+			<ecotype></ecotype>			
+			<!--营业地址，可以为空-->
+			<saleaddr></saleaddr>			
+			<!--通信地址，可以为空-->
+			<conaddr></conaddr>			
+			<!--邮政编码，可以为空-->
+			<zipcode></zipcode>					
+			<!--三个电话，可以为空-->
+			<phone1>62986688</phone1>
+			<phone2></phone2>
+			<phone3></phone3>			
+			<!--两个传真，可以为空-->
+			<fax1></fax1>
+			<fax2></fax2>			
+			<!--三个联系人，可以为空-->
+			<linkman1></linkman1>
+			<linkman2></linkman2>
+			<linkman3></linkman3>			
+			<!--三个呼机，可以为空-->
+			<bp1></bp1>
+			<bp2></bp2>
+			<bp3></bp3>			
+			<!--三个手机，可以为空-->
+			<mobilephone1></mobilephone1>
+			<mobilephone2></mobilephone2>
+			<mobilephone3></mobilephone3>			
+			<!--E-mail地址，可以为空-->
+			<email></email>			
+			<!--Web网址，可以为空-->
+			<url></url>			
+			<!--注册资金，可以为空-->
+			<registerfund>0</registerfund>			
+			<!--备注，可以为空-->
+			<memo></memo>
+		</basdoc_head>
+</basdoc>
+</ufinterface>

@@ -1,19 +1,21 @@
 package com.hqhop.modules.material.service.impl;
 
+import com.hqhop.modules.material.domain.Attribute;
 import com.hqhop.modules.material.domain.MaterialType;
+import com.hqhop.modules.material.repository.MaterialAttributeRepository;
 import com.hqhop.modules.material.repository.MaterialTypeRepository;
 import com.hqhop.modules.material.service.MaterialTypeService;
 import com.hqhop.modules.material.service.dto.MaterialTypeDTO;
 import com.hqhop.modules.material.service.dto.MaterialTypeQueryCriteria;
 import com.hqhop.modules.material.service.mapper.MaterialTypeMapper;
 import com.hqhop.utils.QueryHelp;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.Cacheable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,9 +33,11 @@ public class MaterialTypeServiceImpl implements MaterialTypeService {
     @Autowired
     private MaterialTypeMapper materialTypeMapper;
 
+    @Autowired
+    private MaterialAttributeRepository materialAttributeRepository;
+
     @Override
     public List<MaterialTypeDTO> queryAll(MaterialTypeQueryCriteria criteria) {
-
         return materialTypeMapper.toDto(materialTypeRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
 
     }
@@ -98,18 +102,11 @@ public class MaterialTypeServiceImpl implements MaterialTypeService {
      * 新增物料小类
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public MaterialType addSmallType(MaterialType materialType) {
         return materialTypeRepository.save(materialType);
     }
 
-    /**
-     * 新增物料大分类
-     * @param materialType
-     */
-    @Override
-    public MaterialType addBigType(MaterialType materialType) {
-        return materialTypeRepository.save(materialType);
-    }
 
     /**
      * 修改物料分类
@@ -117,7 +114,32 @@ public class MaterialTypeServiceImpl implements MaterialTypeService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public MaterialType update(MaterialType entity) {
         return materialTypeRepository.saveAndFlush(entity);
+    }
+
+    /**
+     * 删除物料分类
+     * @param id
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteMaterialType(Long id) {
+        MaterialType one = materialTypeRepository.getOne(id);
+        for (Attribute attribute : one.getAttributes()) {
+            materialAttributeRepository.deleteByAttributeAttributeId(attribute.getAttributeId());
+        }
+        materialTypeRepository.deleteById(id);
+    }
+
+    @Override
+    public MaterialType findByTypeName(String typeName) {
+        return materialTypeRepository.findByTypeName(typeName);
+    }
+
+    @Override
+    public MaterialType getOne(Long parseLong) {
+        return materialTypeRepository.getOne(parseLong);
     }
 }

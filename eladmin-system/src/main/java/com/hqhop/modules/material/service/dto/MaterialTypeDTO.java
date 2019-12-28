@@ -3,6 +3,7 @@ package com.hqhop.modules.material.service.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -19,12 +20,21 @@ public class MaterialTypeDTO implements Serializable {
      * 名称
      */
     private String typeName;
+    /**
+     * 选择框的名字
+     */
+    private String name;
 
+
+    //物料分类编码
+    private String materialTypeCode;
     /**
      * 上级分类
      */
     private Long parentId;
 
+    @NotNull
+    private Boolean enabled;
     /**
     子级分类
      */
@@ -40,4 +50,5 @@ public class MaterialTypeDTO implements Serializable {
     public String getLabel() {
         return typeName;
     }
+
 }

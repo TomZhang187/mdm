@@ -13,12 +13,13 @@ import java.util.Set;
 @Data
 public class MaterialTypeQueryCriteria {
 
-    @Query(type = Query.Type.IN, propName="typeId")
-    private Set<Long> ids;
+//    @Query(type = Query.Type.IN, propName="typeId")
+//    private Set<Long> ids;
 
     @Query(type = Query.Type.INNER_LIKE)
     private String name;
-
     @Query
     private Long pid;
+    @Query
+    private Boolean enabled;
 }

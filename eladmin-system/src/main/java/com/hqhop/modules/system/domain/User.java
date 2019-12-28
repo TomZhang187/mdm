@@ -1,5 +1,6 @@
 package com.hqhop.modules.system.domain;
 
+import com.hqhop.modules.company.domain.Account;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,7 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,22 +27,27 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = Update.class)
+    @Column(name = "id")
+    @NotNull(groups = Employee.Update.class)
     private Long id;
 
+    //用户名
     @NotBlank
     @Column(unique = true)
     private String username;
+
+
+
 
     @OneToOne
     @JoinColumn(name = "avatar_id")
     private UserAvatar userAvatar;
 
-    @NotBlank
-    @Pattern(regexp = "([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}",message = "格式错误")
+
+//    @Pattern(regexp = "([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}",message = "格式错误")
     private String email;
 
-    @NotBlank
+
     private String phone;
 
     @NotNull
@@ -65,10 +73,14 @@ public class User implements Serializable {
     @OneToOne
     @JoinColumn(name = "job_id")
     private Job job;
+//
+//    @OneToOne
+//    @JoinColumn(name = "dept_id")
+//    private Dept dept;
 
     @OneToOne
-    @JoinColumn(name = "dept_id")
-    private Dept dept;
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
     @Override
     public String toString() {
@@ -86,4 +98,6 @@ public class User implements Serializable {
     }
 
     public @interface Update {}
+
+
 }

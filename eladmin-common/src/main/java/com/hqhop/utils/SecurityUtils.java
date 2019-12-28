@@ -5,6 +5,8 @@ import com.hqhop.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Set;
+
 /**
  * 获取当前登录的用户
  * @author Zheng Jie
@@ -16,11 +18,13 @@ public class SecurityUtils {
         UserDetails userDetails = null;
         try {
             userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         } catch (Exception e) {
-            throw new BadRequestException(HttpStatus.UNAUTHORIZED, "登录状态过期");
+                throw new BadRequestException(HttpStatus.UNAUTHORIZED, "登录状态过期");
         }
         return userDetails;
     }
+
 
     /**
      * 获取系统用户名称
@@ -30,6 +34,28 @@ public class SecurityUtils {
         Object obj = getUserDetails();
         JSONObject json = new JSONObject(obj);
         return json.get("username", String.class);
+    }
+
+
+    /**
+     * 获取真实员工名称
+     * @return 真实员工名称
+     */
+    public static String getEmployeeName(){
+        Object obj = getUserDetails();
+        JSONObject json = new JSONObject(obj);
+        return json.get("employeeName", String.class);
+    }
+
+
+    /**
+     * 获取当前用户钉钉iD
+     * @return 获取当前用户钉钉iD
+     */
+    public static String getDingId(){
+        Object obj = getUserDetails();
+        JSONObject json = new JSONObject(obj);
+        return json.get("dingId", String.class);
     }
 
     /**

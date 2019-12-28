@@ -84,7 +84,7 @@ public class CompanyUpdate implements Serializable {
 
     // 所属公司
     @Column(name = "belong_company")
-    private Integer belongCompany;
+    private String belongCompany;
 
 
     // 公司状态
@@ -297,13 +297,13 @@ public class CompanyUpdate implements Serializable {
         this.belongArea = belongArea;
     }
 
-    public Integer getBelongCompany() {
+    public String getBelongCompany() {
         return belongCompany;
     }
 
 
 
-    public void setBelongCompany(Integer belongCompany) {
+    public void setBelongCompany(String belongCompany) {
         this.belongCompany = belongCompany;
     }
 
@@ -540,15 +540,15 @@ public class CompanyUpdate implements Serializable {
         companyInfo.setCompanyKey(this.companyKey);
         companyInfo.setCreateMan(this.createMan);
 //        companyInfo.setCreateTime(this.createTime);
-        companyInfo.setBelongArea(Integer.parseInt(this.belongArea));
+        companyInfo.setBelongArea(this.belongArea);
         companyInfo.setBelongCompany(this.belongCompany);
-        companyInfo.setCompanyProp(Integer.parseInt(this.companyProp));
+        companyInfo.setCompanyProp(this.companyProp);
         companyInfo.setCompanyShortName(this.companyShortName);
         companyInfo.setCompanyState(Integer.parseInt(this.companyState));
-        companyInfo.setCompanyType(Integer.parseInt(this.companyType));
+        companyInfo.setCompanyType(this.companyType);
         companyInfo.setCompanyName(this.companyName);
         companyInfo.setContactAddress(this.contactAddress);
-        companyInfo.setEconomicType(Integer.parseInt(this.economicType));
+        companyInfo.setEconomicType(this.economicType);
         companyInfo.setForeignName(this.foreignName);
         companyInfo.setIsDisable(Integer.parseInt(this.isDisable));
         companyInfo.setIsRetai(Integer.parseInt(this.isRetai));
@@ -558,7 +558,7 @@ public class CompanyUpdate implements Serializable {
         companyInfo.setRegisterfund(this.registerfund);
         companyInfo.setRemark(this.remark);
         companyInfo.setTaxId(this.taxId);
-        companyInfo.setTrade(Integer.parseInt(this.trade));
+        companyInfo.setTrade(this.trade);
         companyInfo.setIsSynergyPay(Integer.parseInt(this.isSynergyPay));
          return companyInfo;
     }

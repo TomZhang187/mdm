@@ -1,6 +1,10 @@
 package com.hqhop.config;
 
 import com.hqhop.modules.system.domain.Dept;
+import com.hqhop.modules.system.domain.Employee;
+import com.hqhop.modules.system.domain.Role;
+import com.hqhop.modules.system.repository.EmployeeRepository;
+import com.hqhop.modules.system.repository.RoleRepository;
 import com.hqhop.modules.system.service.DeptService;
 import com.hqhop.modules.system.service.RoleService;
 import com.hqhop.modules.system.service.UserService;
@@ -20,7 +24,7 @@ import java.util.Set;
  * @date 2019-4-1
  */
 @Component
-public class DataScope {
+public class  DataScope {
 
     private final String[] scopeType = {"全部","本级","自定义"};
 
@@ -31,27 +35,40 @@ public class DataScope {
     private RoleService roleService;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private DeptService deptService;
 
     public Set<Long> getDeptIds() {
 
         UserDTO user = userService.findByName(SecurityUtils.getUsername());
+        Employee employee = employeeRepository.findByDingId(user.getEmployee().getDingId());
+        user.setDepts(employee.getDeptsSet());
 
         // 用于存储部门id
         Set<Long> deptIds = new HashSet<>();
 
         // 查询用户角色
-        List<RoleSmallDTO> roleSet = roleService.findByUsers_Id(user.getId());
+        Set<Role> roleSet =roleRepository.findByUsers_Id(user.getId());
 
-        for (RoleSmallDTO role : roleSet) {
+        for (Role role : roleSet) {
 
             if (scopeType[0].equals(role.getDataScope())) {
-                return new HashSet<>() ;
+
+             return new HashSet<>() ;
+//                return  null;
             }
 
             // 存储本级的数据权限
             if (scopeType[1].equals(role.getDataScope())) {
-                deptIds.add(user.getDept().getId());
+                Set<Long> deptsSet = user.getDepts();
+                for (Long aLong : deptsSet) {
+                    deptIds.add(aLong);
+                }
             }
 
             // 存储自定义的数据权限
@@ -71,6 +88,21 @@ public class DataScope {
 
 
     public List<Long> getDeptChildren(List<Dept> deptList) {
+        List<Long> list = new ArrayList<>();
+        deptList.forEach(dept -> {
+                    if (dept!=null && dept.getEnabled()){
+                        List<Dept> depts = deptService.findByPid(dept.getId());
+                        if(deptList!=null && deptList.size()!=0){
+                            list.addAll(getDeptChildren(depts));
+                        }
+                        list.add(dept.getId());
+                    }
+                }
+        );
+        return list;
+    }
+
+    public List<Long> getDeptParent(List<Dept> deptList) {
         List<Long> list = new ArrayList<>();
         deptList.forEach(dept -> {
                     if (dept!=null && dept.getEnabled()){

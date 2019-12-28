@@ -1,9 +1,6 @@
 package com.hqhop.modules.company.service.impl;
 
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
-import com.hqhop.config.dingtalk.dingtalkVo.DingUser;
-import com.hqhop.modules.company.domain.CompanyInfo;
+import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.domain.Contact;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
@@ -22,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,12 +59,11 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ContactDTO create(Contact resources) {
-        Snowflake snowflake = IdUtil.createSnowflake(1, 1);
-        resources.setContactKey(snowflake.nextId());
+    public Contact create(Contact resources) {
+
         //1 新增状态 2 新增审批中 3 驳回 4 审批通过5变更审批  字典为准
         resources.setContactState(1);
-        return contactMapper.toDto(contactRepository.save(resources));
+        return contactRepository.save(resources);
     }
 
     @Override

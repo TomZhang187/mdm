@@ -4,6 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class FileUtilTest {
@@ -33,4 +38,8 @@ public class FileUtilTest {
         Assert.assertEquals("1.00MB   ", FileUtil.getSize(1048576));
         Assert.assertEquals("1.00GB   ", FileUtil.getSize(1073741824));
     }
+
+
+
+
 }

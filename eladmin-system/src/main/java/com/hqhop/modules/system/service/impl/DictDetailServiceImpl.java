@@ -116,12 +116,33 @@ public class DictDetailServiceImpl implements DictDetailService {
         criteria.setDictName(dictName.trim());
         criteria.setValue(value.toString());
         List<DictDetail> list = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
-       if(list.isEmpty()){
-           return null;
-       }else {
-           return  list.get(0).getLabel();
-       }
+        if(list.isEmpty()){
+            return null;
+        }else {
+            return  list.get(0).getLabel();
+        }
     }
+
+    /*
+   拿到字典标签通过字典值
+   * */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String getDicLabel(String dictName, String value) {
+        DictDetailQueryCriteria criteria = new DictDetailQueryCriteria();
+        criteria.setDictName(dictName.trim());
+        criteria.setValue(value);
+        List<DictDetail> list = dictDetailRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
+        if(list.isEmpty()){
+            return null;
+        }else {
+            return  list.get(0).getLabel();
+        }
+    }
+
+
+
+
 /* 拿到字典值通过字典标签
 * */
     @Override
