@@ -13,9 +13,9 @@ public class U8CConfig {
     /**
      * U8Cloud接口请求地址
      */
-    @Value("$({u8cloud.uri})")
-    private String url;
-
-    @Value("${u8cloud.account}")
-    private String account;
+//    @Value("$({u8cloud.uri})")
+//    private String url;
+//
+//    @Value("${u8cloud.account}")
+//    private String account;
 }

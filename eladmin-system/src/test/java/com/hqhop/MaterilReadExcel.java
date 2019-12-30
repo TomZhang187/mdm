@@ -1,9 +1,12 @@
 package com.hqhop;
 
-import com.alipay.api.domain.ItemDiagnoseType;
-import com.hqhop.easyExcel.excelRead.MaterialExcelUtils;
-import com.hqhop.easyExcel.model.*;
-import com.hqhop.modules.material.domain.*;
+import com.hqhop.easyexcel.excelRead.MaterialExcelUtils;
+import com.hqhop.easyexcel.model.*;
+import com.hqhop.exception.BadRequestException;
+import com.hqhop.modules.material.domain.Attribute;
+import com.hqhop.modules.material.domain.Material;
+import com.hqhop.modules.material.domain.MaterialProduction;
+import com.hqhop.modules.material.domain.MaterialType;
 import com.hqhop.modules.material.repository.AttributeRepository;
 import com.hqhop.modules.material.repository.MaterialProductionRepository;
 import com.hqhop.modules.material.repository.MaterialRepository;
@@ -11,23 +14,20 @@ import com.hqhop.modules.material.repository.MaterialTypeRepository;
 import com.hqhop.modules.material.service.MaterialDingService;
 import com.hqhop.modules.material.service.MaterialService;
 import com.hqhop.modules.material.service.impl.AttributeServiceImpl;
-import com.hqhop.modules.system.domain.*;
+import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.*;
 import com.hqhop.modules.system.service.DeptService;
 import com.hqhop.modules.system.service.UserService;
-import com.hqhop.modules.system.service.dto.UserDTO;
 import com.taobao.api.ApiException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -376,7 +376,6 @@ public class MaterilReadExcel {
                     }
                }
         }
-
     }
 
 
@@ -384,17 +383,13 @@ public class MaterilReadExcel {
     @Test
     public  void excelTest5() throws
             ApiException {
-
-
-        String reges = "[0-9.]{9}";
-        List<IncMaterial> list = MaterialExcelUtils.readMaterialExcel("D:\\easyExcel\\科瑞尔物料属性整理表.xlsx");
-        for (IncMaterial object : list) {
-
+//        String reges = "[0-9.]{9}";
+        List list = MaterialExcelUtils.readMaterialExcel("/Users/apple/Desktop/material_all.xlsx");
+        for (Object object1 : list) {
+            IncMaterial object = (IncMaterial) object1;
             Material byNameAndModel = null;
             if(object.getStockName() !=null && object.getModel()!=null){
                byNameAndModel = materialRepository.findByNameAndModel(object.getStockName(), object.getModel());
-
-
             }
             if (byNameAndModel != null){
                 saveMaterialProduction(object, byNameAndModel);
@@ -403,22 +398,20 @@ public class MaterilReadExcel {
 
 
             MaterialType type = null;
-
               if(object.getIdentification()!=null && object.getIdentification().contains(".")){
                   type = materialTypeRepository.findByMaterialTypeCode(object.getIdentification());
                   if(type == null){
                       type = materialTypeRepository.findByTypeName(object.getStockClassification()!=null?object.getStockClassification():"无");
                   }
               }
-
                 Material material = new Material();
                 material.setApprovalState("4");
                 if(type != null){
-
-                    if(object.getNewCinvcode()!=null && object.getNewCinvcode().matches(reges)){
+                    if(object.getNewCinvcode()!=null && !object.equals("")){
                         material.setRemark(object.getNewCinvcode());
                     } else {
-                        material.setRemark(materialService.getWaterCode(type.getId()));
+                        throw new BadRequestException(object.getOldCinvcode()+"没有找到对应的新物料编码");
+//                        material.setRemark(materialService.getWaterCode(type.getId()));
                     }
 
                 }
@@ -431,7 +424,7 @@ public class MaterilReadExcel {
                 if (type != null){
                     material.setType(type);
                      }
-            if(object.getIdentification()!=null && object.getIdentification().contains(".") &&  type!=null) {
+            if(object.getIdentification()!=null && object.getIdentification().length()>4 &&  type!=null) {
                 Material material1 =  materialRepository.save(material);
                 //导入生产档案
                 saveMaterialProduction(object,material);
@@ -489,7 +482,7 @@ public class MaterilReadExcel {
 
             materialProduction.setIsOutgoingWarehousing("是".equals(object.getIsOutgoingWarehousing())?true:false);
             materialProduction.setIsBatchesAccount("是".equals(object.getIsBatchesAccount())?true:false);
-            materialProduction.setValuationMethod("移动平均");
+            materialProduction.setValuationMethod("3");
             materialProduction.setPlanningAttribute(object.getPlanningAttribute());
             materialProduction.setFixedAdvanceTime(object.getFixedAdvanceTime());
 
@@ -499,7 +492,7 @@ public class MaterilReadExcel {
                 materialProduction.setMaterial(materia);
             }
 
-            materialProduction.setDefaultFactory("成都科瑞尔低温设备有限公司");
+            materialProduction.setDefaultFactory(object.getDefaultFactory());
             materialProductionRepository.save(materialProduction);
 
         }
@@ -948,7 +941,7 @@ public class MaterilReadExcel {
 
 
 //导入生产档案
-       public void  saveMaterialProduction2(IncMateril2 object,Material materia) {
+       public void  saveMaterialProduction2(IncMateril2 object, Material materia) {
 
 
            MaterialProduction byOriginalRemark = materialProductionRepository.findByOriginalRemark(object.getLine6());

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<ufinterface account="U8cloud" billtype="defStock" isexchange="Y" proc="add" receiver="1002" replace="Y" roottag=""
+             sender="Test" subbilltype="">
+    <bill id="">
+        <billhead>
+            <a_lyid>1902</a_lyid>
+            <a_pk_corp>0001</a_pk_corp>
+            <a_createtime>2019-12-28 18:40:09</a_createtime>
+            <a_creator>主数据平台</a_creator>
+            <a_invcode>2.10864</a_invcode>
+            <a_invname>弯头,90EL,</a_invname>
+            <a_invtype>GBT12459,Φ159×4,06Cr19Ni10,酸洗固溶</a_invtype>
+            <a_laborflag>N</a_laborflag>
+            <a_modifier>主数据平台</a_modifier>
+            <a_modifytime>2019-12-28 18:40:09</a_modifytime>
+            <a_pk_invcl>002019</a_pk_invcl>
+            <a_pk_measdoc>07</a_pk_measdoc>
+            <a_pk_taxitems>13%</a_pk_taxitems>
+            <b_lyid>2001</b_lyid>
+            <b_createtime>2019-12-28 18:40:09</b_createtime>
+            <b_creator>主数据平台</b_creator>
+            <b_free1></b_free1>
+            <b_free2></b_free2>
+            <b_free3></b_free3>
+            <b_issalable>Y</b_issalable>
+            <b_isvirtual>N</b_isvirtual>
+            <b_modifier></b_modifier>
+            <b_modifytime></b_modifytime>
+            <b_outtrackin>N</b_outtrackin>
+            <b_pk_corp>1002</b_pk_corp>
+            <b_pk_dftfactory>1002</b_pk_dftfactory>
+            <b_sealdate></b_sealdate>
+            <b_sealflag>N</b_sealflag>
+            <b_serialmanaflag>N</b_serialmanaflag>
+            <b_wholemanaflag>Y</b_wholemanaflag>
+            <c_lyid>2001</c_lyid>
+            <c_chkfreeflag>Y</c_chkfreeflag>
+            <c_combineflagc>Y</c_combineflagc>
+            <c_createtimec></c_createtimec>
+            <c_creator>HLLO</c_creator>
+            <c_iscostbyorder>N</c_iscostbyorder>
+            <c_isctoutput>N</c_isctoutput>
+            <c_issend>Y</c_issend>
+            <c_isused>Y</c_isused>
+            <c_lowstocknum></c_lowstocknum>
+            <c_materstate>2</c_materstate>
+            <c_matertyp>MR</c_matertyp>
+            <c_maxstornum></c_maxstornum>
+            <c_modifier></c_modifier>
+            <c_modifytime></c_modifytime>
+            <c_outtype>不委外</c_outtype>
+            <c_pk_corp>1002</c_pk_corp>
+            <c_pk_deptdoc3></c_pk_deptdoc3>
+            <c_pk_psndoc3c></c_pk_psndoc3c>
+            <c_pk_sealuser></c_pk_sealuser>
+            <c_pricemethod>3</c_pricemethod>
+            <c_safetystocknum></c_safetystocknum>
+            <c_scheattr>MRP</c_scheattr>
+            <c_sealdate></c_sealdate>
+            <c_sealflag>N</c_sealflag>
+            <c_sfcbdx>N</c_sfcbdx>
+            <c_sfpchs>Y</c_sfpchs>
+            <c_stockbycheck>N</c_stockbycheck>
+            <c_virtualflag>N</c_virtualflag>
+            <c_zdhd></c_zdhd>
+            <c_pk_calbody>1002</c_pk_calbody>
+            <c_supplytype>0</c_supplytype>
+            <c_fixedahead>18</c_fixedahead>
+        </billhead>
+    </bill>
+</ufinterface>

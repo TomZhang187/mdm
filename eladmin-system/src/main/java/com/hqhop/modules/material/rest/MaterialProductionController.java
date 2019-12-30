@@ -1,8 +1,13 @@
 package com.hqhop.modules.material.rest;
 
 import com.hqhop.aop.log.Log;
+import com.hqhop.easyexcel.excelRead.MaterialExcelUtils;
+import com.hqhop.easyexcel.model.IncMaterial;
+import com.hqhop.exception.BadRequestException;
+import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.domain.MaterialProduction;
+import com.hqhop.modules.material.domain.MaterialType;
 import com.hqhop.modules.material.service.MaterialProducionDingService;
 import com.hqhop.modules.material.service.MaterialProductionService;
 import com.hqhop.modules.material.service.dto.MaterialProductionQueryCriteria;
@@ -16,6 +21,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
+
+import java.util.List;
 
 /**
 * @author wst
@@ -125,6 +132,8 @@ public class MaterialProductionController {
 
         return new ResponseEntity(materialProductionService.getTemporaryData(resources),HttpStatus.OK);
     }
+
+
 }
 
 
