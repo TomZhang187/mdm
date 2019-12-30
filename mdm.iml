@@ -4,6 +4,14 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:mdm.iml
+========
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
+>>>>>>>> 6d57789167a5e0c90f2547b090b99b678a162aa6:eladmin-logging/eladmin-logging.iml
+>>>>>>> 6d57789167a5e0c90f2547b090b99b678a162aa6
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -63,6 +71,10 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.jayway.jsonpath:json-path:2.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.minidev:json-smart:2.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.minidev:accessors-smart:1.2" level="project" />
+<<<<<<< HEAD
+    <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm:5.0.4" level="project" />
+=======
+>>>>>>> 6d57789167a5e0c90f2547b090b99b678a162aa6
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.assertj:assertj-core:3.11.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-core:2.23.0" level="project" />
@@ -123,7 +135,15 @@
     <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.10" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.10" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.2" level="project" />
+<<<<<<< HEAD
+    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.0.6" level="project" />
+=======
+<<<<<<<< HEAD:mdm.iml
     <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.0.7" level="project" />
+========
+    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.0.6" level="project" />
+>>>>>>>> 6d57789167a5e0c90f2547b090b99b678a162aa6:eladmin-logging/eladmin-logging.iml
+>>>>>>> 6d57789167a5e0c90f2547b090b99b678a162aa6
     <orderEntry type="library" name="Maven: org.lionsoul:ip2region:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi:3.17" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.11" level="project" />
@@ -133,9 +153,12 @@
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.virtuald:curvesapi:1.04" level="project" />
+<<<<<<< HEAD
+=======
     <orderEntry type="library" name="Maven: com.alibaba:easyexcel:1.1.2-beta5" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib:3.1" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.asm:asm:4.2" level="project" />
+>>>>>>> 6d57789167a5e0c90f2547b090b99b678a162aa6
     <orderEntry type="library" name="Maven: xerces:xercesImpl:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.4.01" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.54" level="project" />
