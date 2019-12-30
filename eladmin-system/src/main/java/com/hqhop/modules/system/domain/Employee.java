@@ -172,7 +172,7 @@ public class Employee implements Serializable {
     }
 
     public void getDateByResponse(OapiUserGetResponse dingUser){
-        this.dingId = dingUser.getUserid();
+        this.dingId = dingUser.getDingId();
         this.employeePhone = dingUser.getMobile();
         this.extensionNumber = dingUser.getTel();
         this.officeAddress = dingUser.getWorkPlace();

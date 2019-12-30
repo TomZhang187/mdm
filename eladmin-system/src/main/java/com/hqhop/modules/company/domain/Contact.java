@@ -44,7 +44,7 @@ public class Contact implements Serializable {
 
     //联系人类型
     @Column(name = "contact_type")
-    private Integer contactType;
+    private String contactType;
 
     //客商收发货地址名称
     @Column(name = "delivery_address")
@@ -54,9 +54,9 @@ public class Contact implements Serializable {
     @Column(name = "is_default_address")
     private Integer isDefaultAddress;
 
-    //所属公司
+    //所属客商
     @Column(name = "belong_company")
-    private Long belongCompany;
+    private String belongCompany;
 
     //分配公司
     @Column(name = "company_key")
@@ -118,11 +118,11 @@ public class Contact implements Serializable {
         this.position = position;
     }
 
-    public Integer getContactType() {
+    public String getContactType() {
         return contactType;
     }
 
-    public void setContactType(Integer contactType) {
+    public void setContactType(String contactType) {
         this.contactType = contactType;
     }
 
@@ -142,11 +142,11 @@ public class Contact implements Serializable {
         this.isDefaultAddress = isDefaultAddress;
     }
 
-    public Long getBelongCompany() {
+    public String getBelongCompany() {
         return belongCompany;
     }
 
-    public void setBelongCompany(Long belongCompany) {
+    public void setBelongCompany(String belongCompany) {
         this.belongCompany = belongCompany;
     }
 

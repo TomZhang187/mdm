@@ -76,11 +76,9 @@ public class CompanyInfo implements Serializable {
     @Column(name = "company_state", nullable = false)
     private Integer companyState;
 
-    // 公司类型
-    @Column(name = "company_type", nullable = false)
-    private String companyType;
-
-
+    // 客商属性
+    @Column(name = "customer_prop", nullable = false)
+    private String customerProp;
 
     //客商类型
     @Column(name = "customer_type", nullable = false)
@@ -187,7 +185,6 @@ public class CompanyInfo implements Serializable {
                 ", companyProp='" + companyProp + '\'' +
                 ", companyShortName='" + companyShortName + '\'' +
                 ", companyState=" + companyState +
-                ", companyType='" + companyType + '\'' +
                 ", customerType='" + customerType + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", contactAddress='" + contactAddress + '\'' +
@@ -322,13 +319,6 @@ public class CompanyInfo implements Serializable {
         this.companyState = companyState;
     }
 
-    public String getCompanyType() {
-        return companyType;
-    }
-
-    public void setCompanyType(String companyType) {
-        this.companyType = companyType;
-    }
 
     public String getCompanyName() {
         return companyName;
@@ -487,4 +477,12 @@ public class CompanyInfo implements Serializable {
         this.accounts = accounts;
     }
 
+
+    public String getCustomerProp() {
+        return customerProp;
+    }
+
+    public void setCustomerProp(String customerProp) {
+        this.customerProp = customerProp;
+    }
 }

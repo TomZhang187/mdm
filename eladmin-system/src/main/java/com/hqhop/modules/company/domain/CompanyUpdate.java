@@ -96,8 +96,8 @@ public class CompanyUpdate implements Serializable {
     private String dingUrl;
 
     // 公司类型
-    @Column(name = "company_type")
-    private String companyType;
+    @Column(name = "customer_prop")
+    private String customerProp;
 
     // 公司名称
     @Column(name = "company_name")
@@ -176,7 +176,6 @@ public class CompanyUpdate implements Serializable {
     }
 
 
-
     @Override
     public String toString() {
         return "CompanyUpdate{" +
@@ -185,7 +184,7 @@ public class CompanyUpdate implements Serializable {
                 ", approveResult='" + approveResult + '\'' +
                 ", userId='" + userId + '\'' +
                 ", createMan='" + createMan + '\'' +
-               ", createTime=" + createTime +
+                ", approveTime=" + approveTime +
                 ", operationType='" + operationType + '\'' +
                 ", operateTime=" + operateTime +
                 ", companyKey=" + companyKey +
@@ -194,7 +193,8 @@ public class CompanyUpdate implements Serializable {
                 ", belongArea='" + belongArea + '\'' +
                 ", belongCompany='" + belongCompany + '\'' +
                 ", companyState='" + companyState + '\'' +
-                ", companyType='" + companyType + '\'' +
+                ", dingUrl='" + dingUrl + '\'' +
+                ", customerProp='" + customerProp + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", contactAddress='" + contactAddress + '\'' +
                 ", economicType='" + economicType + '\'' +
@@ -210,9 +210,10 @@ public class CompanyUpdate implements Serializable {
                 ", remark='" + remark + '\'' +
                 ", taxId='" + taxId + '\'' +
                 ", trade='" + trade + '\'' +
+                ", contactKey=" + contactKey +
+                ", accountKey=" + accountKey +
                 '}';
     }
-
 
     public Long getContactKey() {
         return contactKey;
@@ -347,16 +348,16 @@ public class CompanyUpdate implements Serializable {
         this.companyState = companyState;
     }
 
-    public String getCompanyType() {
-        return companyType;
+    public String getCustomerProp() {
+        return customerProp;
     }
     @JsonIgnore
     public Integer getCompanyTypeInt() {
-        return Integer.parseInt(companyType);
+        return Integer.parseInt(customerProp);
     }
 
-    public void setCompanyType(String companyType) {
-        this.companyType = companyType;
+    public void setCompanyType(String customerProp) {
+        this.customerProp = customerProp;
     }
 
     public String getCompanyName() {
@@ -545,7 +546,7 @@ public class CompanyUpdate implements Serializable {
         companyInfo.setCompanyProp(this.companyProp);
         companyInfo.setCompanyShortName(this.companyShortName);
         companyInfo.setCompanyState(Integer.parseInt(this.companyState));
-        companyInfo.setCompanyType(this.companyType);
+        companyInfo.setCustomerProp(this.customerProp);
         companyInfo.setCompanyName(this.companyName);
         companyInfo.setContactAddress(this.contactAddress);
         companyInfo.setEconomicType(this.economicType);
@@ -571,7 +572,7 @@ public class CompanyUpdate implements Serializable {
        this.companyProp = companyInfo.getCompanyProp().toString();
        this.companyShortName = companyInfo.getCompanyShortName();
        this.companyState = companyInfo.getCompanyState().toString();
-       this.companyType = companyInfo.getCompanyType().toString();
+       this.customerProp = companyInfo.getCustomerProp();
        this.companyName = companyInfo.getCompanyName();
        this.contactAddress = companyInfo.getContactAddress();
        this.economicType = companyInfo.getEconomicType().toString();

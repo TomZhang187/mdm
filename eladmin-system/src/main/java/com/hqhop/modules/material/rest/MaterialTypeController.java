@@ -50,7 +50,6 @@ public class MaterialTypeController {
     //@PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT','DEPT_ALL','DEPT_SELECT')")
     public ResponseEntity getMaterialTypes(MaterialTypeQueryCriteria criteria) {
 //         数据权限
-        //criteria.setIds(dataUtil.getMaterialTypeIds());
         List<MaterialTypeDTO> materialTypes = materialTypeService.queryAll(criteria);
         materialTypes.forEach(materialTypeDTO -> materialTypeDTO.setName(materialTypeDTO.getTypeName()));
         System.out.println(materialTypes);
@@ -105,7 +104,7 @@ public class MaterialTypeController {
     @GetMapping(value = "/updateType")
     //@PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT','DEPT_ALL','DEPT_SELECT')")
     public ResponseEntity updateType(@Valid @RequestBody(required = true) MaterialTypeDTO materialTypeDTO) {
-        // materialTypeService.update()
+//        materialTypeService.update()
         return null;
     }
 

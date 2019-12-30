@@ -598,7 +598,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             // 明细-单行输入框
             OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName11 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
             ItemName11.setName("公司类型");
-            ItemName11.setValue(dictDetailService.getDicLabel("company_type",resouces.getCompanyType()));
+            ItemName11.setValue(dictDetailService.getDicLabel("customer_prop",resouces.getCustomerProp()));
             list1.add(ItemName11);
 
             // 明细-单行输入框

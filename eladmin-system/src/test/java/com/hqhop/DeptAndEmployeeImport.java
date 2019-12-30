@@ -15,6 +15,7 @@ import com.hqhop.modules.company.domain.U8cDomain.U8cContact;
 import com.hqhop.modules.company.repository.AccountRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
+import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.DeptRepository;
 import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.service.DeptDingService;
@@ -112,11 +113,33 @@ public class DeptAndEmployeeImport {
      @Test
     public void test4() throws
             ApiException {
-        try {
+
+
+//        OapiUserGetResponse userInfo = DingTalkUtils.getUserInfo("24332817681293637");
+//         System.out.println(userInfo.getJobnumber());
+//
+
+
+
+         try {
             employeeDingService.syncDingUser("D:\\easyExcel\\通讯录.xlsx");
         } catch (ApiException e) {
             e.printStackTrace();
         }
+
+
+         List<Employee> all = employeeRepository.findAll();
+         for (Employee employee : all) {
+
+             OapiUserGetResponse userInfo = DingTalkUtils.getUserInfo(employee.getDingId());
+             if(userInfo.getDepartment() !=null && userInfo.getDepartment().size()!=0){
+                 employee.setDingBelongDepts(userInfo.getDepartment().toString());
+             }
+             employee.setEmployeeCode(userInfo.getJobnumber());
+             employeeRepository.save(employee);
+
+
+         }
     }
 
     @Test
@@ -136,114 +159,6 @@ public class DeptAndEmployeeImport {
 
 
 
-
-    //客商基本档案
-    @Test
-    public void test7() throws
-            ApiException {
-
-        CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(50539L);
-        String url = "http://119.6.33.92:8087/service/AddCubasdocData";
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LinkedMultiValueMap<Object, Object> map = new LinkedMultiValueMap<>();
-        map.add("custcode", companyInfo.getTaxId()!=null?companyInfo.getTaxId():"");////客商编码
-        map.add("custname", companyInfo.getCompanyName()!=null?companyInfo.getCompanyName():"");//客商名称
-        map.add("custshortname", companyInfo.getCompanyShortName()!=null?companyInfo.getCompanyShortName():"");//简称名称
-
-        CompanyInfo byCompanyKey = companyInfoRepository.findByCompanyKey(companyInfo.getParentCompanyId());
-        map.add("pk_cubasdoc1",byCompanyKey!=null?byCompanyKey.getTaxId():""); //客商总公司编码
-        map.add("custprop", companyInfo.getCustomerType());//客商类型
-        map.add("custflag", companyInfo.getCompanyType());//客商属性
-
-        map.add("pk_corp1", "4".equals(companyInfo.getCustomerType())?"":companyInfo.getBelongCompany());//对应公司
-
-        map.add("pk_areacl", companyInfo.getBelongArea());//所属地区
-
-        map.add("pk_crop",companyInfo.getBelongCompany()); //组织
-        map.add("csid",companyInfo.getCompanyKey().toString());        //客商id   `
-
-
-        Set<Contact> contacts= contactRepository.findByCompanyKey(companyInfo.getCompanyKey());
-        Set<Account> accounts = accountRepository.findByCompanyKey(companyInfo.getCompanyKey());
-        map.add("addrlist",  JSON.toJSONString(U8cContact.getListBySetContact(contacts,companyInfo.getBelongArea())));  //联系人集合
-        map.add("banklist", JSON.toJSONString(U8cAccount.getListBySetAccount(accounts)));//银行信息
-        if(companyInfo.getIsSynergyPay() != null){
-            map.add("cooperateflag",companyInfo.getIsSynergyPay()!=1?"N":"Y"); //是否收付协同
-        }else {
-            map.add("cooperateflag",companyInfo.getIsSynergyPay()); //是否收付协同
-        }
-       map.add("pk_salestru",companyInfo.getBelongCompany());   //销售组织
-        map.add("pk_calbody",companyInfo.getBelongCompany());    //库存组织
-        map.add("pk_respdept1",companyInfo.getChargeDepartment());  //专管部门
-        map.add("pk_resppsn1",companyInfo.getProfessionSalesman()); //专管业务员
-        map.add("creditlevel",companyInfo.getCreditRating());                    //行用等级
-        map.add("sealflag",companyInfo.getIsDisable()!=1?"N":"Y");           //是否封存
-
-
-        map.add("creator", companyInfo.getCreateMan());  //创建人
-        map.add("createtime", df.format(LocalDateTime.now()));  //创建时间
-        map.add("modifier", companyInfo.getUpdateMan());    //修改人
-        map.add("modifytime", df.format(LocalDateTime.now()));  //修改时间
-        String s = HttpUtil.postRequest(url, map);
-        System.out.println(s);
-        System.out.println(companyInfo.toString());
-
-    }
-
-
-
-
-
-    //客商管理档案
-
-    @Test
-    public void test8() throws
-            ApiException {
-
-
-        String url = "http://119.6.33.92:8087/service/AddCubasdocData";
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("custcode", "91610000681557372F");//客商编码
-        map.add("custname", "测试公司名");//客商名称
-        map.add("custshortname", "91130100754027891A");//客商简称
-       map.add("pk_cubasdoc1", "91130100754027891A"); //客商总公司编码
-        map.add("custprop", "0");//客商类型
-        map.add("pk_corp1", "1099");//对应公司
-        map.add("pk_areacl", "0201");//所属地区
-        map.add("creator", "ALHP0001");  //创建人
-        map.add("createtime", df.format(LocalDateTime.now()));  //创建时间
-        map.add("modifier", "ALHP0001");    //修改人
-        map.add("modifytime", df.format(LocalDateTime.now()));  //修改时间
-        map.add("pk_corp", "1099"); //组织
-        map.add("csid", "1232236");        //客商id   `
-
-
-//        [{"addrname":"123","linkman":"123","phone":"123","defaddrflag":"Y","pk_areacl":"0201","cs_addr_id":"76"}]
-//        [{"accname":"123","account":"123456789","pk_currtype":"CNY","defflag":"Y","cs_bank_id":"76"}]
-        Set<Contact> contacts= contactRepository.findByCompanyKey(35463L);
-        Set<Account> accounts = accountRepository.findByCompanyKey(35463L);
-        map.add("addrlist", "[{\"addrname\":\"123\",\"linkman\":\"123\",\"phone\":\"123\",\"defaddrflag\":\"Y\",\"pk_areacl\":\"0201\",\"cs_addr_id\":\"76\"}]");  //联系人集合
-        map.add("banklist", "[{\"accname\":\"123\",\"account\":\"123456789\",\"pk_currtype\":\"CNY\",\"defflag\":\"Y\",\"cs_bank_id\":\"76\"}]");//银行信息
-
-        map.add("custflaglist", "[{\"custflag\":\"2\"},{\"custflag\":\"3\"}]");//客商属性
-        map.add("cooperateflag", "N"); //是否收付协同
-
-//        map.add("pk_accbank", "sfsf"); //是否收付协同
-
-        map.add("pk_salestru", "1001");   //销售组织
-        map.add("pk_calbody", "1001");    //库存组织
-        map.add("pk_respdept1", "09");  //专管部门
-        map.add("pk_resppsn1", "ALHP0001"); //专管业务员
-        map.add("creditlevel", "01");                    //行用等级
-        map.add("sealflag", "N");                    //是否封存
-        map.add("csmid", "100000");           //是否封存
-        String s = HttpUtil.postRequest(url, map);
-
-
-        System.out.println(s);
-
-    }
 
 
 

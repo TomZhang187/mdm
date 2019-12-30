@@ -3,6 +3,7 @@ package com.hqhop.modules.company.service.impl;
 import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.domain.Contact;
+import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
 import com.hqhop.modules.company.service.ContactService;
@@ -39,9 +40,15 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactMapper contactMapper;
 
+    @Autowired
+    private CompanyInfoRepository companyInfoRepository;
+
     @Override
     public Map<String,Object> queryAll(ContactQueryCriteria criteria, Pageable pageable){
         Page<Contact> page = contactRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+        for (Contact contact : page) {
+            contact.setBelongCompany(companyInfoRepository.findByCompanyKey(contact.getCompanyKey()).getCompanyName());
+        }
         return PageUtil.toPage(page);
     }
 

@@ -275,7 +275,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName11 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName11.setName("公司类型");
-        ItemName11.setValue(resouces.getCompanyType());
+        ItemName11.setValue(resouces.getCustomerProp());
         list1.add(ItemName11);
 
         // 明细-单行输入框
@@ -462,7 +462,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         resouces.setContactAddress(getChange(resouces.getContactAddress(),companyInfo.getContactAddress()));
         resouces.setPostalCode(getChange(resouces.getPostalCode(),companyInfo.getPostalCode()));
         resouces.setCompanyProp(getDictChange("company_prop",resouces.getCompanyProp(),companyInfo.getCompanyProp()));
-        resouces.setCompanyType(getDictChange("company_type",resouces.getCompanyType(),companyInfo.getCompanyType()));
+        resouces.setCompanyType(getDictChange("customer",resouces.getCustomerProp(),companyInfo.getCustomerProp()));
         resouces.setTrade(getDictChange("trade",resouces.getTrade(),companyInfo.getTrade()));
         resouces.setEconomicType(getDictChange("economic_type",resouces.getEconomicType(),companyInfo.getEconomicType()));
         resouces.setIsRetai(getChange(resouces.getIsRetaiInt()==0?"否":"是",companyInfo.getIsRetai()==0?"否":"是"));

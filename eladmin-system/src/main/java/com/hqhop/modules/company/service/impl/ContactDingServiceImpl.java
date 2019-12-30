@@ -86,7 +86,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         listForm.add(input);
         listForm.add(vo4);
 
-//        CompanyInfo companyInfo = companyInfoRepository.getOne(resouces.getBelongCompany());
+//        CompanyInfo companyInfo = companyInfoRepository.getOne(resouces.getCompanyKey());
 //        OapiProcessinstanceCreateRequest.FormComponentValueVo vo5 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
 //        vo5.setName("客商");
 //        vo4.setValue(JSON.toJSONString(Arrays.asList(getCompanyItemList(companyInfo))));
@@ -100,7 +100,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         OapiProcessinstanceCreateResponse response = client.execute(request,DingTalkUtils.getAccessToken());
 
         CompanyUpdate companyUpdate = new CompanyUpdate();
-        CompanyInfo companyInfo = companyInfoRepository.getOne(resouces.getBelongCompany());
+        CompanyInfo companyInfo = companyInfoRepository.getOne(resouces.getCompanyKey());
         companyUpdate.copyCompanyInfo(companyInfo);
         //5客商联系人新增  6客商联系人修改 7....更多对照字典
         companyUpdate.setOperationType("5");
@@ -141,7 +141,7 @@ public class ContactDingServiceImpl implements ContactDingService {
             //1新增 2审批中 3驳回 4审核通过
            contact.setContactState(4);
            Contact contact1 =  contactRepository.save(contact);
-           CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+           CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getCompanyKey());
            companyInfo.getContacts().add(contact1);
            companyInfoRepository.save(companyInfo);
 
@@ -237,7 +237,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName5 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName5.setName("所属客商");
-        ItemName5.setValue(getChange(companyInfoRepository.findByCompanyKey(resouces.getBelongCompany()).getCompanyName(),companyInfoRepository.findByCompanyKey(contact.getBelongCompany()).getCompanyName()));
+        ItemName5.setValue(getChange(companyInfoRepository.findByCompanyKey(resouces.getCompanyKey()).getCompanyName(),companyInfoRepository.findByCompanyKey(contact.getCompanyKey()).getCompanyName()));
         list1.add(ItemName5);
 
         // 明细-单行输入框
@@ -249,7 +249,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName7 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName7.setName("类型");
-        ItemName7.setValue(getDictChange("company_type",resouces.getContactType(),contact.getContactType()));
+        ItemName7.setValue(getDictChange("customer",resouces.getContactType(),contact.getContactType()));
         list1.add(ItemName7);
 
         // 明细-单行输入框
@@ -280,7 +280,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         System.out.println(errmsage);
 
        CompanyUpdate companyUpdate = new  CompanyUpdate();
-        CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getBelongCompany());
+        CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getCompanyKey());
         companyUpdate.copyCompanyInfo(companyInfo);
 
         //放入审批实例ID
@@ -317,7 +317,7 @@ public class ContactDingServiceImpl implements ContactDingService {
             contact.setContactState(4);
 
             Contact contact1 =  contactRepository.save(contact);
-            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getCompanyKey());
             companyInfo.getContacts().add(contact1);
             companyInfoRepository.save(companyInfo);
         }
@@ -369,13 +369,13 @@ public class ContactDingServiceImpl implements ContactDingService {
         }
     }
     //字典值对比
-    public  String getDictChange(String dictName,Integer update ,Integer now) {
-        Integer value = update;
-        if(value == now){
+    public  String getDictChange(String dictName,String update ,String now) {
+
+        if(update.equals(now)){
             System.out.println("所属公司"+dictDetailService.getDicLabel(dictName,now));
             return  dictDetailService.getDicLabel(dictName,now);
         }else {
-            return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,value);
+            return dictDetailService.getDicLabel(dictName,now)+" -> "+dictDetailService.getDicLabel(dictName,update);
         }
     }
 
@@ -409,7 +409,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         OapiProcessinstanceCreateResponse response = client.execute(request,DingTalkUtils.getAccessToken());
 
         CompanyUpdate companyUpdate = new CompanyUpdate();
-        CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getBelongCompany());
+        CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getCompanyKey());
         companyUpdate.copyCompanyInfo(companyInfo);
 
         //放入审批实例ID
@@ -467,7 +467,7 @@ public class ContactDingServiceImpl implements ContactDingService {
             //1新增 2审批中 3驳回 4审核通过
             contact.setContactState(4);
             Contact contact1 =  contactRepository.save(contact);
-            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getCompanyKey());
             companyInfo.getContacts().add(contact1);
             companyInfoRepository.save(companyInfo);
         }
@@ -487,7 +487,7 @@ public class ContactDingServiceImpl implements ContactDingService {
             //1新增 2审批中 3驳回 4审核通过
             contact.setContactState(4);
             Contact contact1 =  contactRepository.save(contact);
-            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getBelongCompany());
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(contact.getCompanyKey());
             companyInfo.getContacts().add(contact1);
             companyInfoRepository.save(companyInfo);
             companyUpdateRepository.deleteById(companyUpdate.getOperateKey());
@@ -528,7 +528,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName5 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName5.setName("所属客商");
-        ItemName5.setValue(companyInfoRepository.getOne(resouces.getBelongCompany()).getCompanyName());
+        ItemName5.setValue(companyInfoRepository.getOne(resouces.getCompanyKey()).getCompanyName());
         list1.add(ItemName5);
 
         // 明细-单行输入框
@@ -584,7 +584,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName4 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName4.setName("所属公司");
-        ItemName4.setValue(dictDetailService.getDicLabel("inside_company",resouces.getBelongCompany()));
+        ItemName4.setValue(companyInfoRepository.findByCompanyKey(resouces.getCompanyKey()).getCompanyName());
         list1.add(ItemName4);
 
         // 明细-单行输入框
@@ -626,7 +626,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName11 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName11.setName("公司类型");
-        ItemName11.setValue(dictDetailService.getDicLabel("company_type",resouces.getCompanyType()));
+        ItemName11.setValue(dictDetailService.getDicLabel("company_type",resouces.getCustomerProp()));
         list1.add(ItemName11);
 
         // 明细-单行输入框

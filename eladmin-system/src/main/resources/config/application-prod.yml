@@ -7,9 +7,9 @@ spring:
     druid:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:postgresql://192.168.10.95:5432/mdm
+      url: jdbc:log4jdbc:postgresql://182.151.57.173:5432/mdm
       username: postgres
-      password: 123456
+      password: Hqhop_db_123#
 
       # 初始化配置
       initial-size: 3

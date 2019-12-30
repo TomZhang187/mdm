@@ -892,7 +892,7 @@ public class MaterilReadExcel {
                 MaterialType type = null;
                 if(object.getLine3()!=null && object.getLine3().contains(".")){
                     String[] strs = object.getLine3().split("\\.");
-                    String typeCode = strs[1];
+                    String typeCode = strs[0]+strs[1];
                     type = materialTypeRepository.findByMaterialTypeCode(typeCode);
                 }
 
@@ -911,8 +911,6 @@ public class MaterilReadExcel {
                     saveMaterialProduction2(object,byNameAndModel );
                     continue;
                 }
-
-
 
 
             Material material = new Material();
