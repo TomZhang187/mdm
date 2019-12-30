@@ -320,23 +320,37 @@ public class CompanyReadExcel {
     public void  test12() {
 
 
-         List<DictDetail> allByDictId = dictDetailRepository.findAllByDictId(6L);
-         for (DictDetail dictDetail : allByDictId) {
-             System.out.println(dictDetail);
+         CompanyInfo byCompanyKey = companyInfoRepository.findByCompanyKey(107675L);
+         CompanyInfo companyInfo = new CompanyInfo();
+         companyInfo.copy(byCompanyKey);
+         companyInfo.setCompanyKey(null);
+         Set<Contact> contacts = byCompanyKey.getContacts();
+         for (Contact contact : contacts) {
+             contact.setContactKey(null);
          }
-         for (DictDetail dictDetail : allByDictId) {
-             if(!dictDetail.getValue().equals("10")){
-
-                 List<CompanyInfo> all = companyInfoRepository.findAll();
-                 for (CompanyInfo companyInfo : all) {
-                     CompanyInfo companyInfo1 = new CompanyInfo();
-                     companyInfo1.copy(companyInfo);
-                     companyInfo1.getContacts().addAll(companyInfo.getContacts());
-                 }
+         companyInfo.setContacts(contacts);
+         System.out.println(companyInfo);
 
 
-             }
-         }
+
+
+//         List<DictDetail> allByDictId = dictDetailRepository.findAllByDictId(5L);
+//         for (DictDetail dictDetail : allByDictId) {
+//             System.out.println(dictDetail);
+//         }
+//         for (DictDetail dictDetail : allByDictId) {
+//             if(!dictDetail.getValue().equals("10")){
+//
+//                 List<CompanyInfo> all = companyInfoRepository.findAll();
+//                 for (CompanyInfo companyInfo : all) {
+//                     CompanyInfo companyInfo1 = new CompanyInfo();
+//                     companyInfo1.copy(companyInfo);
+//                     companyInfo1.getContacts().addAll(companyInfo.getContacts());
+//                 }
+//
+//
+//             }
+//         }
      }
 
 
