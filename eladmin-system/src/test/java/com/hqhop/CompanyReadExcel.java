@@ -66,20 +66,19 @@ public class CompanyReadExcel {
             CompanyInfo companyInfo = new CompanyInfo();
             DictDetail dictDetail = dictDetailRepository.findByLabelAndDict_Id(incClient.getBelongCompany() != null ? incClient.getBelongCompany() : "无", 8L);
 
+            CompanyInfo byTaxIdAndBelongCompany = null;
             if (dictDetail != null) {
                 companyInfo.setBelongCompany(dictDetail.getValue());
+                 byTaxIdAndBelongCompany = companyInfoRepository.findByTaxIdAndBelongCompany(incClient.getCustomerCode(), dictDetail.getValue());
             }
 
-            CompanyInfo byTaxIdAndBelongCompany = companyInfoRepository.findByTaxIdAndBelongCompany(incClient.getCustomerCode(), dictDetail.getValue());
+
             if(byTaxIdAndBelongCompany != null){
                 continue;
             }
-
-
             companyInfo.setTaxId(incClient.getCustomerCode());
             companyInfo.setCompanyName(incClient.getCustomerNmae());
             companyInfo.setCompanyShortName(incClient.getCustomerShortName());
-
             DictDetail dictDetail1 = null;
             if (incClient.getBelongArea() != null) {
                 dictDetail1 = dictDetailRepository.findLikeLabelAndDict_Id(incClient.getBelongArea(), 10L);
@@ -96,7 +95,7 @@ public class CompanyReadExcel {
 
             //4 外部单位
             companyInfo.setCustomerType("4");
-            companyInfo.setCustomerProp("2");
+            companyInfo.setCustomerProp("1");
 
             companyInfo.setRemark(incClient.getRemark());
             companyInfo.setContactAddress(incClient.getContactAddress());
@@ -111,7 +110,7 @@ public class CompanyReadExcel {
                 companyInfoRepository.save(companyInfo);
 
             }
-//            Test2();
+
         }
     }
 

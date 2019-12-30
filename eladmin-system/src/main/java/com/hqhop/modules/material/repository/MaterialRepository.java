@@ -78,9 +78,6 @@ public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSp
     Material findByNameAndModels(String code,String model);
 
 
-    Material findMaterialByRemark(String remark);
-
-
 
 
 

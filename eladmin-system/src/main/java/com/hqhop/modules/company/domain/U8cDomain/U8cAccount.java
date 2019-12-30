@@ -43,8 +43,6 @@ public class U8cAccount implements Serializable {
                 u8cAccount.setAccount(account.getAccount());
                 if(account.getIsDefalut()!=null){
                     u8cAccount.setDefflag(account.getIsDefalut()!=1?"N":"Y");
-                } else {
-                    u8cAccount.setDefflag("N") ;
                 }
                 u8cAccount.setPk_currtype(account.getCurrency());
                 list.add(u8cAccount);
