@@ -1,6 +1,7 @@
 package com.hqhop.modules.company.service;
 
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
+import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.service.dto.CompanyInfoDTO;
@@ -88,5 +89,8 @@ public interface CompanyInfoService {
     CompanyInfo VerifyAdd(CompanyInfoDTO resources);
 
 
-
+    /*
+     添加之前前客商验证
+     * */
+    CompanyBasic findCompanyBasicByTaxId(CompanyInfoDTO resources);
 }

@@ -53,7 +53,7 @@ public class CompanyInfoQueryCriteria {
 
     // 精确
     @Query
-    private Integer companyType;
+    private String customerProp;
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
@@ -134,8 +134,8 @@ public class CompanyInfoQueryCriteria {
         this.companyState = companyState;
     }
 
-    public void setCompanyType(Integer companyType) {
-        this.companyType = companyType;
+    public void setCompanyType(String customerProp) {
+        this.customerProp = customerProp;
     }
 
     public void setCompayName(String compayName) {

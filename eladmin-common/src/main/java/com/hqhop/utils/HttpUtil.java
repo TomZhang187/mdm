@@ -1,6 +1,5 @@
 package com.hqhop.utils;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -25,7 +24,7 @@ import java.util.List;
 
 
 public class HttpUtil {
-    public static String postRequest(String url, MultiValueMap params) {
+    public static ResponseEntity<String> postRequest(String url, MultiValueMap params) {
 
         RestTemplate client = getRestTemplate("UTF-8");
         //新建Http头，add方法可以添加参数
@@ -44,7 +43,7 @@ public class HttpUtil {
 
 
 
-        return response.getBody();
+        return response;
     }
 
     /**

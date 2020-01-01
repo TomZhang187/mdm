@@ -2,9 +2,11 @@ package com.hqhop.modules.company.service.impl;
 
 
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
+import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.domain.Contact;
+import com.hqhop.modules.company.repository.CompanyBasicRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
@@ -45,6 +47,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private CompanyBasicRepository companyBasicRepository;
 
 
 
@@ -96,7 +101,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 //1 启用 0 停用
                 resources.setIsDisable(1);
             }
-            resources.setCreateTime(new Date());
+
             return companyInfoRepository.save(resources);
         }
 
@@ -138,6 +143,21 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         }
         return list.get(0);
     }
+
+
+    /*
+ 添加之前前客商验证
+ * */
+    @Override
+    public  CompanyBasic findCompanyBasicByTaxId(CompanyInfoDTO resources) {
+
+        CompanyBasic companyBasic = new CompanyBasic();
+        companyBasic = companyBasicRepository.findByTaxId(resources.getTaxId());
+
+
+        return companyBasic;
+    }
+
 
 
     //名字模糊查询出来的对应公司id集合

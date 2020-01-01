@@ -1,6 +1,7 @@
 package com.hqhop.modules.company.repository;
 
 
+import com.hqhop.annotation.Query;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,6 +17,9 @@ public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long>,
     //通过纳税登记号和所属公司查询客商数据
     CompanyInfo findByTaxIdAndBelongCompany(String taxId, String belongCompanyId);
 
+    @org.springframework.data.jpa.repository.Query(value = "select * from company_info where tax_id=?1 and belong_company =?2", nativeQuery = true)
+    List<CompanyInfo> findByTaxIdAndBelongCompanys(String taxId, String belongCompanyId);
+
     //通过纳税登记号查询客商数据
     List<CompanyInfo> findByTaxId(String taxId);
 
@@ -23,5 +27,26 @@ public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long>,
     CompanyInfo findByCompanyKey(Long key);
 
 
+    @org.springframework.data.jpa.repository.Query(value = "select * from company_info",nativeQuery = true)
+   List<CompanyInfo>  findAllCompanyInfo();
+
+
+    List<CompanyInfo>  findByBelongCompany(String code);
+
+
+    @org.springframework.data.jpa.repository.Query(value = " select * from company_info WHERE belong_company !=?1", nativeQuery = true)
+    List<CompanyInfo>  findByNotBelongCompany(String code);
+
+
+    @org.springframework.data.jpa.repository.Query(value = " select * from company_info WHERE company_name like %?1%", nativeQuery = true)
+    List<CompanyInfo>  findByLikeNmae(String name);
+
+
+    List<CompanyInfo> findByCustomerProp(String prop);
+
+
+    List<CompanyInfo> findByCustomerPropAndBelongCompany(String prop,String belognCompany);
+
+    CompanyInfo findByCustomerPropAndBelongCompanyAndTaxId(String prop,String belongCompany,String taxId);
 
 }

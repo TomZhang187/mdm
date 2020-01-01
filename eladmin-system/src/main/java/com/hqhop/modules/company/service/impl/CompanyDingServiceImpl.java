@@ -6,12 +6,15 @@ import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
+import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
+import com.hqhop.modules.company.repository.CompanyBasicRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.modules.company.service.CompanyDingService;
 import com.hqhop.modules.company.service.CompanyInfoService;
+import com.hqhop.modules.company.service.mapper.CompanyU8cService;
 import com.hqhop.modules.company.utils.CompanyUtils;
 import com.hqhop.modules.system.service.DictDetailService;
 import com.taobao.api.ApiException;
@@ -47,6 +50,12 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
 
     @Autowired
     private CompanyInfoService companyInfoService;
+
+    @Autowired
+    private CompanyBasicRepository companyBasicRepository;
+
+    @Autowired
+    private CompanyU8cService companyU8cService;
 
 
 
@@ -133,9 +142,38 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
             //1新增 2审批中 3驳回 4审核通过
             companyInfo.setCompanyState(4);
             companyInfo.setApproveTime(new Timestamp(new Date().getTime()));
-            companyInfoRepository.save(companyInfo);
+                CompanyInfo save = companyInfoRepository.save(companyInfo);
 
-        }
+                CompanyBasic companyBasic = companyBasicRepository.findByTaxId(save.getTaxId());
+                if(companyBasic == null){
+                    CompanyBasic companyBasic1 = new CompanyBasic();
+                    companyBasic1.setTaxId(save.getTaxId());
+                    companyBasic1.setCompanyName(save.getCompanyName());
+                    companyBasic1.setBelongArea(save.getBelongArea());
+                    companyBasic1.setBelongCompany(save.getBelongCompany());
+                    companyBasic1.setCompanyShortName(save.getCompanyShortName());
+                    companyBasic1.setCustomerType(save.getCustomerType());
+                    companyBasic1.setBelongCompany(save.getBelongCompany());
+
+                    CompanyInfo companyInfo1 = companyInfoRepository.findByCompanyKey(save.getParentCompanyId());
+                    companyBasic1.setHeadOfficeCode(companyInfo1!=null?companyInfo1.getTaxId():null);
+
+                    companyBasic1.setCreateMan(save.getCreateMan());
+                    companyBasic1.setCreateTime(save.getCreateTime());
+                    companyBasic1.setUpdateMan(save.getUpdateMan());
+                    companyBasic1.setUpdateTime(save.getUpdateTime());
+
+                    CompanyBasic companyBasic2 = companyBasicRepository.save(companyBasic1);
+
+                    companyU8cService.addToU8C(companyInfo,companyBasic2.getKey().toString());
+
+                }else {
+                    companyU8cService.addToU8C(companyInfo,companyBasic.getKey().toString());
+                }
+
+
+
+            }
 
 
 
@@ -375,8 +413,32 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
             updateData.setUpdateTime(new Timestamp(new Date().getTime()));
             //1新增 2审批中 3驳回 4审核通过
             updateData.setCompanyState(4);
-            companyInfoRepository.save(updateData);
+            CompanyInfo save = companyInfoRepository.save(updateData);
             companyUpdateRepository.deleteById(temporaryRecord.getOperateKey());
+
+            //客商基本档案更新
+            CompanyBasic companyBasic1 = companyBasicRepository.findByTaxId(save.getTaxId());
+            if(companyBasic1 != null){
+            companyBasic1.setTaxId(save.getTaxId());
+            companyBasic1.setCompanyName(save.getCompanyName());
+            companyBasic1.setBelongArea(save.getBelongArea());
+            companyBasic1.setBelongCompany(save.getBelongCompany());
+            companyBasic1.setCompanyShortName(save.getCompanyShortName());
+            companyBasic1.setCustomerType(save.getCustomerType());
+            companyBasic1.setBelongCompany(save.getBelongCompany());
+
+            CompanyInfo companyInfo1 = companyInfoRepository.findByCompanyKey(save.getParentCompanyId());
+            companyBasic1.setHeadOfficeCode(companyInfo1!=null?companyInfo1.getTaxId():null);
+
+            companyBasic1.setCreateMan(save.getCreateMan());
+            companyBasic1.setCreateTime(save.getCreateTime());
+            companyBasic1.setUpdateMan(save.getUpdateMan());
+            companyBasic1.setUpdateTime(save.getUpdateTime());
+            CompanyBasic companyBasic2 = companyBasicRepository.save(companyBasic1);
+            companyU8cService.updateToU8C(companyInfo,companyBasic2 .getKey().toString());
+
+            }
+
         }
     }
 
@@ -557,8 +619,12 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
             }else if("4".equals(companyUpdate.getOperationType())) {
                 companyInfo.setIsDisable(1);
             }
+            CompanyInfo save = companyInfoRepository.save(companyInfo);
+            CompanyBasic companyBasic = companyBasicRepository.findByTaxId(save.getTaxId());
+            if(companyBasic != null){
+                companyU8cService.updateToU8C(companyInfo,companyBasic.getKey().toString());
 
-            companyInfoRepository.save(companyInfo);
+            }
 
         }
 

@@ -143,13 +143,13 @@ public class CompanyInfo implements Serializable {
     private Integer isSynergyPay;
 
     //账户
-    @OneToMany(targetEntity = Account.class, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Account.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_key")
     private Set<Account > accounts  = new HashSet<>();
 
 
     //联系人
-    @OneToMany(targetEntity = Contact.class, cascade = CascadeType.PERSIST )
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.PERSIST )
     @JoinColumn(name = "company_key")
     private Set<Contact> contacts = new HashSet<>();
 
@@ -270,8 +270,11 @@ public class CompanyInfo implements Serializable {
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") //入参
-    public void setCreateTime(Date  createTime) {
-        this.createTime = new Timestamp(createTime.getTime());
+    public void setCreateTime(Timestamp  createTime) {
+        if(createTime != null){
+            this.createTime = createTime;
+        }
+
     }
 
     public Timestamp getApproveTime() {
@@ -485,4 +488,49 @@ public class CompanyInfo implements Serializable {
     public void setCustomerProp(String customerProp) {
         this.customerProp = customerProp;
     }
+
+    public void getBasicAttribute (CompanyInfo resources){
+        this.createMan = resources.getCreateMan();
+        this.createTime = resources.getCreateTime();
+        this.approveTime = resources.getApproveTime();
+        this.updateMan = resources.getUpdateMan();
+        this.updateTime = resources.getUpdateTime();
+        this.belongArea = resources.getBelongArea();
+        this.belongCompany = resources.getBelongCompany();
+        this.companyProp = resources.getCompanyProp();
+        this.companyShortName = resources.getCompanyShortName();
+        this.companyState = resources.getCompanyState();
+
+        this.customerProp = resources.getCompanyProp();
+
+        this.customerType = resources.getCustomerType();
+        this.companyName = resources.getCompanyName();
+        this.contactAddress = resources.getContactAddress();
+        this.economicType = resources.getEconomicType();
+        this.foreignName = resources.getForeignName();
+        this.isDisable = resources.getIsDisable();
+        this.isRetai = resources.getIsRetai();
+        this.legalbody = resources.getLegalbody();
+        this.parentCompanyId = resources.getParentCompanyId();
+        this.postalCode = resources.getPostalCode();
+        this.registerfund = resources.getRegisterfund();
+        this.remark = resources.getRemark();
+        this.taxId = resources.getTaxId();
+        this.trade = resources.getTrade();
+        this.isSynergyPay = resources.getIsSynergyPay();
+//        this.accounts = accounts;
+//        this.contacts = contacts;
+        this.chargeDepartment = resources.getChargeDepartment();
+        this.professionSalesman = resources.getProfessionSalesman();
+        this.creditRating = resources.getCreditRating();
+        this.defaultPaymentAgreement = resources.getDefaultPaymentAgreement();
+    }
+
+
+
+
+
+
+
+
 }

@@ -119,6 +119,15 @@ public class CompanyInfoController {
         return new ResponseEntity(companyInfoService.VerifyAdd(resources), HttpStatus.OK);
     }
 
+    @Log("添加之前客商基本档案查询")
+    @ApiOperation(value = " 添加之前客商基本档案查询")
+    @GetMapping(value = "/findCompanyBasicByTaxId")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity findCompanyBasicByTaxId(CompanyInfoDTO resources) {
+        return new ResponseEntity(companyInfoService.findCompanyBasicByTaxId(resources), HttpStatus.OK);
+    }
+
+
     @Log("钉钉调用测试")
     @ApiOperation(value = "钉钉调用测试")
     @GetMapping(value = "/dingTest")
