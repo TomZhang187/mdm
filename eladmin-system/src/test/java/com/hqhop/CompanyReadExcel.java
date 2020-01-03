@@ -2,9 +2,9 @@ package com.hqhop;
 
 
 import com.alibaba.fastjson.JSON;
-import com.hqhop.easyExcel.excelread.CustomerExcelUtils;
-import com.hqhop.easyExcel.model.IncClient;
-import com.hqhop.easyExcel.model.IncSupplier;
+import com.hqhop.easyexcels.excelread.CustomerExcelUtils;
+import com.hqhop.easyexcels.model.IncClient;
+import com.hqhop.easyexcels.model.IncSupplier;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.Contact;

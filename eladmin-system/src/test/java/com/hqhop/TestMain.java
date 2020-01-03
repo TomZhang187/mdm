@@ -1,7 +1,6 @@
 package com.hqhop;
 import com.alibaba.fastjson.JSON;
-import com.hqhop.easyExcel.excelread.CustomerExcelUtils;
-import com.hqhop.easyExcel.model.IncCustomer;
+import com.hqhop.easyexcels.excelread.CustomerExcelUtils;
 import com.hqhop.modules.company.domain.Account;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.Contact;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;

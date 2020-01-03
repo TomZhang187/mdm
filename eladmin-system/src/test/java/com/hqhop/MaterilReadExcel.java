@@ -1,7 +1,6 @@
 package com.hqhop;
 
-import com.hqhop.easyExcel.excelread.MaterialExcelUtils;
-import com.hqhop.easyExcel.model.*;
+import com.hqhop.easyexcels.excelread.MaterialExcelUtils;
 import com.hqhop.modules.material.domain.*;
 import com.hqhop.modules.material.repository.AttributeRepository;
 import com.hqhop.modules.material.repository.MaterialProductionRepository;

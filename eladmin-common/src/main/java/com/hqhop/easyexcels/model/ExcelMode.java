@@ -1,4 +1,4 @@
-package com.hqhop.easyExcel.model;
+package com.hqhop.easyexcels.model;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
 import lombok.Data;

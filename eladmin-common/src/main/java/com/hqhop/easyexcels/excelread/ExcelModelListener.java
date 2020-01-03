@@ -1,7 +1,7 @@
-package com.hqhop.easyExcel;
+package com.hqhop.easyexcels.excelread;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import com.hqhop.easyExcel.model.ExcelMode;
+import com.hqhop.easyexcels.model.ExcelMode;
 
 import java.util.ArrayList;
 import java.util.List;

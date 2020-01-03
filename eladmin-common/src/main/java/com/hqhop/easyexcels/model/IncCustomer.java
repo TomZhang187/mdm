@@ -1,15 +1,11 @@
-package com.hqhop.easyExcel.model;
+package com.hqhop.easyexcels.model;
 
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 //客商excel读取
 @Data

@@ -1,9 +1,9 @@
-package com.hqhop.easyExcel.excelread;
+package com.hqhop.easyexcels.excelread;
 
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
-import com.hqhop.easyExcel.model.EmployeeModel;
+import com.hqhop.easyexcels.model.EmployeeModel;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
