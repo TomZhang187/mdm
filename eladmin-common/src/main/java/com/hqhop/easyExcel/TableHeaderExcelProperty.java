@@ -1,4 +1,4 @@
-package com.hqhop.easyexcels.excelread;
+package com.hqhop.easyexcel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;

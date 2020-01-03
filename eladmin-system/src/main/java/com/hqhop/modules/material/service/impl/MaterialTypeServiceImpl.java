@@ -47,7 +47,7 @@ public class MaterialTypeServiceImpl implements MaterialTypeService {
         //物料分类集合
         Set<MaterialTypeDTO> materialTypes= new LinkedHashSet<>();
         for (MaterialTypeDTO materialType : materialTypes) {
-            materialType.setTypeName(materialType.getTypeName()+" "+materialType.getMaterialTypeCode());
+            materialType.setTypeName(materialType.getTypeName()+materialType.getMaterialTypeCode());
         }
         //获取全部的分类名称
         List<String> deptNames = typeDTOS.stream().map(MaterialTypeDTO::getTypeName).collect(Collectors.toList());

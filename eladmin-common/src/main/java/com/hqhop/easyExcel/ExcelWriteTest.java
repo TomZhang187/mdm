@@ -1,4 +1,4 @@
-package com.hqhop.easyexcels.excelread;
+package com.hqhop.easyExcel;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;

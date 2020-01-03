@@ -1,4 +1,4 @@
-package com.hqhop.easyexcels.model;
+package com.hqhop.easyExcel.model;
 
 
 import com.alibaba.excel.annotation.ExcelProperty;

@@ -1,10 +1,10 @@
-package com.hqhop.easyexcels.excelread;
+package com.hqhop.easyExcel.excelread;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
-import com.hqhop.easyexcels.model.IncClient;
-import com.hqhop.easyexcels.model.IncCustomer;
-import com.hqhop.easyexcels.model.IncSupplier;
+import com.hqhop.easyExcel.model.IncClient;
+import com.hqhop.easyExcel.model.IncCustomer;
+import com.hqhop.easyExcel.model.IncSupplier;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
