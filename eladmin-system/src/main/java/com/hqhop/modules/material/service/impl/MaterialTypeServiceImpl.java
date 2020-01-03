@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.Cacheable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +46,9 @@ public class MaterialTypeServiceImpl implements MaterialTypeService {
         Set<MaterialTypeDTO> trees = new LinkedHashSet<>();
         //物料分类集合
         Set<MaterialTypeDTO> materialTypes= new LinkedHashSet<>();
+        for (MaterialTypeDTO materialType : materialTypes) {
+            materialType.setTypeName(materialType.getTypeName()+materialType.getMaterialTypeCode());
+        }
         //获取全部的分类名称
         List<String> deptNames = typeDTOS.stream().map(MaterialTypeDTO::getTypeName).collect(Collectors.toList());
         Boolean isChild = null;

@@ -5,8 +5,6 @@ import com.hqhop.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Set;
-
 /**
  * 获取当前登录的用户
  * @author Zheng Jie
@@ -66,5 +64,16 @@ public class SecurityUtils {
         Object obj = getUserDetails();
         JSONObject json = new JSONObject(obj);
         return json.get("id", Long.class);
+    }
+
+
+    /**
+     * 获取系统员工id
+     * @return 系统用户id
+     */
+    public static Long getEmployeeId(){
+        Object obj = getUserDetails();
+        JSONObject json = new JSONObject(obj);
+        return json.get("employeeId", Long.class);
     }
 }

@@ -1,4 +1,4 @@
-package com.hqhop.easyExcel.excelRead;
+package com.hqhop.easyExcel.excelread;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
@@ -69,7 +69,7 @@ public class CustomerExcelUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Sheet sheet = new Sheet(1,3,IncCustomer .class);
+        Sheet sheet = new Sheet(1,1,IncCustomer .class);
         List<Object> typeList = EasyExcelFactory.read(inputStream,sheet);
         List<IncCustomer > types = new LinkedList<>();
         for (Object student :  typeList){

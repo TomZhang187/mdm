@@ -17,6 +17,8 @@ public class IncCustomer extends BaseRowModel {
 
 
 
+
+
     // 客商名称
     @ExcelProperty(value = "客商名称", index = 0)
     private String companyName;
@@ -27,12 +29,9 @@ public class IncCustomer extends BaseRowModel {
     @ExcelProperty(value = "客商简称", index = 1)
     private String companyShortName;
 
-
     // 税务登记号 /客商编码
     @ExcelProperty(value = " 税务登记号", index = 2)
     private String taxId;
-
-
 
     // 所属地区
     @ExcelProperty(value = "所属地区", index = 3)
