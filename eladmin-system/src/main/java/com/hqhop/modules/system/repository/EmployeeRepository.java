@@ -3,6 +3,9 @@ package com.hqhop.modules.system.repository;
 import com.hqhop.modules.system.domain.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Set;
 
 /**
 * @author zf
@@ -21,5 +24,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
     Employee findByEmployeeName(String name);
 
 
+     //获取改员工负责的客商
+    @Query(value = " select company_key from  employee_company where employee_key=?1", nativeQuery = true)
+    Set<Long> findCompanyKeysByEmployeeKey(Long key);
 
 }

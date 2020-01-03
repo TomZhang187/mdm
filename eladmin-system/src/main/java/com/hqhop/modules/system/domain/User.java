@@ -1,18 +1,15 @@
 package com.hqhop.modules.system.domain;
 
-import com.hqhop.modules.company.domain.Account;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -100,4 +97,22 @@ public class User implements Serializable {
     public @interface Update {}
 
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = null;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    public void setEnabled(String enabled) {
+        this.enabled = enabled.equals("FALSE")?false:true;
+    }
 }

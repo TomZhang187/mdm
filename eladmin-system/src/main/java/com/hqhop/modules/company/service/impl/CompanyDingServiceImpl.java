@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
+import com.hqhop.common.dingtalk.DingTalkConstant;
 import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyBasic;
@@ -16,6 +17,10 @@ import com.hqhop.modules.company.service.CompanyDingService;
 import com.hqhop.modules.company.service.CompanyInfoService;
 import com.hqhop.modules.company.service.mapper.CompanyU8cService;
 import com.hqhop.modules.company.utils.CompanyUtils;
+import com.hqhop.modules.system.domain.DictDetail;
+import com.hqhop.modules.system.domain.Employee;
+import com.hqhop.modules.system.repository.DictDetailRepository;
+import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.service.DictDetailService;
 import com.taobao.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +51,9 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
     private CompanyInfoRepository companyInfoRepository;
 
     @Autowired
+    private  DictDetailRepository dictDetailRepository;
+
+    @Autowired
     private DictDetailService dictDetailService;
 
     @Autowired
@@ -56,6 +64,14 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
 
     @Autowired
     private CompanyU8cService companyU8cService;
+
+    @Autowired
+    private EmployeeCompanyServiceImpl employeeCompanyService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+
 
 
 
@@ -83,7 +99,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
 
             DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
             OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
-            request.setProcessCode("PROC-1F000E3F-6764-4631-8712-6E270120E039");
+            request.setProcessCode(DingTalkConstant.PROCESSCODE_CUSTOMER_MANAGE);
 
             List<OapiProcessinstanceCreateRequest.FormComponentValueVo> listForm = new ArrayList<OapiProcessinstanceCreateRequest.FormComponentValueVo>();
 
@@ -141,7 +157,11 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
             CompanyInfo companyInfo = companyInfoRepository.getOne(companyUpdate.getCompanyKey());
             //1新增 2审批中 3驳回 4审核通过
             companyInfo.setCompanyState(4);
-            companyInfo.setApproveTime(new Timestamp(new Date().getTime()));
+                DictDetail dictDetail = dictDetailRepository.findByLabelAndDict_Id(companyInfo.getCompanyName(), 11L);
+                if(dictDetail !=null){
+                    companyInfo.setCustomerType("3");
+                }
+                companyInfo.setApproveTime(new Timestamp(new Date().getTime()));
                 CompanyInfo save = companyInfoRepository.save(companyInfo);
 
                 CompanyBasic companyBasic = companyBasicRepository.findByTaxId(save.getTaxId());
@@ -238,7 +258,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
 
         DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
         OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
-        request.setProcessCode("PROC-1F000E3F-6764-4631-8712-6E270120E039");
+        request.setProcessCode(DingTalkConstant.PROCESSCODE_CUSTOMER_MANAGE);
 
         List<OapiProcessinstanceCreateRequest.FormComponentValueVo> listForm = new ArrayList<OapiProcessinstanceCreateRequest.FormComponentValueVo>();
 
@@ -524,7 +544,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         resouces.setContactAddress(getChange(resouces.getContactAddress(),companyInfo.getContactAddress()));
         resouces.setPostalCode(getChange(resouces.getPostalCode(),companyInfo.getPostalCode()));
         resouces.setCompanyProp(getDictChange("company_prop",resouces.getCompanyProp(),companyInfo.getCompanyProp()));
-        resouces.setCompanyType(getDictChange("customer",resouces.getCustomerProp(),companyInfo.getCustomerProp()));
+        resouces.setCustomerProp(getDictChange("customer_prop",resouces.getCustomerProp(),companyInfo.getCustomerProp()));
         resouces.setTrade(getDictChange("trade",resouces.getTrade(),companyInfo.getTrade()));
         resouces.setEconomicType(getDictChange("economic_type",resouces.getEconomicType(),companyInfo.getEconomicType()));
         resouces.setIsRetai(getChange(resouces.getIsRetaiInt()==0?"否":"是",companyInfo.getIsRetai()==0?"否":"是"));
@@ -544,7 +564,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
 
         DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
         OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
-        request.setProcessCode("PROC-1F000E3F-6764-4631-8712-6E270120E039");
+        request.setProcessCode(DingTalkConstant.PROCESSCODE_CUSTOMER_MANAGE);
 
         List<OapiProcessinstanceCreateRequest.FormComponentValueVo> listForm = new ArrayList<OapiProcessinstanceCreateRequest.FormComponentValueVo>();
 
@@ -670,6 +690,79 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
 
     }
 
+    //客商管理权限申请审批
+    @Override
+    public void getCustomerPermission(CompanyUpdate resouces, DingUser dingUser) throws
+            ApiException {
+
+        DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
+        OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
+        request.setProcessCode(DingTalkConstant.PROCESSCODE_CUSTOMER_MANAGE);
+
+        List<OapiProcessinstanceCreateRequest.FormComponentValueVo> listForm = new ArrayList<OapiProcessinstanceCreateRequest.FormComponentValueVo>();
+
+        // 单行输入框
+        OapiProcessinstanceCreateRequest.FormComponentValueVo input = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
+        input.setName("审批类型");
+        //1 新增 2 修改 3停用....更多对照字典
+        input.setValue(dictDetailService.getDicLabel("company_operation_type",12));
+
+        OapiProcessinstanceCreateRequest.FormComponentValueVo vo4 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
+        vo4.setName("客商管理权限申请");
+        //vo4.setValue(JSON.toJSONString(Arrays.asList(Arrays.asList(ItemName1, ItemName2, ItemName3,ItemName4))));
+        vo4.setValue(JSON.toJSONString(Arrays.asList(getItemList(resouces))));
+        listForm.add(input);
+        listForm.add(vo4);
+        request.setFormComponentValues(listForm);
+        request.setOriginatorUserId(dingUser.getUserid());
+        request.setDeptId(dingUser.getDepteId());
+        OapiProcessinstanceCreateResponse response = client.execute(request,DingTalkUtils.getAccessToken());
+
+        CompanyUpdate companyUpdate = new CompanyUpdate();
+        companyUpdate.setCompanyKey(resouces.getCompanyKey());
+        companyUpdate.setTaxId(resouces.getTaxId());
+        companyUpdate.setBelongCompany(resouces.getBelongCompany());
+
+
+        //1 新增 2 修改 3停用10管理权限申请....更多对照字典
+        companyUpdate.setOperationType("12");
+        //放入审批实例ID
+        companyUpdate.setProcessId(response.getProcessInstanceId());
+        //放入当前用户ID
+        companyUpdate.setUserId(dingUser.getUserid());
+        companyUpdate.setCreateMan(dingUser.getName());
+        CompanyUpdate companyUpdate2 = companyUpdateRepository.save(companyUpdate);
+
+    }
+
+
+    //客商管理权限申请审批通过
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void agreeGetCustomerPermission(String processId) {
+        CompanyUpdate companyUpdate = companyUpdateRepository.findByProcessIdAndApproveResult(processId,"未知");
+        if(companyUpdate !=null){
+            companyUpdate.setApproveResult("通过");
+            companyUpdate.setApproveTime(new Timestamp(new Date().getTime()));
+            companyUpdateRepository.save(companyUpdate);
+            Employee employee = employeeRepository.findByDingId(companyUpdate.getUserId());
+            employeeCompanyService.saveBykey(employee.getId(),companyUpdate.getCompanyKey());
+        }
+    }
+
+
+    //客商管理权限申请审批驳回
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void refuseGetCustomerPermission(String processId) {
+        CompanyUpdate companyUpdate = companyUpdateRepository.findByProcessIdAndApproveResult(processId,"未知");
+        if(companyUpdate !=null){
+            companyUpdate.setApproveResult("驳回");
+            companyUpdate.setApproveTime(new Timestamp(new Date().getTime()));
+            companyUpdateRepository.save(companyUpdate);
+        }
+
+    }
 
 
     //拿到审批 公司明细列表
@@ -709,13 +802,13 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName6 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName6.setName("注册资金");
-        ItemName6.setValue(resouces.getRegisterfund().toString());
+        ItemName6.setValue(resouces.getRegisterfund()!=null?resouces.getRegisterfund().toString():null);
         list1.add(ItemName6);
 
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName7 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName7.setName("所属地区");
-        ItemName7.setValue(dictDetailService.getDicLabel("area",resouces.getBelongAreaInt()));
+        ItemName7.setValue(dictDetailService.getDicLabel("area",resouces.getBelongArea()));
         list1.add(ItemName7);
 
         // 明细-单行输入框
@@ -733,39 +826,46 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName10 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName10.setName("公司属性");
-        ItemName10.setValue(dictDetailService.getDicLabel("company_prop",resouces.getCompanyPropInt()));
+        ItemName10.setValue(dictDetailService.getDicLabel("company_prop",resouces.getCompanyProp()));
         list1.add(ItemName10);
 
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName11 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName11.setName("公司类型");
-        ItemName11.setValue(dictDetailService.getDicLabel("company_type",resouces.getCompanyTypeInt()));
+        ItemName11.setValue(dictDetailService.getDicLabel("customer_prop",resouces.getCustomerProp()));
         list1.add(ItemName11);
 
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName12 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName12.setName("所属行业");
-        ItemName12.setValue(dictDetailService.getDicLabel("trade",resouces.getTradeInt()));
+        ItemName12.setValue(dictDetailService.getDicLabel("trade",resouces.getTrade()));
         list1.add(ItemName12);
 
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName13 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName13.setName("经济类型");
-        ItemName13.setValue(dictDetailService.getDicLabel("economic_type",resouces.getEconomicTypeInt()));
+        ItemName13.setValue(dictDetailService.getDicLabel("economic_type",resouces.getEconomicType()));
         list1.add(ItemName13);
 
-        // 明细-单行输入框
-        OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName14 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
-        ItemName14.setName("是否散户");
-        ItemName14.setValue(resouces.getIsRetaiInt() == 1 ?"是":"否");
-        list1.add(ItemName14);
+        if(resouces.getIsRetai() != null){
+            // 明细-单行输入框
+            OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName14 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
+            ItemName14.setName("是否散户");
+            ItemName14.setValue(resouces.getIsRetaiInt() == 1 ?"是":"否");
+            list1.add(ItemName14);
+        }
 
-        // 明细-单行输入框
-        OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName15 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
-        ItemName15.setName("是否协同付款");
-        ItemName15.setValue(resouces.getIsSynergyPayInt() == 1 ?"是":"否");
 
-        list1.add(ItemName15);
+
+        if(resouces.getIsSynergyPay() != null){
+            // 明细-单行输入框
+            OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName15 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
+            ItemName15.setName("是否协同付款");
+            ItemName15.setValue(resouces.getIsSynergyPayInt() == 1 ?"是":"否");
+
+            list1.add(ItemName15);
+        }
+
 
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName16 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName16.setName("备注");

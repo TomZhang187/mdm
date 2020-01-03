@@ -59,6 +59,15 @@ public interface UserService {
 //    @Cacheable(key = "'loadUserByUsername:'+#p0")
     UserDTO findByName(String userName);
 
+
+    /**
+     * findByName
+     * @param userName
+     * @return
+     */
+//    @Cacheable(key = "'loadUserByUsername:'+#p0")
+    UserDTO findByDingId(String userName);
+
     /**
      * 修改密码
      * @param username

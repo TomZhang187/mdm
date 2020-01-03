@@ -30,6 +30,9 @@ public class JwtUser implements UserDetails {
     //用户的钉钉ID
     private final String dingId;
 
+      //用户员工主键
+    private final Long employeeId;
+
     @JsonIgnore
     private final String password;
 

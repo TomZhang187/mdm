@@ -1,16 +1,14 @@
 package com.hqhop.modules.company.service;
 
-import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
-import com.hqhop.modules.company.domain.CompanyUpdate;
+import com.hqhop.modules.company.domain.EmployeeCompany;
 import com.hqhop.modules.company.service.dto.CompanyInfoDTO;
 import com.hqhop.modules.company.service.dto.CompanyInfoQueryCriteria;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zf
@@ -27,7 +25,7 @@ public interface CompanyInfoService {
      * @return
      */
     //@Cacheable
-    Map<String, Object> queryAll(CompanyInfoQueryCriteria criteria, Pageable pageable);
+    Map<String, Object> queryAll(CompanyInfoQueryCriteria criteria, Pageable pageable,String dingId);
 
     /**
      * 查询所有数据不分页
@@ -90,7 +88,12 @@ public interface CompanyInfoService {
 
 
     /*
-     添加之前前客商验证
-     * */
+    客商管理权限验证
+ * */
+    EmployeeCompany VerifyPermission(Long companyKey);
+
+    /*
+         添加之前前客商验证
+         * */
     CompanyBasic findCompanyBasicByTaxId(CompanyInfoDTO resources);
 }

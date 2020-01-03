@@ -4,15 +4,16 @@ import com.hqhop.exception.BadRequestException;
 import com.hqhop.modules.security.security.JwtUser;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.EmployeeRepository;
-import com.hqhop.modules.system.repository.UserRepository;
 import com.hqhop.modules.system.service.UserService;
-import com.hqhop.modules.system.service.dto.*;
+import com.hqhop.modules.system.service.dto.JobSmallDTO;
+import com.hqhop.modules.system.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 /**
@@ -33,13 +34,33 @@ public class    JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private JwtPermissionService permissionService;
 
-    //加载用户信息方法
+//    //通过用户名加载用户信息方法
+//    @Override
+//    public UserDetails loadUserByUsername(String username){
+//
+//        UserDTO user = userService.findByName(username);
+//        if(user.getEmployee() != null){
+//            Employee employee = employeeRepository.findByDingId(user.getEmployee().getDingId());
+//            user.setDepts(employee.getDeptsSet());
+//        }
+//
+//        if (user == null) {
+//            throw new BadRequestException("账号不存在");
+//        } else {
+//            return createJwtUser(user);
+//        }
+//    }
+
+    //通过用户名（钉钉ID）加载用户信息方法
     @Override
     public UserDetails loadUserByUsername(String username){
 
-        UserDTO user = userService.findByName(username);
-        Employee employee = employeeRepository.findByDingId(user.getEmployee().getDingId());
-        user.setDepts(employee.getDeptsSet());
+        UserDTO user = userService.findByDingId("15706722071874645");
+        if(user.getEmployee() != null){
+            Employee employee = employeeRepository.findByDingId(user.getEmployee().getDingId());
+            user.setDepts(employee.getDeptsSet());
+        }
+
         if (user == null) {
             throw new BadRequestException("账号不存在");
         } else {
@@ -47,17 +68,19 @@ public class    JwtUserDetailsService implements UserDetailsService {
         }
     }
 
+
     public UserDetails createJwtUser(UserDTO user) {
         return new JwtUser(
                 user.getId(),
                 user.getUsername(),
-                user.getEmployee().getEmployeeName(),
-                user.getEmployee().getDingId(),
+                user.getEmployee()!=null?user.getEmployee().getEmployeeName():null,
+                user.getEmployee()!=null?user.getEmployee().getDingId():null,
+                user.getEmployee()!=null?user.getEmployee().getId():null,
                 user.getPassword(),
                 user.getAvatar(),
                 user.getEmail(),
                 user.getPhone(),
-                Optional.ofNullable(user.getEmployee().getEmployeeName()).orElse(null),
+                Optional.ofNullable(user.getEmployee()!=null?user.getEmployee().getEmployeeName():null).orElse(null),
                 user.getDepts(),
                 Optional.ofNullable(user.getJob()).map(JobSmallDTO::getName).orElse(null),
                 permissionService.mapToGrantedAuthorities(user),

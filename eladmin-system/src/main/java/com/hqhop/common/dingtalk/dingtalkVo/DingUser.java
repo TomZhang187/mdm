@@ -29,7 +29,7 @@ public class DingUser {
     public boolean isBoss;
     public String dingId;
 
-    public Integer depteId;
+    public Long depteId=-1L;
 
 
     public DingUser() {
@@ -65,10 +65,10 @@ public class DingUser {
 
     public Long getDepteId(){
 
-    return depteId.longValue();
+    return depteId;
     }
 
-    public void setDepteId(Integer depteId) {
+    public void setDepteId(Long depteId) {
         this.depteId = depteId;
     }
 

@@ -1,6 +1,8 @@
 package com.hqhop.modules.company.rest;
 
+import com.dingtalk.api.response.OapiUserGetResponse;
 import com.hqhop.aop.log.Log;
+import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
@@ -46,8 +48,8 @@ public class CompanyInfoController {
     @ApiOperation(value = "查询CompanyInfo")
     @GetMapping(value = "/companyInfo")
 //    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
-    public ResponseEntity getCompanyInfos(CompanyInfoQueryCriteria criteria, Pageable pageable) {
-        return new ResponseEntity(companyInfoService.queryAll(criteria, pageable), HttpStatus.OK);
+    public ResponseEntity getCompanyInfos(CompanyInfoQueryCriteria criteria, Pageable pageable,String id) {
+        return new ResponseEntity(companyInfoService.queryAll(criteria, pageable,id), HttpStatus.OK);
     }
 
     @Log("查询所有CompanyInfo")
@@ -73,16 +75,6 @@ public class CompanyInfoController {
     @PostMapping(value = "/companyInfo")
 //    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_CREATE')")
     public ResponseEntity create(@Validated @RequestBody CompanyInfo resources) {
-
-//        CompanyInfo companyInfo = new CompanyInfo();
-//      companyInfo.setCreateTime(new java.util.Date());
-//
-//        System.out.println("审批时间为"+resources.getApproveTime());
-//        System.out.println("创建时间为"+resources.getCreateTime());
-//
-//
-//        System.out.println("本地放的创建时间为"+companyInfo.getCreateTime());
-//        System.out.println("传过来的数据"+resources);
 
       return new ResponseEntity(companyInfoService.createAndUpadte(resources), HttpStatus.CREATED);
 
@@ -138,10 +130,17 @@ public class CompanyInfoController {
 //       companyDingService.saveApproval(userId,depteId);
 //        return new ResponseEntity( HttpStatus.OK);
 
-          return null;
+        return null;
     }
 
-
+    @Log("客商管理权限验证")
+    @ApiOperation(value = "客商管理权限验证")
+    @GetMapping(value = "/verifyPermission")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity  VerifyPermission(Long companyKey) throws
+            ApiException {
+        return new ResponseEntity(companyInfoService.VerifyPermission(companyKey), HttpStatus.OK);
+    }
 
     @Log("客商审批接口")
     @ApiOperation(value = "客商审批接口")
@@ -153,7 +152,14 @@ public class CompanyInfoController {
         System.out.println("公司主键" + resouces.getCompanyKey());
         System.out.println("用户名" + dingUser.getName());
         System.out.println("用户Id" + dingUser.getUserid());
-        System.out.println("部门ID" + dingUser.getDepteId());
+       if(dingUser.getDepteId() == null){
+
+           OapiUserGetResponse userInfo = DingTalkUtils.getUserInfo(dingUser.getUserid());
+           dingUser.setDepartment(userInfo.getDepartment());
+           dingUser.setDepteId(userInfo.getDepartment().get(0));
+       }
+
+
         if(resouces.getCompanyKey() != null){
             CompanyInfo companyInfo = companyInfoRepository.getOne(resouces.getCompanyKey());
             resouces.setApproveTime(companyInfo.getApproveTime());
@@ -179,4 +185,23 @@ public class CompanyInfoController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
+    @Log("客商权限审批接口")
+    @ApiOperation(value = "客商权限审批接口")
+    @GetMapping(value = "/getCustomerPermission")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity getCustomerPermission( Long companyKey,DingUser dingUser ) throws
+    ApiException {
+
+        CompanyInfo byCompanyKey = companyInfoRepository.findByCompanyKey(companyKey);
+        CompanyUpdate companyUpdate = new CompanyUpdate();
+        companyUpdate.copyCompanyInfo(byCompanyKey);
+        companyDingService.getCustomerPermission(companyUpdate, dingUser);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
+
+
+
+
+}

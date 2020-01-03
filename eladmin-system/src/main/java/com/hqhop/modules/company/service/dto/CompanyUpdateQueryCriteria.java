@@ -56,8 +56,8 @@ public class CompanyUpdateQueryCriteria{
     @Query(type = Query.Type.INNER_LIKE)
     private String contactAddress;
 
-    // 模糊
-    @Query(type = Query.Type.INNER_LIKE)
+    // 精准
+    @Query
     private String createMan;
 
     // 精确

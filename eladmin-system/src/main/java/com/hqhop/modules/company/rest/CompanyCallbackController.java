@@ -92,6 +92,8 @@ public class CompanyCallbackController {
             toUpdateAccount(callback,dicValue);
         }else  if("11".equals(dicValue)) {  //客商账户解绑....更多对照字典
             toRemoveAccount(callback,dicValue);
+        } else  if("12".equals(dicValue)){ //申请管理权限....更多对照字典
+            toCustomerPermission(callback,dicValue);
         }
         else {
             System.err.println("钉钉回调审批类型未知/根本拿不到");
@@ -259,6 +261,22 @@ public class CompanyCallbackController {
         }else if("terminate".equals(callback.getType())){
             //撤销操作
             accountDingService.terminateRemoveApproval(callback.getProcessInstanceId(),dicValue);
+        }
+    }
+
+
+    //客商管理权限申请回调
+    private void toCustomerPermission( ApprovalCallbackVo callback,String dicValue){
+
+        if("finish".equals(callback.getType()) && "agree".equals(callback.getResult())){
+            //审批同意操作
+            companyDingService.agreeGetCustomerPermission(callback.getProcessInstanceId());
+
+        }else if("finish".equals(callback.getType()) && "refuse".equals(callback.getResult())){
+            //拒绝操作
+            companyDingService.refuseGetCustomerPermission(callback.getProcessInstanceId());
+
+
         }
     }
 }

@@ -1,24 +1,23 @@
 package com.hqhop.modules.company.service.impl;
 
 
-import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
-import com.hqhop.modules.company.domain.CompanyUpdate;
-import com.hqhop.modules.company.domain.Contact;
+import com.hqhop.modules.company.domain.EmployeeCompany;
 import com.hqhop.modules.company.repository.CompanyBasicRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
-import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
+import com.hqhop.modules.company.repository.EmployeeCompanyRepository;
 import com.hqhop.modules.company.service.CompanyInfoService;
 import com.hqhop.modules.company.service.dto.CompanyInfoDTO;
 import com.hqhop.modules.company.service.dto.CompanyInfoQueryCriteria;
 import com.hqhop.modules.company.service.mapper.CompanyInfoMapper;
-import com.hqhop.utils.CompanyQueryHelp;
-import com.hqhop.utils.PageUtil;
-import com.hqhop.utils.QueryHelp;
-import com.hqhop.utils.ValidationUtil;
+import com.hqhop.modules.system.domain.Employee;
+import com.hqhop.modules.system.repository.EmployeeRepository;
+import com.hqhop.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * @author zf`
@@ -51,19 +47,34 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Autowired
     private CompanyBasicRepository companyBasicRepository;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeCompanyServiceImpl employeeCompanyService;
+
+    @Autowired
+    private EmployeeCompanyRepository employeeCompanyRepository;
+
+
 
 
 
 
     @Override
-    public Map<String, Object> queryAll(CompanyInfoQueryCriteria criteria, Pageable pageable) {
+    public Map<String, Object> queryAll(CompanyInfoQueryCriteria criteria, Pageable pageable,String id) {
 
 
         List<BigInteger> compyKeyList = findCompanykeys(criteria.getContactName());
         if (criteria.getIsDisable() == null || "".equals(criteria.getIsDisable())) {
             criteria.setIsDisable(1);
         }
-
+        Employee employee = employeeRepository.findByDingId(id);
+        Set<Long> keys = employeeRepository.findCompanyKeysByEmployeeKey(employee!=null?employee.getId():0L);
+        if(keys==null || keys.size()==0){
+            keys.add(0L);
+        }
+        criteria.setKeys(keys);
         Page<CompanyInfo> page = companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> CompanyQueryHelp.getPredicate(root, criteria, criteriaBuilder, compyKeyList ), pageable);
         return PageUtil.toPage(page);
     }
@@ -101,8 +112,13 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 //1 启用 0 停用
                 resources.setIsDisable(1);
             }
+            resources.setCreateMan(SecurityUtils.getEmployeeName());
+            resources.setCreateTime(new Timestamp(new Date().getTime()));
 
-            return companyInfoRepository.save(resources);
+            CompanyInfo save = companyInfoRepository.save(resources);
+            employeeCompanyService.saveBykey(SecurityUtils.getEmployeeId(),save.getCompanyKey());
+
+            return save;
         }
 
     }
@@ -145,8 +161,21 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
 
+
     /*
- 添加之前前客商验证
+    客商管理权限验证
+ * */
+    @Override
+    public EmployeeCompany VerifyPermission(Long companyKey) {
+
+        EmployeeCompany employeeCompany = employeeCompanyRepository.findByCompanyKeyAndEmployeeKey(companyKey, SecurityUtils.getEmployeeId());
+
+        return employeeCompany;
+    }
+
+
+    /*
+   通过基本纳税编码查基本档案
  * */
     @Override
     public  CompanyBasic findCompanyBasicByTaxId(CompanyInfoDTO resources) {
@@ -157,6 +186,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
         return companyBasic;
     }
+
 
 
 

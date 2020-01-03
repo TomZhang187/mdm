@@ -27,6 +27,7 @@ public class AuthorizationUser {
 
     private String uuid = "";
 
+
     @Override
     public String toString() {
         return "{username=" + username  + ", password= ******}";

@@ -47,7 +47,7 @@ public class CompanyU8cServiceImpl implements CompanyU8cService {
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        String url = "http://119.6.33.92:8088/service/AddCubasdocData";
+        String url = "http://119.6.33.92:8087/service/AddCubasdocData";
         String belongCompanuy = null;
                 LinkedMultiValueMap<Object, Object> map = new LinkedMultiValueMap<>();
                 map.add("custcode", companyInfo.getTaxId()!=null?companyInfo.getTaxId():"");////客商编码
@@ -57,7 +57,7 @@ public class CompanyU8cServiceImpl implements CompanyU8cService {
                 CompanyInfo byCompanyKey = companyInfoRepository.findByCompanyKey(companyInfo.getParentCompanyId());
 
                 map.add("pk_cubasdoc1",byCompanyKey!=null?byCompanyKey.getTaxId():""); //客商总公司编码
-                map.add("custprop", Optional.ofNullable(companyInfo.getCustomerType().toString()).orElse(""));//客商类型
+                map.add("custprop", Optional.ofNullable(companyInfo.getCustomerType()).orElse(""));//客商类型
                 map.add("custflag", Optional.ofNullable(companyInfo.getCustomerProp()).orElse(""));//客商属性
 
 
@@ -117,7 +117,7 @@ public class CompanyU8cServiceImpl implements CompanyU8cService {
                 map.add("iscansold","Y");  //
                 ResponseEntity<String> stringResponseEntity = HttpUtil.postRequest(url, map);
                if(stringResponseEntity.getBody().contains("成功")){
-                      System.out.println("u8c修改客商成功"+stringResponseEntity.getBody());
+                      System.out.println("u8c新增客商成功"+stringResponseEntity.getBody());
                        }else {
                       System.out.println(stringResponseEntity.getBody());
                  }
@@ -133,9 +133,9 @@ public class CompanyU8cServiceImpl implements CompanyU8cService {
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        String url = "http://119.6.33.92:8088/service/UpdateCubasdocData";
+        String url = "http://119.6.33.92:8087/service/UpdateCubasdocData";
         LinkedMultiValueMap<Object, Object> map = new LinkedMultiValueMap<>();
-        map.add("custcode", companyInfo.getTaxId()!=null?companyInfo.getTaxId():"");////客商编码
+        map.add("custcode", "91510100740341476L");////客商编码
         map.add("custname", companyInfo.getCompanyName()!=null?companyInfo.getCompanyName():"");//客商名称
         map.add("custshortname", companyInfo.getCompanyShortName()!=null?companyInfo.getCompanyShortName():"");//简称名称
 
@@ -148,8 +148,8 @@ public class CompanyU8cServiceImpl implements CompanyU8cService {
 
         map.add("pk_areacl", companyInfo.getBelongArea());//所属地区
 
-        map.add("pk_corp",companyInfo.getBelongCompany()); //组织
-        map.add("csid", csid);        //客商id   `
+        map.add("pk_corp","1007"); //组织
+        map.add("csid", "107677");        //客商id   `
 
 
         Set<Contact> contacts= contactRepository.findByCompanyKey(companyInfo.getCompanyKey());
@@ -208,12 +208,6 @@ public class CompanyU8cServiceImpl implements CompanyU8cService {
         }
 
     }
-
-
-
-
-
-
 
 
 }

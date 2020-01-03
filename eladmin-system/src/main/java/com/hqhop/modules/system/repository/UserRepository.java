@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -72,6 +72,10 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @Query(value ="select DISTINCT employee_id from employees_depts where dept_id in ?1",nativeQuery = true)
     Set<Long> getEmployeeIdByDeptsId(Set<Long> ids);
+
+
+    @Query(value ="select * from sys_user where employee_id =  (SELECT id FROM employee WHERE ding_id = ?1)",nativeQuery = true)
+    User findByDingID(String dingId);
 
 
 }

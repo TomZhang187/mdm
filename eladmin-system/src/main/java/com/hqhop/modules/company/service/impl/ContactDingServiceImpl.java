@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
 import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
+import com.hqhop.common.dingtalk.DingTalkConstant;
 import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyInfo;
@@ -69,7 +70,7 @@ public class ContactDingServiceImpl implements ContactDingService {
 
         DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
         OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
-        request.setProcessCode("PROC-1F000E3F-6764-4631-8712-6E270120E039");
+        request.setProcessCode(DingTalkConstant.PROCESSCODE_CUSTOMER_MANAGE);
 
         List<OapiProcessinstanceCreateRequest.FormComponentValueVo> listForm = new ArrayList<OapiProcessinstanceCreateRequest.FormComponentValueVo>();
 
@@ -198,7 +199,7 @@ public class ContactDingServiceImpl implements ContactDingService {
 
         DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
         OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
-        request.setProcessCode("PROC-1F000E3F-6764-4631-8712-6E270120E039");
+        request.setProcessCode(DingTalkConstant.PROCESSCODE_CUSTOMER_MANAGE);
 
         List<OapiProcessinstanceCreateRequest.FormComponentValueVo> listForm = new ArrayList<OapiProcessinstanceCreateRequest.FormComponentValueVo>();
 
@@ -387,7 +388,7 @@ public class ContactDingServiceImpl implements ContactDingService {
 
         DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
         OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
-        request.setProcessCode("PROC-1F000E3F-6764-4631-8712-6E270120E039");
+        request.setProcessCode(DingTalkConstant.PROCESSCODE_CUSTOMER_MANAGE);
 
         List<OapiProcessinstanceCreateRequest.FormComponentValueVo> listForm = new ArrayList<OapiProcessinstanceCreateRequest.FormComponentValueVo>();
 

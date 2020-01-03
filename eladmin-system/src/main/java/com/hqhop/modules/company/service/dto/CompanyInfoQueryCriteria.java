@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.hqhop.annotation.Query;
 import lombok.Data;
 
-
-import javax.persistence.Column;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -22,6 +19,12 @@ public class CompanyInfoQueryCriteria {
     // 处理精度丢失问题
     @JsonSerialize(using = ToStringSerializer.class)
     private Long companyKey;
+
+
+    @Query(type = Query.Type.IN, propName="companyKey")
+    private Set<Long> keys;
+
+
 
     // 批准时间
     private Timestamp approveTime;
@@ -188,5 +191,17 @@ public class CompanyInfoQueryCriteria {
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
+    }
+
+
+
+    public void setKeys(Set<Long> keys) {
+
+        if(keys!=null && keys.size()!=0){
+            this.keys = keys;
+        }else {
+            this.keys.add(0L);
+        }
+
     }
 }

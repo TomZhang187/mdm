@@ -2,7 +2,7 @@ package com.hqhop;
 
 
 import com.alibaba.fastjson.JSON;
-import com.hqhop.easyExcel.excelRead.CustomerExcelUtils;
+import com.hqhop.easyExcel.excelread.CustomerExcelUtils;
 import com.hqhop.easyExcel.model.IncClient;
 import com.hqhop.easyExcel.model.IncSupplier;
 import com.hqhop.modules.company.domain.Account;
@@ -13,23 +13,18 @@ import com.hqhop.modules.company.domain.U8cDomain.U8cContact;
 import com.hqhop.modules.company.repository.AccountRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
-import com.hqhop.modules.system.domain.Dict;
 import com.hqhop.modules.system.domain.DictDetail;
 import com.hqhop.modules.system.repository.DictDetailRepository;
 import com.hqhop.utils.HttpUtil;
 import com.taobao.api.ApiException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

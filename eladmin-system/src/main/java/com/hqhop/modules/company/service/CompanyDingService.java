@@ -70,4 +70,16 @@ public interface CompanyDingService {
     //客商 停用/启用 审批撤销
     @Transactional(rollbackFor = Exception.class)
     void terminateIsAbleApproval(String processId);
+
+    //获取客商管理权限审批
+    void getCustomerPermission(CompanyUpdate resouces, DingUser dingUser) throws
+            ApiException;
+
+    //新增客商审批通过
+    @Transactional(rollbackFor = Exception.class)
+    void agreeGetCustomerPermission(String processId);
+
+    //新增客商审批驳回
+    @Transactional(rollbackFor = Exception.class)
+    void refuseGetCustomerPermission(String processId);
 }

@@ -23,6 +23,10 @@ public class DingTalkConstant {
     /** 物料生产档案管理审批 **/
     public  static String PROCESSCODE_MATERIALPRODUCTION_ADD ;
 
+    public static String PROCESSCODE_CUSTOMER_MANAGE="PROC-0ECA9104-1CAC-476C-8934-3FE3FA69F1EE";
+
+
+
     @Value("${dingtalk.corpid}")
     public String corpid;
 

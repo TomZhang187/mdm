@@ -1,22 +1,14 @@
     package com.hqhop.modules.company.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.hqhop.modules.company.utils.CompanyUtils;
-import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -77,12 +69,12 @@ public class CompanyInfo implements Serializable {
     private Integer companyState;
 
     // 客商属性
-    @Column(name = "customer_prop", nullable = false)
+    @Column(name = "customer_prop")
     private String customerProp;
 
     //客商类型
-    @Column(name = "customer_type", nullable = false)
-    private String customerType;
+    @Column(name = "customer_type")
+    private String customerType="0";
 
     // 客商名称
     @Column(name = "company_name")
@@ -143,13 +135,13 @@ public class CompanyInfo implements Serializable {
     private Integer isSynergyPay;
 
     //账户
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Account.class, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Account.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_key")
     private Set<Account > accounts  = new HashSet<>();
 
 
     //联系人
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Contact.class, cascade = CascadeType.PERSIST )
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Contact.class, cascade = CascadeType.PERSIST )
     @JoinColumn(name = "company_key")
     private Set<Contact> contacts = new HashSet<>();
 
@@ -501,7 +493,7 @@ public class CompanyInfo implements Serializable {
         this.companyShortName = resources.getCompanyShortName();
         this.companyState = resources.getCompanyState();
 
-        this.customerProp = resources.getCompanyProp();
+        this.customerProp = resources.getCustomerProp();
 
         this.customerType = resources.getCustomerType();
         this.companyName = resources.getCompanyName();

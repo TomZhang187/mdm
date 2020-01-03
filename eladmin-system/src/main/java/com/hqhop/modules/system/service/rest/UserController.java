@@ -125,6 +125,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_CREATE')")
     public ResponseEntity create(@Validated @RequestBody User resources){
         checkLevel(resources);
+
         return new ResponseEntity(userService.create(resources),HttpStatus.CREATED);
     }
 

@@ -1,12 +1,8 @@
 package com.hqhop.modules.company.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hqhop.modules.company.utils.CompanyUtils;
-import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -95,9 +91,15 @@ public class CompanyUpdate implements Serializable {
     @Column(name = "ding_url")
     private String dingUrl;
 
-    // 公司类型
+    // 客商属性
     @Column(name = "customer_prop")
     private String customerProp;
+
+    //客商类型
+    @Column(name = "customer_type")
+    private String customerType="0";
+
+
 
     // 公司名称
     @Column(name = "company_name")
@@ -122,11 +124,11 @@ public class CompanyUpdate implements Serializable {
 
     // 是否散户
     @Column(name = "is_retai")
-    private String isRetai;
+    private String isRetai="0";
 
     // 是否协同付款
     @Column(name = "is_synergy_pay")
-    private String isSynergyPay;
+        private String isSynergyPay="0";
 
     // 法人
     @Column(name = "legalbody")
@@ -351,12 +353,8 @@ public class CompanyUpdate implements Serializable {
     public String getCustomerProp() {
         return customerProp;
     }
-    @JsonIgnore
-    public Integer getCompanyTypeInt() {
-        return Integer.parseInt(customerProp);
-    }
 
-    public void setCompanyType(String customerProp) {
+    public void setCustomerProp(String customerProp) {
         this.customerProp = customerProp;
     }
 
@@ -421,7 +419,10 @@ public class CompanyUpdate implements Serializable {
     }
     @JsonIgnore
     public Integer getIsRetaiInt() {
-        return Integer.parseInt(isRetai);
+
+            return Integer.parseInt(isRetai);
+
+
     }
 
     public void setIsRetai(String isRetai) {
@@ -547,6 +548,7 @@ public class CompanyUpdate implements Serializable {
         companyInfo.setCompanyShortName(this.companyShortName);
         companyInfo.setCompanyState(Integer.parseInt(this.companyState));
         companyInfo.setCustomerProp(this.customerProp);
+        companyInfo.setCustomerType(this.customerType);
         companyInfo.setCompanyName(this.companyName);
         companyInfo.setContactAddress(this.contactAddress);
         companyInfo.setEconomicType(this.economicType);
@@ -567,26 +569,27 @@ public class CompanyUpdate implements Serializable {
     public void copyCompanyInfo(CompanyInfo companyInfo){
         this.companyKey = companyInfo.getCompanyKey();
             this.createMan = companyInfo.getCreateMan();
-        this.belongArea = companyInfo.getBelongArea().toString();
+        this.belongArea = companyInfo.getBelongArea();
        this.belongCompany = companyInfo.getBelongCompany();
-       this.companyProp = companyInfo.getCompanyProp().toString();
+       this.companyProp = companyInfo.getCompanyProp();
        this.companyShortName = companyInfo.getCompanyShortName();
        this.companyState = companyInfo.getCompanyState().toString();
        this.customerProp = companyInfo.getCustomerProp();
+       this.customerType = companyInfo.getCustomerType();
        this.companyName = companyInfo.getCompanyName();
        this.contactAddress = companyInfo.getContactAddress();
-       this.economicType = companyInfo.getEconomicType().toString();
+       this.economicType = companyInfo.getEconomicType();
        this.foreignName = companyInfo.getForeignName();
        this.isDisable = companyInfo.getIsDisable().toString();
-       this.isRetai = companyInfo.getIsRetai().toString();
-       this.isSynergyPay = companyInfo.getIsSynergyPay().toString();
+       this.isRetai = companyInfo.getIsRetai()!=null?companyInfo.getIsRetai().toString():null;
+       this.isSynergyPay = companyInfo.getIsSynergyPay()!=null?companyInfo.getIsSynergyPay().toString():null;
        this.legalbody = companyInfo.getLegalbody();
        this.parentCompanyId = companyInfo.getParentCompanyId();
        this.postalCode = companyInfo.getPostalCode();
        this.registerfund = companyInfo.getRegisterfund();
        this.remark = companyInfo.getRemark();
        this.taxId = companyInfo.getTaxId();
-       this.trade = companyInfo.getTrade().toString();
+       this.trade = companyInfo.getTrade();
     }
 
 }

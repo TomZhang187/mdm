@@ -11,7 +11,7 @@ import com.dingtalk.api.response.OapiSmartworkHrmEmployeeQueryonjobResponse;
 import com.dingtalk.api.response.OapiUserGetResponse;
 import com.dingtalk.api.response.OapiUserListbypageResponse;
 import com.hqhop.common.dingtalk.DingTalkUtils;
-import com.hqhop.easyExcel.excelRead.EmployeeExcelUtils;
+import com.hqhop.easyExcel.excelread.EmployeeExcelUtils;
 import com.hqhop.easyExcel.model.EmployeeModel;
 import com.hqhop.modules.system.domain.Dept;
 import com.hqhop.modules.system.domain.Employee;

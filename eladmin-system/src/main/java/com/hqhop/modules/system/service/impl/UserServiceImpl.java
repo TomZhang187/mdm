@@ -1,16 +1,15 @@
 package com.hqhop.modules.system.service.impl;
 
+import com.hqhop.exception.EntityExistException;
+import com.hqhop.exception.EntityNotFoundException;
 import com.hqhop.modules.monitor.service.RedisService;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.domain.User;
-import com.hqhop.exception.EntityExistException;
-import com.hqhop.exception.EntityNotFoundException;
 import com.hqhop.modules.system.domain.UserAvatar;
 import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.modules.system.repository.UserAvatarRepository;
 import com.hqhop.modules.system.repository.UserRepository;
 import com.hqhop.modules.system.service.DeptService;
-import com.hqhop.modules.system.service.EmployeeService;
 import com.hqhop.modules.system.service.UserService;
 import com.hqhop.modules.system.service.dto.RoleSmallDTO;
 import com.hqhop.modules.system.service.dto.UserDTO;
@@ -104,8 +103,10 @@ public class UserServiceImpl implements UserService {
 
         // 默认密码 123456，此密码是加密后的字符
         resources.setPassword("e10adc3949ba59abbe56e057f20f883e");
-        Employee employee = employeeRepository.findByEmployeeCode(resources.getEmployee().getEmployeeCode());
-        resources.setEmployee(employee);
+        if(resources.getEmployee()!=null){
+            Employee employee = employeeRepository.findByEmployeeCode(resources.getEmployee().getEmployeeCode());
+            resources.setEmployee(employee);
+        }
         return userMapper.toDto(userRepository.save(resources));
     }
 
@@ -173,12 +174,37 @@ public class UserServiceImpl implements UserService {
         } else {
 
             UserDTO userDTO = userMapper.toDto(user);
-            Employee employee = employeeRepository.findByDingId(userDTO.getEmployee().getDingId());
-            userDTO.setDepts(employee.getDeptsSet());
-            userDTO.setBelongFiliales(deptService.getBelongFiliale(employee.getDeptsSet()));
+            if(userDTO.getEmployee()!=null){
+                Employee employee = employeeRepository.findByDingId(userDTO.getEmployee().getDingId());
+                userDTO.setDepts(employee.getDeptsSet());
+                userDTO.setBelongFiliales(deptService.getBelongFiliale(employee.getDeptsSet()));
+            }
+
             return userDTO;
         }
     }
+
+
+    @Override
+    public UserDTO findByDingId(String userName) {
+        User user = null;
+        user = userRepository.findByDingID(userName);
+
+        if (user == null) {
+            throw new EntityNotFoundException(User.class, "name", userName);
+        } else {
+
+            UserDTO userDTO = userMapper.toDto(user);
+            if(userDTO.getEmployee()!=null){
+                Employee employee = employeeRepository.findByDingId(userDTO.getEmployee().getDingId());
+                userDTO.setDepts(employee.getDeptsSet());
+                userDTO.setBelongFiliales(deptService.getBelongFiliale(employee.getDeptsSet()));
+            }
+
+            return userDTO;
+        }
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
