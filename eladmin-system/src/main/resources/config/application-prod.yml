@@ -81,9 +81,9 @@ dingtalk:
   # 审批流CODE
   processcode:
     # 物料基本档案新增
-    material-base-add: PROC-B0A45D0A-A9FC-43AE-BD86-76F54B5902AA
+    material-base-add: PROC-E3655515-4411-4950-A803-4096928A1AEB
     # 物料生产档案新增
-    material-production-add: PROC-B0A45D0A-A9FC-43AE-BD86-76F54B5902AA
+    material-production-add: PROC-89A356BF-F728-4360-98E0-2DE3E8B7ABC6
 
 u8cloud:
   url: http://119.6.33.92:8087/service/XChangeServlet

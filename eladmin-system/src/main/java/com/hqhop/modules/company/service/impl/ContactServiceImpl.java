@@ -10,8 +10,10 @@ import com.hqhop.modules.company.service.ContactService;
 import com.hqhop.modules.company.service.dto.ContactDTO;
 import com.hqhop.modules.company.service.dto.ContactQueryCriteria;
 import com.hqhop.modules.company.service.mapper.ContactMapper;
+import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.utils.PageUtil;
 import com.hqhop.utils.QueryHelp;
+import com.hqhop.utils.SecurityUtils;
 import com.hqhop.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
 * @author zf
@@ -43,11 +47,27 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private CompanyInfoRepository companyInfoRepository;
 
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+
     @Override
     public Map<String,Object> queryAll(ContactQueryCriteria criteria, Pageable pageable){
+
+        Set<Long> keys = employeeRepository.findCompanyKeysByEmployeeKey(SecurityUtils.getEmployeeId());
+        if(keys == null || keys.size()==0){
+            criteria.setCompanyKey(0L);
+        }else {
+            Set<Long> contactKeysByCompnayKes = contactRepository.findContactKeysByCompnayKes(keys.stream().collect(Collectors.toList()));
+            criteria.setKeys(contactKeysByCompnayKes);
+        }
         Page<Contact> page = contactRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
         for (Contact contact : page) {
-            contact.setBelongCompany(companyInfoRepository.findByCompanyKey(contact.getCompanyKey()).getCompanyName());
+            if(contact.getContactKey() != null){
+                contact.setBelongCompany(companyInfoRepository.findByCompanyKey(contact.getCompanyKey()).getCompanyName());
+            }
+
         }
         return PageUtil.toPage(page);
     }

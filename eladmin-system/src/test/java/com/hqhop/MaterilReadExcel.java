@@ -946,11 +946,6 @@ public class MaterilReadExcel {
 
            MaterialProduction byOriginalRemark = materialProductionRepository.findByOriginalRemark(object.getLine6());
            if(byOriginalRemark == null){
-
-
-
-
-
            MaterialProduction materialProduction = new MaterialProduction();
 
            if (object.getLine11() != null && object.getLine11().contains(".")) {

@@ -2,7 +2,6 @@ package com.hqhop.modules.company.repository;
 
 
 import com.hqhop.modules.company.domain.CompanyInfo;
-import com.hqhop.modules.company.service.dto.CompanyDictDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -45,9 +44,11 @@ public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long>,
 
     CompanyInfo findByCustomerPropAndBelongCompanyAndTaxId(String prop,String belongCompany,String taxId);
 
-    @org.springframework.data.jpa.repository.Query(value = " select company_key,company_name,tax_id from company_info WHERE company_name like %?1%", nativeQuery = true)
-    List<CompanyDictDto> findByLikeName(String name);
+    @org.springframework.data.jpa.repository.Query(value = " select * from company_info WHERE company_name like CONCAT('%',?1,'%')", nativeQuery = true)
+    List<CompanyInfo> findByLikeName(String name);
 
+    @org.springframework.data.jpa.repository.Query(value = " select * from company_info WHERE company_key in ?1", nativeQuery = true)
+    List<CompanyInfo>  findByCompanyKeyIn(List<Long> keys);
 
 
 

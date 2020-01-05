@@ -2,6 +2,7 @@
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import com.hqhop.modules.company.service.dto.CompanyDictDto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -96,9 +97,9 @@ public class CompanyInfo implements Serializable {
     @Column(name = "is_disable")
     private Integer isDisable;
 
-    // 是否散户
-    @Column(name = "is_retai")
-    private Integer isRetai;
+    // 是否同步到了U8c
+    @Column(name = "is_sync_u8c")
+    private Integer isSyncU8c;
 
     // 法人
     @Column(name = "legalbody")
@@ -183,7 +184,6 @@ public class CompanyInfo implements Serializable {
                 ", economicType='" + economicType + '\'' +
                 ", foreignName='" + foreignName + '\'' +
                 ", isDisable=" + isDisable +
-                ", isRetai=" + isRetai +
                 ", legalbody='" + legalbody + '\'' +
                 ", parentCompanyId=" + parentCompanyId +
                 ", postalCode='" + postalCode + '\'' +
@@ -355,12 +355,12 @@ public class CompanyInfo implements Serializable {
         this.isDisable = isDisable;
     }
 
-    public Integer getIsRetai() {
-        return isRetai;
+    public Integer getIsSyncU8c() {
+        return isSyncU8c;
     }
 
-    public void setIsRetai(Integer isRetai) {
-        this.isRetai = isRetai;
+    public void setIsSyncU8c(Integer isSyncU8c) {
+        this.isSyncU8c = isSyncU8c;
     }
 
     public String getLegalbody() {
@@ -481,6 +481,8 @@ public class CompanyInfo implements Serializable {
         this.customerProp = customerProp;
     }
 
+
+
     public void getBasicAttribute (CompanyInfo resources){
         this.createMan = resources.getCreateMan();
         this.createTime = resources.getCreateTime();
@@ -501,7 +503,7 @@ public class CompanyInfo implements Serializable {
         this.economicType = resources.getEconomicType();
         this.foreignName = resources.getForeignName();
         this.isDisable = resources.getIsDisable();
-        this.isRetai = resources.getIsRetai();
+        this.isSyncU8c = resources.getIsSyncU8c();
         this.legalbody = resources.getLegalbody();
         this.parentCompanyId = resources.getParentCompanyId();
         this.postalCode = resources.getPostalCode();
@@ -519,10 +521,105 @@ public class CompanyInfo implements Serializable {
     }
 
 
+public CompanyDictDto getDictDto(){
+        CompanyDictDto companyDictDto = new CompanyDictDto();
+        companyDictDto.setCompanyKey(this.companyKey);
+        companyDictDto.setCompanyName(this.companyName);
+        companyDictDto.setTaxId(this.taxId);
+        return  companyDictDto;
+}
 
 
 
 
+
+public void dataCompare(CompanyInfo resources){
+
+    this.createMan = this.createMan.equals(resources.getCreateMan())?null:resources.getCreateMan();
+    this.createTime = this.createTime.equals(resources.getCreateTime()) ?null:resources.getCreateTime()      ;
+    this.approveTime =this.approveTime.equals(resources.getApproveTime())?null: resources.getApproveTime();
+
+    if(this.updateMan!=null && resources.getUpdateMan()!=null){
+        this.updateMan = this.updateMan.equals(resources.getUpdateMan()!=null)?null:resources.getUpdateMan();
+    }
+    if(this.updateTime!=null && resources.getUpdateTime()!=null){
+        this.updateTime = this.updateTime.equals(resources.getUpdateTime())?null:resources.getUpdateTime();
+    }
+    if(this.belongArea!=null&&resources.getBelongArea()!=null){
+        this.belongArea = this.belongArea.equals(resources.getBelongArea())?null:resources.getBelongArea();
+    }
+  if(this.belongCompany!=null&&resources.getBelongCompany()!=null){
+      this.belongCompany =this.belongCompany.equals(resources.getBelongCompany())?null: resources.getBelongCompany();
+  }
+   if(this.companyProp!=null&&resources.getCompanyProp()!=null){
+       this.companyProp = this.companyProp.equals(resources.getCompanyProp())?null:resources.getCompanyProp();
+   }
+  if(this.getCompanyShortName()!=null&&resources.getCompanyShortName()!=null){
+      this.companyShortName = this.getCompanyShortName().equals(resources.getCompanyShortName())?null:resources.getCompanyShortName();
+  }
+   if(this.companyState!=null&&resources.getCompanyState()!=null){
+       this.companyState = this.companyState.equals(resources.getCompanyState())?null:resources.getCompanyState();
+   }
+  if(this.customerProp!=null&&resources.getCustomerProp()!=null){
+      this.customerProp = this.customerProp.equals(resources.getCustomerProp())?null:resources.getCustomerProp();
+  }
+  if(this.customerType!=null&&resources.getCustomerType()!=null){
+      this.customerType = this.customerType.equals(resources.getCustomerType())?null:resources.getCustomerType();
+  }
+  if(companyName!=null&&resources.getCompanyName()!=null){
+      this.companyName = this.companyName.equals(resources.getCompanyName())?null:resources.getCompanyName();
+  }
+   if(contactAddress!=null&&resources.getContactAddress()!=null){
+       this.contactAddress =this.contactAddress.equals(resources.getContactAddress())?null: resources.getContactAddress();
+   }
+   if(economicType!=null&resources.getEconomicType()!=null){
+       this.economicType = this.economicType.equals(resources.getEconomicType())?null:resources.getEconomicType();
+   }
+   if(foreignName!=null&&resources.getForeignName()!=null){
+       this.foreignName = this.foreignName.equals(resources.getForeignName())?null:resources.getForeignName();
+   }
+   if(isDisable!=null&&resources.getIsDisable()!=null){
+       this.isDisable = this.isDisable.equals(resources.getIsDisable())?null:resources.getIsDisable();
+   }
+  if(legalbody!=null&&resources.getLegalbody()!=null){
+      this.legalbody =this.legalbody.equals(resources.getLegalbody())?null: resources.getLegalbody();
+  }
+  if(parentCompanyId!=null&&resources.getParentCompanyId()!=null){
+      this.parentCompanyId = this.parentCompanyId.equals(resources.getParentCompanyId())?null:resources.getParentCompanyId();
+  }
+   if(postalCode!=null&&resources.getPostalCode()!=null){
+       this.postalCode =this.postalCode.equals(resources.getPostalCode())?null: resources.getPostalCode();
+   }
+   if(registerfund!=null&&resources.getRegisterfund()!=null){
+       this.registerfund =this.registerfund.equals(resources.getRegisterfund())?null: resources.getRegisterfund();
+   }
+  if(remark!=null&&resources.getRemark()!=null){
+      this.remark = this.remark.equals(resources.getRemark())?null:resources.getRemark();
+  }
+   if(taxId!=null&&resources.getTaxId()!=null){
+       this.taxId = this.taxId.equals(resources.getTaxId())?null:resources.getTaxId();
+   }
+
+   if(trade!=null&&resources.getTrade()!=null){
+       this.trade = this.trade.equals(resources.getTrade())?null:resources.getTrade();
+   }
+   if(isSynergyPay!=null&&resources.isSynergyPay!=null){
+       this.isSynergyPay = this.isSynergyPay.equals(resources.getIsSynergyPay())?null:resources.getIsSynergyPay();
+   }
+  if(chargeDepartment!=null&&resources.getChargeDepartment()!=null){
+      this.chargeDepartment = this.chargeDepartment.equalsIgnoreCase(resources.chargeDepartment)?null: resources.getChargeDepartment();
+  }
+   if(professionSalesman!=null&&resources.getProfessionSalesman()!=null){
+       this.professionSalesman = this.professionSalesman.equals(resources.getProfessionSalesman())?null:resources.getProfessionSalesman();
+   }
+    if(creditRating!=null&&resources.getCreditRating()!=null){
+        this.creditRating =this.creditRating.equals(resources.getCreditRating())?null: resources.getCreditRating();
+    }
+    if(defaultPaymentAgreement!=null&&resources.defaultPaymentAgreement!=null){
+        this.defaultPaymentAgreement =this.defaultPaymentAgreement.equals(resources.getDefaultPaymentAgreement())?null: resources.getDefaultPaymentAgreement();
+    }
+
+}
 
 
 }

@@ -2,8 +2,12 @@ package com.hqhop.modules.company.rest;
 
 import com.hqhop.aop.log.Log;
 import com.hqhop.modules.company.domain.EmployeeCompany;
+import com.hqhop.modules.company.repository.EmployeeCompanyRepository;
 import com.hqhop.modules.company.service.EmployeeCompanyService;
 import com.hqhop.modules.company.service.dto.EmployeeCompanyQueryCriteria;
+import com.hqhop.utils.SecurityUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -11,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
 
 /**
 * @author zf
@@ -24,6 +27,9 @@ public class EmployeeCompanyController {
 
     @Autowired
     private EmployeeCompanyService employeeCompanyService;
+
+    @Autowired
+    private EmployeeCompanyRepository employeeCompanyRepository;
 
     @Log("查询EmployeeCompany")
     @ApiOperation(value = "查询EmployeeCompany")
@@ -57,5 +63,17 @@ public class EmployeeCompanyController {
     public ResponseEntity delete(@PathVariable Long companyKey){
         employeeCompanyService.delete(companyKey);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+
+    @Log("用户单个客商权限验证")
+    @ApiOperation(value = "用户单个客商权限验证")
+    @GetMapping(value = "/findEmployCompanyByEmployeeKeyAndCompanyKey")
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEECOMPANY_ALL','EMPLOYEECOMPANY_DELETE')")
+    public ResponseEntity findByEmployeeKeyAndCompanyKey(String companyKey){
+        EmployeeCompany employeeCompany = employeeCompanyRepository.findByCompanyKeyAndEmployeeKey(Long.valueOf(companyKey), SecurityUtils.getEmployeeId());
+
+        return new ResponseEntity(employeeCompany,HttpStatus.OK);
     }
 }

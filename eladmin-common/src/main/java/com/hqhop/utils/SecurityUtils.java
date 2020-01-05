@@ -76,4 +76,15 @@ public class SecurityUtils {
         JSONObject json = new JSONObject(obj);
         return json.get("employeeId", Long.class);
     }
+
+
+    /**
+     * 获取系统员工工号
+     * @return 系统用户id
+     */
+    public static String getEmployeeCode(){
+        Object obj = getUserDetails();
+        JSONObject json = new JSONObject(obj);
+        return json.get("employeeCode", String.class);
+    }
 }

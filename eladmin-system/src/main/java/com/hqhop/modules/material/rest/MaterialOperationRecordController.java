@@ -5,14 +5,14 @@ import com.hqhop.modules.material.domain.Material;
 import com.hqhop.modules.material.domain.MaterialOperationRecord;
 import com.hqhop.modules.material.service.MaterialOperationRecordService;
 import com.hqhop.modules.material.service.dto.MaterialOperationRecordQueryCriteria;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
 
 /**
 * @author zf
@@ -38,7 +38,7 @@ public class MaterialOperationRecordController {
     @Log("新增MaterialOperationRecord")
     @ApiOperation(value = "新增MaterialOperationRecord")
     @PostMapping(value = "/materialOperationRecord")
-    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_CREATE')")
+//    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_CREATE')")
     public ResponseEntity create(@Validated @RequestBody MaterialOperationRecord resources){
         return new ResponseEntity(materialOperationRecordService.create(resources),HttpStatus.CREATED);
     }
@@ -47,7 +47,7 @@ public class MaterialOperationRecordController {
     @Log("修改MaterialOperationRecord")
     @ApiOperation(value = "修改MaterialOperationRecord")
     @PutMapping(value = "/materialOperationRecord")
-    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_EDIT')")
+//    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_EDIT')")
     public ResponseEntity update(@Validated @RequestBody MaterialOperationRecord resources){
         materialOperationRecordService.update(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -56,7 +56,7 @@ public class MaterialOperationRecordController {
     @Log("删除MaterialOperationRecord")
     @ApiOperation(value = "删除MaterialOperationRecord")
     @DeleteMapping(value = "/materialOperationRecord/{key}")
-    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_DELETE')")
+//    @PreAuthorize("hasAnyRole('ADMIN','MATERIALOPERATIONRECORD_ALL','MATERIALOPERATIONRECORD_DELETE')")
     public ResponseEntity delete(@PathVariable Long key){
         materialOperationRecordService.delete(key);
         return new ResponseEntity(HttpStatus.OK);

@@ -27,6 +27,9 @@ public class U8cContact implements Serializable {
     //所属地区
     private String  pk_areacl ;
 
+    //联系人主键
+    private  String cs_addr_id;
+
 
     public static List<U8cContact> getListBySetContact(Set<Contact> contacts,String belognArea){
 
@@ -42,7 +45,7 @@ public class U8cContact implements Serializable {
                 if(contact.getIsDefaultAddress()!=null){
                     u8cContact.setDefaddrflag(contact.getIsDefaultAddress()!=1?"N":"Y");
                 }
-
+                u8cContact.setCs_addr_id(contact.getContactKey().toString());
                 list.add(u8cContact);
             }
 

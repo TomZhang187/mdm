@@ -31,6 +31,9 @@ public class U8cAccount implements Serializable {
     //  是否默认
     private String   defflag;
 
+    //账户主键
+    private  String cs_bank_id;
+
 
 
     public static   List<U8cAccount> getListBySetAccount(Set<Account > accounts){
@@ -40,10 +43,11 @@ public class U8cAccount implements Serializable {
                 U8cAccount u8cAccount = new U8cAccount();
                 u8cAccount.setPk_accbank(account.getAccountBlank());
                 u8cAccount.setAccname(account.getAccountName());
-                u8cAccount.setAccount(account.getAccount());
+                u8cAccount.setAccount("602971977");
                 if(account.getIsDefalut()!=null){
                     u8cAccount.setDefflag(account.getIsDefalut()!=1?"N":"Y");
                 }
+                u8cAccount.setCs_bank_id(account.getAccountKey().toString());
                 u8cAccount.setPk_currtype(account.getCurrency());
                 list.add(u8cAccount);
             }
@@ -52,8 +56,4 @@ public class U8cAccount implements Serializable {
          return  list;
 
     }
-
-
-
-
 }

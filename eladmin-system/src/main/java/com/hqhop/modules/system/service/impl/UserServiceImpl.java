@@ -4,9 +4,11 @@ import com.hqhop.exception.EntityExistException;
 import com.hqhop.exception.EntityNotFoundException;
 import com.hqhop.modules.monitor.service.RedisService;
 import com.hqhop.modules.system.domain.Employee;
+import com.hqhop.modules.system.domain.Role;
 import com.hqhop.modules.system.domain.User;
 import com.hqhop.modules.system.domain.UserAvatar;
 import com.hqhop.modules.system.repository.EmployeeRepository;
+import com.hqhop.modules.system.repository.RoleRepository;
 import com.hqhop.modules.system.repository.UserAvatarRepository;
 import com.hqhop.modules.system.repository.UserRepository;
 import com.hqhop.modules.system.service.DeptService;
@@ -56,6 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private DeptService deptService;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
 
 
@@ -190,20 +195,57 @@ public class UserServiceImpl implements UserService {
         User user = null;
         user = userRepository.findByDingID(userName);
 
-        if (user == null) {
-            throw new EntityNotFoundException(User.class, "name", userName);
-        } else {
 
-            UserDTO userDTO = userMapper.toDto(user);
-            if(userDTO.getEmployee()!=null){
+        UserDTO userDTO = new UserDTO();
+        if(user==null){
+              userDTO = createUserByDingId(userName);
+              }else {
+            userDTO = userMapper.toDto(user);
+              }
+            if(userDTO.getEmployee()!=null) {
                 Employee employee = employeeRepository.findByDingId(userDTO.getEmployee().getDingId());
                 userDTO.setDepts(employee.getDeptsSet());
                 userDTO.setBelongFiliales(deptService.getBelongFiliale(employee.getDeptsSet()));
             }
 
+
             return userDTO;
-        }
+
     }
+
+    @Override
+    public   UserDTO createUserByDingId(String dingId){
+
+        Employee byDingId = employeeRepository.findByDingId(dingId);
+        if(byDingId == null){
+            throw new EntityNotFoundException(Employee.class, "employee", byDingId);
+        } else {
+
+            User user = new User();
+            user.setEmployee(byDingId);
+            user.setUsername(dingId);
+            user.setEnabled(true);
+            Role role= roleRepository.findByName("客商物料用户");
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            user.setRoles(roles);
+            UserDTO userDTO = create(user);
+            return userDTO;
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     @Override

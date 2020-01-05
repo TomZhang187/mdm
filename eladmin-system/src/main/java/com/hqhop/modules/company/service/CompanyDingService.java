@@ -82,4 +82,8 @@ public interface CompanyDingService {
     //新增客商审批驳回
     @Transactional(rollbackFor = Exception.class)
     void refuseGetCustomerPermission(String processId);
+
+    //客商管理权限申请审批撤销
+    @Transactional(rollbackFor = Exception.class)
+    void terminateGetCustomerPermission(String processId);
 }

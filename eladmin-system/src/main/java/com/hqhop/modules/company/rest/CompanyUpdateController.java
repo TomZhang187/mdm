@@ -5,6 +5,9 @@ import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.service.CompanyUpdateService;
 import com.hqhop.modules.company.service.dto.CompanyUpdateQueryCriteria;
+import com.hqhop.utils.SecurityUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
 
 /**
 * @author zf
@@ -69,6 +71,14 @@ public class CompanyUpdateController {
         return new ResponseEntity(companyUpdateService.loadUpdateRecord(companyKey,state,userId,name),HttpStatus.OK);
     }
 
+
+    @Log("查询用户对当前客商的审批记录")
+    @ApiOperation(value = "查询用户对当前客商的审批记录")
+    @GetMapping(value = "/findPermissionRecord")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYUPDATE_ALL','COMPANYUPDATE_SELECT')")
+    public ResponseEntity loadPermissionRecord(Long companyKey){
+        return new ResponseEntity(companyUpdateService.loadPermissionRecord(companyKey,SecurityUtils.getDingId()),HttpStatus.OK);
+    }
 
 
     @Log("新增该客商的CompanyUpdate")

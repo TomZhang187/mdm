@@ -32,4 +32,7 @@ public interface RoleRepository extends JpaRepository<Role, Long>, JpaSpecificat
     @Modifying
     @Query(value = "delete from roles_menus where menu_id = ?1",nativeQuery = true)
     void untiedMenu(Long id);
+
+
+
 }

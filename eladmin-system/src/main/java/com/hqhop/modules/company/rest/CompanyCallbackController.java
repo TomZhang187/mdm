@@ -277,6 +277,9 @@ public class CompanyCallbackController {
             companyDingService.refuseGetCustomerPermission(callback.getProcessInstanceId());
 
 
-        }
+        }else if("terminate".equals(callback.getType())){
+        //撤销操作
+        companyDingService.terminateGetCustomerPermission(callback.getProcessInstanceId());
+    }
     }
 }

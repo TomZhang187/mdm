@@ -490,7 +490,7 @@ public class MaterialProductionDingServiceImpl  implements MaterialProducionDing
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName6 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName6.setName("创建人");
-        ItemName6.setValue(material.getCreatePerson()!=null?material.getCreatePerson():"");
+        ItemName6.setValue(material.getCreatePerson()!=null?material.getCreatePerson():"张");
         list1.add(ItemName6);
 
 //        // 单行输入框
@@ -503,7 +503,7 @@ public class MaterialProductionDingServiceImpl  implements MaterialProducionDing
         // 单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName7 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
         ItemName7.setName("默认工厂");
-        ItemName7.setValue(deptRepository.findNameByDingId(resources.getDefaultFactory()));
+        ItemName7.setValue(deptRepository.findNameByDingId(resources.getDefaultFactory()!=null?resources.getDefaultFactory():"1"));
         list1.add(ItemName7);
 
 

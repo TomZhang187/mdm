@@ -1,28 +1,29 @@
 package com.hqhop.modules.company.service.impl;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
 import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
-import com.hqhop.utils.CompanyUpdateHelp;
-import com.hqhop.utils.ValidationUtil;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.modules.company.service.CompanyUpdateService;
 import com.hqhop.modules.company.service.dto.CompanyUpdateDTO;
 import com.hqhop.modules.company.service.dto.CompanyUpdateQueryCriteria;
 import com.hqhop.modules.company.service.mapper.CompanyUpdateMapper;
+import com.hqhop.utils.CompanyUpdateHelp;
+import com.hqhop.utils.PageUtil;
+import com.hqhop.utils.QueryHelp;
+import com.hqhop.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import com.hqhop.utils.PageUtil;
-import com.hqhop.utils.QueryHelp;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
 * @author zf
@@ -99,6 +100,26 @@ public class CompanyUpdateServiceImpl implements CompanyUpdateService {
           }
 
     }
+
+
+    /*
+     查询该客商申请权限记录记录
+     * */  @Override
+    public CompanyUpdate loadPermissionRecord(Long companyKey ,String userId) {
+        //1 新增 2 审批中 3驳回 4审核通过
+        CompanyUpdate companyUpdate = companyUpdateRepository.findByCompanyKeyAndUserIdAndApproveResultAndOperationType(companyKey,userId,"未知","12");
+//          List<CompanyUpdate> companyUpdates = companyUpdateRepository.findAllByCompanyKeyAndCompanyState(companyKey,state);
+        if(companyUpdate != null){
+            return  companyUpdate;
+
+        }else {
+            return  null;
+        }
+
+    }
+
+
+
     /**
      * 新增该客商的修改记录
      */

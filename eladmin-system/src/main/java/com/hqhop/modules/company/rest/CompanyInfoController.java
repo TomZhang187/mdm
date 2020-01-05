@@ -9,11 +9,12 @@ import com.hqhop.modules.company.domain.CompanyUpdate;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.service.CompanyDingService;
 import com.hqhop.modules.company.service.CompanyInfoService;
+import com.hqhop.modules.company.service.dto.CompanyDictDto;
 import com.hqhop.modules.company.service.dto.CompanyInfoDTO;
 import com.hqhop.modules.company.service.dto.CompanyInfoQueryCriteria;
-
-
 import com.taobao.api.ApiException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 ;
 
@@ -178,6 +181,8 @@ public class CompanyInfoController {
             return new ResponseEntity(HttpStatus.OK);
         } else {
             //新增审批调用
+            resouces.setCompanyState("1");
+            resouces.setIsDisable("1");
             companyDingService.addApprovel(resouces, dingUser);
 
         }
@@ -199,6 +204,36 @@ public class CompanyInfoController {
         companyDingService.getCustomerPermission(companyUpdate, dingUser);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+
+    @Log("客商名字模糊查询")
+    @ApiOperation(value = "客商名字模糊查询")
+    @GetMapping(value = "/findLikeCompanyName")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity findLikeCompanyNmae( String companyName) throws
+            ApiException {
+
+        List<CompanyInfo> byLikeName = companyInfoRepository.findByLikeName(companyName);
+        List<CompanyDictDto> list = new ArrayList<>();
+        for (CompanyInfo companyInfo : byLikeName) {
+           list.add(companyInfo.getDictDto());
+        }
+
+        return new ResponseEntity(list,HttpStatus.OK);
+    }
+
+
+    @Log("查询当前用户权限客商")
+    @ApiOperation(value = "查询当前用户权限客商")
+    @GetMapping(value = "/findPermissonCompany")
+//    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
+    public ResponseEntity findPermissonCompany() throws
+            ApiException {
+
+
+        return new ResponseEntity(companyInfoService.findPermissonCompany(),HttpStatus.OK);
     }
 
 

@@ -13,7 +13,7 @@ public class CompanyDictDto implements Serializable {
 
 
     // 客商名称
-    private String compayName;
+    private String companyName;
 
 
     // 税务登记号

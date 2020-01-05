@@ -55,7 +55,7 @@ public class    JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username){
 
-        UserDTO user = userService.findByDingId("15706722071874645");
+        UserDTO user = userService.findByDingId(username);
         if(user.getEmployee() != null){
             Employee employee = employeeRepository.findByDingId(user.getEmployee().getDingId());
             user.setDepts(employee.getDeptsSet());
@@ -76,6 +76,7 @@ public class    JwtUserDetailsService implements UserDetailsService {
                 user.getEmployee()!=null?user.getEmployee().getEmployeeName():null,
                 user.getEmployee()!=null?user.getEmployee().getDingId():null,
                 user.getEmployee()!=null?user.getEmployee().getId():null,
+                user.getEmployee()!=null?user.getEmployee().getEmployeeCode():null,
                 user.getPassword(),
                 user.getAvatar(),
                 user.getEmail(),

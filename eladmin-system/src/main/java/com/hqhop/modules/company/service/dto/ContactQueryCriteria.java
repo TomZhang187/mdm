@@ -3,6 +3,8 @@ package com.hqhop.modules.company.service.dto;
 import com.hqhop.annotation.Query;
 import lombok.Data;
 
+import java.util.Set;
+
 /**
 * @author zf
 * @date 2019-11-07
@@ -13,6 +15,10 @@ public class ContactQueryCriteria{
     // 精确
     @Query
     private Long contactKey;
+
+
+    @Query(type = Query.Type.IN, propName="contactKey")
+    private Set<Long> keys;
 
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)

@@ -72,6 +72,12 @@ public class Material implements Serializable {
     @Column(name = "unit")
     private String unit;
 
+    /**
+     * 立库内码
+     */
+    @Column(name = "wms_code")
+    private Integer wmsCode;
+
     //审批状态
     @Column(name = "approval_state")
     private String approvalState;

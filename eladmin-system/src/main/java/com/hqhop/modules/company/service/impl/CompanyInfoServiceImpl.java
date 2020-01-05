@@ -9,6 +9,7 @@ import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
 import com.hqhop.modules.company.repository.EmployeeCompanyRepository;
 import com.hqhop.modules.company.service.CompanyInfoService;
+import com.hqhop.modules.company.service.dto.CompanyDictDto;
 import com.hqhop.modules.company.service.dto.CompanyInfoDTO;
 import com.hqhop.modules.company.service.dto.CompanyInfoQueryCriteria;
 import com.hqhop.modules.company.service.mapper.CompanyInfoMapper;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zf`
@@ -58,13 +60,10 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
 
 
-
-
-
     @Override
     public Map<String, Object> queryAll(CompanyInfoQueryCriteria criteria, Pageable pageable,String id) {
 
-
+       //添加初始条件
         List<BigInteger> compyKeyList = findCompanykeys(criteria.getContactName());
         if (criteria.getIsDisable() == null || "".equals(criteria.getIsDisable())) {
             criteria.setIsDisable(1);
@@ -75,7 +74,18 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
             keys.add(0L);
         }
         criteria.setKeys(keys);
+
         Page<CompanyInfo> page = companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> CompanyQueryHelp.getPredicate(root, criteria, criteriaBuilder, compyKeyList ), pageable);
+
+        //数据处理
+        for (CompanyInfo companyInfo : page) {
+            Employee byEmployeeCode = employeeRepository.findByEmployeeCode(companyInfo.getCreateMan());
+            if(byEmployeeCode != null){
+                companyInfo.setCreateMan(byEmployeeCode.getEmployeeName());
+            }
+
+
+        }
         return PageUtil.toPage(page);
     }
 
@@ -112,7 +122,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 //1 启用 0 停用
                 resources.setIsDisable(1);
             }
-            resources.setCreateMan(SecurityUtils.getEmployeeName());
+            resources.setCreateMan(SecurityUtils.getEmployeeCode());
             resources.setCreateTime(new Timestamp(new Date().getTime()));
 
             CompanyInfo save = companyInfoRepository.save(resources);
@@ -174,9 +184,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
 
-    /*
-   通过基本纳税编码查基本档案
- * */
+       /*
+      通过基本纳税编码查基本档案
+    * */
     @Override
     public  CompanyBasic findCompanyBasicByTaxId(CompanyInfoDTO resources) {
 
@@ -188,7 +198,35 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
 
+  /*
+     查询当前用户权限客商
+    * */
+    @Override
+    public   List<CompanyDictDto>  findPermissonCompany() {
 
+        Set<Long> keys = employeeRepository.findCompanyKeysByEmployeeKey(SecurityUtils.getEmployeeId()!=null?SecurityUtils.getEmployeeId():0L);
+        if(keys==null || keys.size()==0){
+            keys.add(0L);
+        }
+        CompanyInfoQueryCriteria criteria = new CompanyInfoQueryCriteria();
+        criteria.setKeys(keys);
+
+        List<CompanyInfo> list = companyInfoRepository.findByCompanyKeyIn(keys.stream().collect(Collectors.toList()));
+        List<CompanyDictDto> list2 = new ArrayList<>();
+        for (CompanyInfo companyInfo : list) {
+//            //审批通过的公司
+//            if(companyInfo.getCompanyState().equals("4")){
+//                list2.add(companyInfo.getDictDto());
+//            }
+
+            list2.add(companyInfo.getDictDto());
+        }
+
+
+
+
+        return list2;
+    }
 
     //名字模糊查询出来的对应公司id集合
     public List<BigInteger> findCompanykeys(String contactsName) {

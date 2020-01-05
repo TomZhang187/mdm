@@ -1,9 +1,10 @@
 package com.hqhop.modules.company.service.dto;
 
-import lombok.Data;
-import java.io.Serializable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.Data;
+
+import java.io.Serializable;
 
 
 /**
@@ -36,5 +37,5 @@ public class AccountDTO implements Serializable {
     // 账户名
     private String name;
 
-    private Long companyKey;
+    private String companyKey;
 }

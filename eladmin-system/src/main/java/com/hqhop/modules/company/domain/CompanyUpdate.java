@@ -88,7 +88,7 @@ public class CompanyUpdate implements Serializable {
     private String companyState="1";
 
     // 审批链接
-    @Column(name = "ding_url")
+    @Column(name = "ding_url" ,length =500)
     private String dingUrl;
 
     // 客商属性
@@ -553,8 +553,9 @@ public class CompanyUpdate implements Serializable {
         companyInfo.setContactAddress(this.contactAddress);
         companyInfo.setEconomicType(this.economicType);
         companyInfo.setForeignName(this.foreignName);
-        companyInfo.setIsDisable(Integer.parseInt(this.isDisable));
-        companyInfo.setIsRetai(Integer.parseInt(this.isRetai));
+        if(this.isDisable != null){
+            companyInfo.setIsDisable(Integer.parseInt(this.isDisable));
+        }
         companyInfo.setLegalbody(this.legalbody);
         companyInfo.setParentCompanyId(this.parentCompanyId);
         companyInfo.setPostalCode(this.postalCode);
@@ -564,6 +565,14 @@ public class CompanyUpdate implements Serializable {
         companyInfo.setTrade(this.trade);
         companyInfo.setIsSynergyPay(Integer.parseInt(this.isSynergyPay));
          return companyInfo;
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
     }
 
     public void copyCompanyInfo(CompanyInfo companyInfo){
@@ -581,7 +590,6 @@ public class CompanyUpdate implements Serializable {
        this.economicType = companyInfo.getEconomicType();
        this.foreignName = companyInfo.getForeignName();
        this.isDisable = companyInfo.getIsDisable().toString();
-       this.isRetai = companyInfo.getIsRetai()!=null?companyInfo.getIsRetai().toString():null;
        this.isSynergyPay = companyInfo.getIsSynergyPay()!=null?companyInfo.getIsSynergyPay().toString():null;
        this.legalbody = companyInfo.getLegalbody();
        this.parentCompanyId = companyInfo.getParentCompanyId();

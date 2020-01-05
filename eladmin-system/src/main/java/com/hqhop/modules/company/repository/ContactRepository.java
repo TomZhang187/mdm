@@ -43,4 +43,19 @@ public interface ContactRepository extends JpaRepository<Contact, Long>, JpaSpec
 
     @Query(value = " select * from contact where company_key in (select company_key from company_info WHERE belong_company !=?1)", nativeQuery = true)
    List<Contact> findByNotBelongCompany(String code);
+
+
+
+
+    @Query(value = " select company_name from company_info where company_key in (select company_key from contact WHERE contactKey =?1)", nativeQuery = true)
+   String findBelongCompanyName(Long key);
+
+
+
+    @Query(value = " select contact_key from contact where company_key in ?1", nativeQuery = true)
+    Set<Long> findContactKeysByCompnayKes(List<Long> keys);
+
+
+
+
 }

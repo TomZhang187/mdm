@@ -93,7 +93,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             OapiProcessinstanceCreateResponse response = client.execute(request,DingTalkUtils.getAccessToken());
 
             CompanyUpdate companyUpdate = new CompanyUpdate();
-            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getBelongCompany());
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getCompanyKey());
             companyUpdate.copyCompanyInfo(companyInfo);
             //5客商联系人新增  6客商联系人修改 7客商账户新增....更多对照字典
             companyUpdate.setOperationType("7");
@@ -135,7 +135,7 @@ public class AccountDingServiceImpl implements AccountDingService {
                 account.setAccountState(4);
 
                 Account account1 = accountRepository.save(account);
-                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getCompanyKey());
                 companyInfo.getAccounts().add(account1);
                 companyInfoRepository.save(companyInfo);
 
@@ -205,7 +205,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             // 明细-单行输入框
             OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName1 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
             ItemName1.setName("所属客商");
-            ItemName1.setValue(getChange(companyInfoRepository.findByCompanyKey(resouces.getBelongCompany()).getCompanyName(),companyInfoRepository.findByCompanyKey(account.getBelongCompany()).getCompanyName()));
+            ItemName1.setValue(getChange(companyInfoRepository.findByCompanyKey(resouces.getCompanyKey()).getCompanyName(),companyInfoRepository.findByCompanyKey(account.getCompanyKey()).getCompanyName()));
             list1.add(ItemName1);
 
             // 明细-单行输入框
@@ -260,7 +260,7 @@ public class AccountDingServiceImpl implements AccountDingService {
 
 
             CompanyUpdate companyUpdate = new  CompanyUpdate();
-            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getBelongCompany());
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getCompanyKey());
             companyUpdate.copyCompanyInfo(companyInfo);
 
             //放入审批实例ID
@@ -298,7 +298,7 @@ public class AccountDingServiceImpl implements AccountDingService {
                 account.setAccountState(4);
 //                account.setCompanyKey(account.getBelongCompany());
                 Account account1 = accountRepository.save(account);
-                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getCompanyKey());
                 companyInfo.getAccounts().add(account1);
                 companyInfoRepository.save(companyInfo);
 
@@ -395,7 +395,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             OapiProcessinstanceCreateResponse response = client.execute(request,DingTalkUtils.getAccessToken());
 
             CompanyUpdate companyUpdate = new CompanyUpdate();
-            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getBelongCompany());
+            CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(resouces.getCompanyKey());
             companyUpdate.copyCompanyInfo(companyInfo);
 
             //放入审批实例ID
@@ -453,7 +453,7 @@ public class AccountDingServiceImpl implements AccountDingService {
                 //1新增 2审批中 3驳回 4审核通过
                 account.setAccountState(4);
                 Account account1 = accountRepository.save(account);
-                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getCompanyKey());
                 companyInfo.getAccounts().add(account1);
                 companyInfoRepository.save(companyInfo);
 
@@ -473,7 +473,7 @@ public class AccountDingServiceImpl implements AccountDingService {
                 //1新增 2审批中 3驳回 4审核通过
                 account.setAccountState(4);
                 Account account1 = accountRepository.save(account);
-                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getBelongCompany());
+                CompanyInfo companyInfo = companyInfoRepository.findByCompanyKey(account.getCompanyKey());
                 companyInfo.getAccounts().add(account1);
                 companyInfoRepository.save(companyInfo);
                 companyUpdateRepository.deleteById(companyUpdate.getOperateKey());
@@ -490,7 +490,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             // 明细-单行输入框
             OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName1 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
             ItemName1.setName("所属客商");
-            ItemName1.setValue(companyInfoRepository.findByCompanyKey(resouces.getBelongCompany()).getCompanyName());
+            ItemName1.setValue(companyInfoRepository.findByCompanyKey(resouces.getCompanyKey()).getCompanyName());
             list1.add(ItemName1);
 
             // 明细-单行输入框
@@ -614,11 +614,7 @@ public class AccountDingServiceImpl implements AccountDingService {
             ItemName13.setValue(dictDetailService.getDicLabel("economic_type",resouces.getEconomicType()));
             list1.add(ItemName13);
 
-            // 明细-单行输入框
-            OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName14 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
-            ItemName14.setName("是否散户");
-            ItemName14.setValue(resouces.getIsRetai() == 1 ?"是":"否");
-            list1.add(ItemName14);
+
 
             // 明细-单行输入框
             OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName15 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();

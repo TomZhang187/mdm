@@ -642,11 +642,7 @@ public class ContactDingServiceImpl implements ContactDingService {
         ItemName13.setValue(dictDetailService.getDicLabel("economic_type",resouces.getEconomicType()));
         list1.add(ItemName13);
 
-        // 明细-单行输入框
-        OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName14 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();
-        ItemName14.setName("是否散户");
-        ItemName14.setValue(resouces.getIsRetai() == 1 ?"是":"否");
-        list1.add(ItemName14);
+
 
         // 明细-单行输入框
         OapiProcessinstanceCreateRequest.FormComponentValueVo ItemName15 = new OapiProcessinstanceCreateRequest.FormComponentValueVo();

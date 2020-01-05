@@ -2,7 +2,6 @@ package com.hqhop.modules.company.repository;
 
 
 import com.hqhop.modules.company.domain.CompanyUpdate;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -48,6 +47,9 @@ public interface CompanyUpdateRepository extends JpaRepository<CompanyUpdate, Lo
 
     //通过账户主键加用户ID加审批结果的数据
     CompanyUpdate findByAccountKeyAndUserIdAndApproveResult(Long contactKey,String userId,String approveResult);
+
+
+
 
 
 }

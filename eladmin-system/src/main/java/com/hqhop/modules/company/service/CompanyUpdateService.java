@@ -69,6 +69,10 @@ public interface CompanyUpdateService {
     * */
     CompanyUpdate loadUpdateRecord(Long companyKey,String state,String userId,String name);
 
+    /*
+     查询该客商申请权限记录记录
+     * */ CompanyUpdate loadPermissionRecord(Long companyKey, String userId);
+
     /**
      * 新增该客商的修改记录
      */

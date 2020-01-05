@@ -1,8 +1,8 @@
 package com.hqhop.modules.company.domain;
 
-import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -54,7 +54,7 @@ public class Account implements Serializable {
 
     //所属公司
     @Column(name = "belong_company")
-    private Long belongCompany;
+    private String belongCompany;
 
     public void copy(Account source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
@@ -84,11 +84,11 @@ public class Account implements Serializable {
         this.accountName = accountName;
     }
 
-    public Long getBelongCompany() {
+    public String getBelongCompany() {
         return belongCompany;
     }
 
-    public void setBelongCompany(Long belongCompany) {
+    public void setBelongCompany(String belongCompany) {
         this.belongCompany = belongCompany;
     }
 
