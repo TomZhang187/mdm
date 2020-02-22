@@ -1,17 +1,19 @@
 package com.hqhop.modules.system.domain;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.alibaba.fastjson.JSONArray;
 import com.dingtalk.api.response.OapiUserGetResponse;
 import com.dingtalk.api.response.OapiUserListbypageResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hqhop.easyExcel.model.EmployeeModel;
 import lombok.Data;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
 * @author zf
@@ -186,22 +188,7 @@ public class Employee implements Serializable {
         }
 
     }
-    //从excel表读取对象拿数据
-    public  void getDataByEmployeeModel(EmployeeModel model){
-        this.dingId = model.getEmployeeId();
-        this.pageBelongDepts = model.getDeptStr();
-        this.employeePhone = model.getPhone();
-        this.employeeCode = model.getJobNumber();
-        this.leader = "是".equals(model.getIsDirector())?true:false;
-        this.email = model.getEmail();
-        this.employeeName = model.getName();
-        this.remark = model.getRemark();
-        this.officeAddress = model.getOfficeSpace();
-        this.enabled = "是".equals(model.getEnable())?true:false;
-         this.extensionNumber = model.getExtNumber();
 
-
-    }
 
 
 

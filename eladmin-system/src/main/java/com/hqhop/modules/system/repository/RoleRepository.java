@@ -21,8 +21,8 @@ public interface RoleRepository extends JpaRepository<Role, Long>, JpaSpecificat
      */
     Role findByName(String name);
 
-    @Query(value = "select sys_role.id,sys_role.create_time,sys_role.data_scope,sys_role.level,sys_role.name,sys_role.remark from sys_role " +
-            "inner join users_roles on users_roles.role_id = sys_role.id and users_roles.user_id=?1",nativeQuery = true)
+    @Query(value = "select role.id,role.create_time,role.data_scope,role.level,role.name,role.remark from role " +
+            "inner join users_roles on users_roles.role_id = role.id and users_roles.user_id=?1",nativeQuery = true)
     Set<Role> findByUsers_Id(Long id);
 
     @Modifying

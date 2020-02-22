@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Data
-@Table(name = "sys_quartz_log")
+@Table(name = "quartz_log")
 public class QuartzLog implements Serializable {
 
     @Id

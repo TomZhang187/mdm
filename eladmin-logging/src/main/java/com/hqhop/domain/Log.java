@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Data
-@Table(name = "sys_log")
+@Table(name = "log")
 @NoArgsConstructor
 public class Log  implements Serializable {
 

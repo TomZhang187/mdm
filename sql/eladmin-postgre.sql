@@ -405,8 +405,8 @@ INSERT INTO quartz_job(id,bean_name,cron_expression,is_pause,job_name,method_nam
 -- ----------------------------
 -- Table structure for role
 -- ----------------------------
-DROP TABLE IF EXISTS sys_role;
-CREATE TABLE sys_role  (
+DROP TABLE IF EXISTS role;
+CREATE TABLE role  (
   id serial NOT NULL,
   create_time timestamp NULL DEFAULT NULL COMMENT '创建日期',
   name varchar(255) NOT NULL COMMENT '名称',
@@ -419,9 +419,9 @@ CREATE TABLE sys_role  (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO sys_role(id,create_time,name,remark,data_scope,level) VALUES (1, '2018-11-23 11:04:37', '超级管理员', '·', '全部', 1);
-INSERT INTO sys_role(id,create_time,name,remark,data_scope,level) VALUES (2, '2018-11-23 13:09:06', '普通用户', '用于测试菜单与权限', '自定义', 3);
-INSERT INTO sys_role(id,create_time,name,remark,data_scope,level) VALUES (4, '2019-05-13 14:16:15', '普通管理员', '普通管理员级别为2，使用该角色新增用户时只能赋予比普通管理员级别低的角色', '自定义', 2);
+INSERT INTO role(id,create_time,name,remark,data_scope,level) VALUES (1, '2018-11-23 11:04:37', '超级管理员', '·', '全部', 1);
+INSERT INTO role(id,create_time,name,remark,data_scope,level) VALUES (2, '2018-11-23 13:09:06', '普通用户', '用于测试菜单与权限', '自定义', 3);
+INSERT INTO role(id,create_time,name,remark,data_scope,level) VALUES (4, '2019-05-13 14:16:15', '普通管理员', '普通管理员级别为2，使用该角色新增用户时只能赋予比普通管理员级别低的角色', '自定义', 2);
 
 -- ----------------------------
 -- Table structure for roles_depts
@@ -590,9 +590,9 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO sys_user(id,avatar_id,create_time,email,enabled,password,username,last_password_reset_time,dept_id,phone,job_id) VALUES (1, NULL, '2018-08-23 09:11:56', 'admin@eladmin.net', true, 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2019-05-18 17:34:21', 2, '18888888888', 11);
-INSERT INTO sys_user(id,avatar_id,create_time,email,enabled,password,username,last_password_reset_time,dept_id,phone,job_id) VALUES (3, NULL, '2018-12-27 20:05:26', 'test@eladmin.net', true, 'e10adc3949ba59abbe56e057f20f883e', 'test', '2019-04-01 09:15:24', 2, '17777777777', 12);
-INSERT INTO sys_user(id,avatar_id,create_time,email,enabled,password,username,last_password_reset_time,dept_id,phone,job_id) VALUES (5, NULL, '2019-04-02 10:07:12', 'hr@eladmin.net', true, 'e10adc3949ba59abbe56e057f20f883e', 'hr', NULL, 11, '15555555555', 8);
+INSERT INTO user(id,avatar_id,create_time,email,enabled,password,username,last_password_reset_time,dept_id,phone,job_id) VALUES (1, NULL, '2018-08-23 09:11:56', 'admin@eladmin.net', true, 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2019-05-18 17:34:21', 2, '18888888888', 11);
+INSERT INTO user(id,avatar_id,create_time,email,enabled,password,username,last_password_reset_time,dept_id,phone,job_id) VALUES (3, NULL, '2018-12-27 20:05:26', 'test@eladmin.net', true, 'e10adc3949ba59abbe56e057f20f883e', 'test', '2019-04-01 09:15:24', 2, '17777777777', 12);
+INSERT INTO user(id,avatar_id,create_time,email,enabled,password,username,last_password_reset_time,dept_id,phone,job_id) VALUES (5, NULL, '2019-04-02 10:07:12', 'hr@eladmin.net', true, 'e10adc3949ba59abbe56e057f20f883e', 'hr', NULL, 11, '15555555555', 8);
 
 -- ----------------------------
 -- Table structure for user_avatar

@@ -1,10 +1,8 @@
 package com.hqhop.modules.company.service.impl;
 
 
-import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.EmployeeCompany;
-import com.hqhop.modules.company.repository.CompanyBasicRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
 import com.hqhop.modules.company.repository.EmployeeCompanyRepository;
@@ -45,9 +43,6 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Autowired
     private ContactRepository contactRepository;
-
-    @Autowired
-    private CompanyBasicRepository companyBasicRepository;
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -181,20 +176,6 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         EmployeeCompany employeeCompany = employeeCompanyRepository.findByCompanyKeyAndEmployeeKey(companyKey, SecurityUtils.getEmployeeId());
 
         return employeeCompany;
-    }
-
-
-       /*
-      通过基本纳税编码查基本档案
-    * */
-    @Override
-    public  CompanyBasic findCompanyBasicByTaxId(CompanyInfoDTO resources) {
-
-        CompanyBasic companyBasic = new CompanyBasic();
-        companyBasic = companyBasicRepository.findByTaxId(resources.getTaxId());
-
-
-        return companyBasic;
     }
 
 

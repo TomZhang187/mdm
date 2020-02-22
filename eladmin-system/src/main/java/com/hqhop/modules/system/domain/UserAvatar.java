@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @date 2019年9月7日 16:16:59
  */
 @Entity
-@Table(name = "sys_user_avatar")
+@Table(name = "user_avatar")
 @Data
 @NoArgsConstructor
 public class UserAvatar {

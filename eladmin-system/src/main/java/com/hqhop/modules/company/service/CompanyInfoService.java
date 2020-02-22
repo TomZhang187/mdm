@@ -1,6 +1,5 @@
 package com.hqhop.modules.company.service;
 
-import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.EmployeeCompany;
 import com.hqhop.modules.company.service.dto.CompanyDictDto;
@@ -93,13 +92,7 @@ public interface CompanyInfoService {
  * */
     EmployeeCompany VerifyPermission(Long companyKey);
 
-    /*
-         添加之前前客商验证
-         * */
-    CompanyBasic findCompanyBasicByTaxId(CompanyInfoDTO resources);
 
-    /*
-           查询当前用户权限客商
-          * */
+
     List<CompanyDictDto>  findPermissonCompany();
 }

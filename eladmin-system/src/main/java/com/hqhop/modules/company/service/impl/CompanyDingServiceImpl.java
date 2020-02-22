@@ -7,17 +7,13 @@ import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
 import com.hqhop.common.dingtalk.DingTalkConstant;
 import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.common.dingtalk.dingtalkVo.DingUser;
-import com.hqhop.modules.company.domain.CompanyBasic;
 import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.domain.CompanyUpdate;
-import com.hqhop.modules.company.repository.CompanyBasicRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.CompanyUpdateRepository;
 import com.hqhop.modules.company.service.CompanyDingService;
 import com.hqhop.modules.company.service.CompanyInfoService;
-import com.hqhop.modules.company.service.CompanyU8cService;
 import com.hqhop.modules.company.utils.CompanyUtils;
-import com.hqhop.modules.system.domain.DictDetail;
 import com.hqhop.modules.system.domain.Employee;
 import com.hqhop.modules.system.repository.DictDetailRepository;
 import com.hqhop.modules.system.repository.EmployeeRepository;
@@ -30,7 +26,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author ：张丰
@@ -60,11 +59,7 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
     @Autowired
     private CompanyInfoService companyInfoService;
 
-    @Autowired
-    private CompanyBasicRepository companyBasicRepository;
 
-    @Autowired
-    private CompanyU8cService companyU8cService;
 
     @Autowired
     private EmployeeCompanyServiceImpl employeeCompanyService;
@@ -149,52 +144,52 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
     public void agreeAddApproval(String processId) {
 
 
-            CompanyUpdate companyUpdate = companyUpdateRepository.findByProcessIdAndApproveResult(processId,"未知");
-            if(companyUpdate !=null){
-            companyUpdate.setApproveResult("通过");
-            companyUpdate.setApproveTime(new Timestamp(new Date().getTime()));
-            companyUpdateRepository.save(companyUpdate);
-
-            CompanyInfo companyInfo = companyInfoRepository.getOne(companyUpdate.getCompanyKey());
-            //1新增 2审批中 3驳回 4审核通过
-            companyInfo.setCompanyState(4);
-                DictDetail dictDetail = dictDetailRepository.findByLabelAndDict_Id(companyInfo.getCompanyName(), 11L);
-                if(dictDetail !=null){
-                    companyInfo.setCustomerType("3");
-                }
-                companyInfo.setApproveTime(new Timestamp(new Date().getTime()));
-                CompanyInfo save = companyInfoRepository.save(companyInfo);
-
-                CompanyBasic companyBasic = companyBasicRepository.findByTaxId(save.getTaxId());
-                if(companyBasic == null){
-                    CompanyBasic companyBasic1 = new CompanyBasic();
-                    companyBasic1.setTaxId(save.getTaxId());
-                    companyBasic1.setCompanyName(save.getCompanyName());
-                    companyBasic1.setBelongArea(save.getBelongArea());
-                    companyBasic1.setBelongCompany(save.getBelongCompany());
-                    companyBasic1.setCompanyShortName(save.getCompanyShortName());
-                    companyBasic1.setCustomerType(save.getCustomerType());
-                    companyBasic1.setBelongCompany(save.getBelongCompany());
-
-                    CompanyInfo companyInfo1 = companyInfoRepository.findByCompanyKey(save.getParentCompanyId());
-                    companyBasic1.setHeadOfficeCode(companyInfo1!=null?companyInfo1.getTaxId():null);
-
-                    companyBasic1.setCreateMan(save.getCreateMan());
-                    companyBasic1.setCreateTime(save.getCreateTime());
-                    companyBasic1.setUpdateMan(save.getUpdateMan());
-                    companyBasic1.setUpdateTime(save.getUpdateTime());
-
-                    CompanyBasic companyBasic2 = companyBasicRepository.save(companyBasic1);
-
-                    companyU8cService.addToU8C(companyInfo,companyBasic2.getKey().toString());
-
-                }else {
-                    companyU8cService.addToU8C(companyInfo,companyBasic.getKey().toString());
-                }
-
-
-
-            }
+//            CompanyUpdate companyUpdate = companyUpdateRepository.findByProcessIdAndApproveResult(processId,"未知");
+//            if(companyUpdate !=null){
+//            companyUpdate.setApproveResult("通过");
+//            companyUpdate.setApproveTime(new Timestamp(new Date().getTime()));
+//            companyUpdateRepository.save(companyUpdate);
+//
+//            CompanyInfo companyInfo = companyInfoRepository.getOne(companyUpdate.getCompanyKey());
+//            //1新增 2审批中 3驳回 4审核通过
+//            companyInfo.setCompanyState(4);
+//                DictDetail dictDetail = dictDetailRepository.findByLabelAndDict_Id(companyInfo.getCompanyName(), 11L);
+//                if(dictDetail !=null){
+//                    companyInfo.setCustomerType("3");
+//                }
+//                companyInfo.setApproveTime(new Timestamp(new Date().getTime()));
+//                CompanyInfo save = companyInfoRepository.save(companyInfo);
+//
+//                CompanyBasic companyBasic = companyBasicRepository.findByTaxId(save.getTaxId());
+//                if(companyBasic == null){
+//                    CompanyBasic companyBasic1 = new CompanyBasic();
+//                    companyBasic1.setTaxId(save.getTaxId());
+//                    companyBasic1.setCompanyName(save.getCompanyName());
+//                    companyBasic1.setBelongArea(save.getBelongArea());
+//                    companyBasic1.setBelongCompany(save.getBelongCompany());
+//                    companyBasic1.setCompanyShortName(save.getCompanyShortName());
+//                    companyBasic1.setCustomerType(save.getCustomerType());
+//                    companyBasic1.setBelongCompany(save.getBelongCompany());
+//
+//                    CompanyInfo companyInfo1 = companyInfoRepository.findByCompanyKey(save.getParentCompanyId());
+//                    companyBasic1.setHeadOfficeCode(companyInfo1!=null?companyInfo1.getTaxId():null);
+//
+//                    companyBasic1.setCreateMan(save.getCreateMan());
+//                    companyBasic1.setCreateTime(save.getCreateTime());
+//                    companyBasic1.setUpdateMan(save.getUpdateMan());
+//                    companyBasic1.setUpdateTime(save.getUpdateTime());
+//
+//                    CompanyBasic companyBasic2 = companyBasicRepository.save(companyBasic1);
+//
+//                    companyU8cService.addToU8C(companyInfo,companyBasic2.getKey().toString());
+//
+//                }else {
+//                    companyU8cService.addToU8C(companyInfo,companyBasic.getKey().toString());
+//                }
+//
+//
+//
+//            }
 
 
 
@@ -425,51 +420,51 @@ public class CompanyDingServiceImpl implements CompanyDingService  {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void agreeUpdateApproval(String processId, String dicValue) {
-        //1 新增 2 修改 3停用4启用....9本地保存 更多对照字典
-        CompanyUpdate companyUpdate1 = companyUpdateRepository.findByProcessIdAndOperationType(processId,"9");
-        if(companyUpdate1 !=null){
-
-
-        CompanyUpdate companyUpdate = companyUpdateRepository.findByProcessIdAndOperationType(processId,dicValue);
-        companyUpdate.setApproveResult("通过");
-            companyUpdate.setApproveTime(new Timestamp(new Date().getTime()));
-            companyUpdateRepository.save(companyUpdate);
-
-            //用来修改客商数据的记录  1 新增 2 修改 3停用4启用....9本地保存 更多对照字典
-            CompanyUpdate temporaryRecord  = companyUpdateRepository.findByProcessIdAndOperationType(processId,"9");
-            CompanyInfo companyInfo = companyInfoRepository.getOne(temporaryRecord.getCompanyKey());
-            CompanyInfo updateData = temporaryRecord.toCompanyInfo();
-            updateData.setCompanyKey(companyInfo.getCompanyKey());
-            updateData.setUpdateTime(new Timestamp(new Date().getTime()));
-            //1新增 2审批中 3驳回 4审核通过
-            updateData.setCompanyState(4);
-            CompanyInfo save = companyInfoRepository.save(updateData);
-            companyUpdateRepository.deleteById(temporaryRecord.getOperateKey());
-
-            //客商基本档案更新
-            CompanyBasic companyBasic1 = companyBasicRepository.findByTaxId(save.getTaxId());
-            if(companyBasic1 != null){
-            companyBasic1.setTaxId(save.getTaxId());
-            companyBasic1.setCompanyName(save.getCompanyName());
-            companyBasic1.setBelongArea(save.getBelongArea());
-            companyBasic1.setBelongCompany(save.getBelongCompany());
-            companyBasic1.setCompanyShortName(save.getCompanyShortName());
-            companyBasic1.setCustomerType(save.getCustomerType());
+//        //1 新增 2 修改 3停用4启用....9本地保存 更多对照字典
+//        CompanyUpdate companyUpdate1 = companyUpdateRepository.findByProcessIdAndOperationType(processId,"9");
+//        if(companyUpdate1 !=null){
+//
+//
+//        CompanyUpdate companyUpdate = companyUpdateRepository.findByProcessIdAndOperationType(processId,dicValue);
+//        companyUpdate.setApproveResult("通过");
+//            companyUpdate.setApproveTime(new Timestamp(new Date().getTime()));
+//            companyUpdateRepository.save(companyUpdate);
+//
+//            //用来修改客商数据的记录  1 新增 2 修改 3停用4启用....9本地保存 更多对照字典
+//            CompanyUpdate temporaryRecord  = companyUpdateRepository.findByProcessIdAndOperationType(processId,"9");
+//            CompanyInfo companyInfo = companyInfoRepository.getOne(temporaryRecord.getCompanyKey());
+//            CompanyInfo updateData = temporaryRecord.toCompanyInfo();
+//            updateData.setCompanyKey(companyInfo.getCompanyKey());
+//            updateData.setUpdateTime(new Timestamp(new Date().getTime()));
+//            //1新增 2审批中 3驳回 4审核通过
+//            updateData.setCompanyState(4);
+//            CompanyInfo save = companyInfoRepository.save(updateData);
+//            companyUpdateRepository.deleteById(temporaryRecord.getOperateKey());
+//
+//            //客商基本档案更新
+//            CompanyBasic companyBasic1 = companyBasicRepository.findByTaxId(save.getTaxId());
+//            if(companyBasic1 != null){
+//            companyBasic1.setTaxId(save.getTaxId());
+//            companyBasic1.setCompanyName(save.getCompanyName());
+//            companyBasic1.setBelongArea(save.getBelongArea());
 //            companyBasic1.setBelongCompany(save.getBelongCompany());
-
-            CompanyInfo companyInfo1 = companyInfoRepository.findByCompanyKey(save.getParentCompanyId());
-            companyBasic1.setHeadOfficeCode(companyInfo1!=null?companyInfo1.getTaxId():null);
-
-            companyBasic1.setCreateMan(save.getCreateMan());
-            companyBasic1.setCreateTime(save.getCreateTime());
-            companyBasic1.setUpdateMan(save.getUpdateMan());
-            companyBasic1.setUpdateTime(save.getUpdateTime());
-            CompanyBasic companyBasic2 = companyBasicRepository.save(companyBasic1);
-            companyU8cService.updateToU8C(companyInfo, updateData,companyBasic2 .getKey().toString());
-
-            }
-
-        }
+//            companyBasic1.setCompanyShortName(save.getCompanyShortName());
+//            companyBasic1.setCustomerType(save.getCustomerType());
+////            companyBasic1.setBelongCompany(save.getBelongCompany());
+//
+//            CompanyInfo companyInfo1 = companyInfoRepository.findByCompanyKey(save.getParentCompanyId());
+//            companyBasic1.setHeadOfficeCode(companyInfo1!=null?companyInfo1.getTaxId():null);
+//
+//            companyBasic1.setCreateMan(save.getCreateMan());
+//            companyBasic1.setCreateTime(save.getCreateTime());
+//            companyBasic1.setUpdateMan(save.getUpdateMan());
+//            companyBasic1.setUpdateTime(save.getUpdateTime());
+//            CompanyBasic companyBasic2 = companyBasicRepository.save(companyBasic1);
+//            companyU8cService.updateToU8C(companyInfo, updateData,companyBasic2 .getKey().toString());
+//
+//            }
+//
+//        }
     }
 
     //修改客商审批驳回

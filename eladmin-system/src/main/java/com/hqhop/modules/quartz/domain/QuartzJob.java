@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  */
 @Data
 @Entity
-@Table(name = "sys_quartz_job")
+@Table(name = "quartz_job")
 public class QuartzJob implements Serializable {
 
     public static final String JOB_KEY = "JOB_KEY";

@@ -11,7 +11,7 @@ import java.io.Serializable;
 */
 @Entity
 @Data
-@Table(name="sys_dict_detail")
+@Table(name="dict_detail")
 public class DictDetail implements Serializable {
 
 

@@ -18,7 +18,7 @@ import java.util.Set;
  * @date 2018-11-22
  */
 @Entity
-@Table(name = "sys_role")
+@Table(name = "role")
 @Getter
 @Setter
 public class Role implements Serializable {

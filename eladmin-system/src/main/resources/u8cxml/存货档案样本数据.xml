@@ -4,7 +4,7 @@
         <billhead>
 		<!--存货基本档案（集团）-->
             <!--来源,主数据单据id(若要传存货基本档案 则必填)最大长度为64,类型为:String-->
-            <a_lyid>mdm1232114</a_lyid>
+            <a_lyid>customer1232114</a_lyid>
 			<!--公司,固定为集团编码 最大长度为64,类型为:String-->
 			<a_pk_corp>0001</a_pk_corp>
             <!--创建时间,格式（YYYY-MM-DD HH:mm:ss）最大长度为64,类型为:String-->
@@ -31,7 +31,7 @@
             <a_pk_taxitems></a_pk_taxitems>
 		<!--存货管理档案-->
             <!--来源id,主数据单据id (若要传存货管理档案 则必填)最大长度为64,类型为:String-->
-            <b_lyid>mdm1232114</b_lyid>
+            <b_lyid>customer1232114</b_lyid>
             <!--创建时间,格式（YYYY-MM-DD HH:mm:ss）最大长度为64,类型为:String-->
             <b_createtime>2019-12-24 19:01:00</b_createtime>
             <!--创建人,最大长度为64,类型为:String-->
@@ -66,7 +66,7 @@
             <b_wholemanaflag>N</b_wholemanaflag>
 	<!--物料生产档案（公司）案-->
             <!--来源id,主数据单据id (若要传物料生产档案 则必填)最大长度为64,类型为:String-->
-            <c_lyid>mdm1232114</c_lyid>
+            <c_lyid>customer1232114</c_lyid>
             <!--是否免检,最大长度为64,类型为:String-->
             <c_chkfreeflag>N</c_chkfreeflag>
             <!--是否需求合并,最大长度为64,类型为:String-->

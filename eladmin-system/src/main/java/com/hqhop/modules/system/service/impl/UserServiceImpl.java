@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findByDingId(String userName) {
         User user = null;
-        user = userRepository.findByDingID(userName);
+        user = userRepository.findByUsername(userName);
 
 
         UserDTO userDTO = new UserDTO();

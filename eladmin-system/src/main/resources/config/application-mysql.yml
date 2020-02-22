@@ -1,15 +1,12 @@
 #配置数据源
 spring:
-  devtools:
-    restart:
-      additional-paths: ../eladmin-common,../eladmin-logging,../eladmin-system,../eladmin-tools,../eladmin-generator
   datasource:
     druid:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:postgresql://182.151.57.173:5432/mdm
-      username: postgres
-      password: Hqhop_db_123#
+      url: jdbc:log4jdbc:mysql://localhost:3306/eladmin?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+      username: root
+      password: root
 
       # 初始化配置
       initial-size: 3
@@ -71,13 +68,3 @@ file:
   # 文件大小 /M
   maxSize: 100
   avatarMaxSize: 5
-
-# 钉钉相关配置文件
-dingtalk:
-  corpid: ding1d7e8b088fab194f35c2f4657eb6378f
-  agentid: 305599728
-  appkey: dingvbqhfyejajuhowyu
-  appsecret: Qg72b2JwNqMnkpVyG_hsppyd5K7FW2d3tnkFc4GMomymSQ185c2feyxec4tWxLVv
-  processcode.material-base-add: sssfasdfas
-  processcode.material-base-add: sdfsdfs
-

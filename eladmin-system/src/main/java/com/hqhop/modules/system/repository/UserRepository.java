@@ -49,7 +49,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
      * @param pass
      */
     @Modifying
-    @Query(value = "update sys_user set password = ?2 , last_password_reset_time = ?3 where username = ?1",nativeQuery = true)
+    @Query(value = "update user set password = ?2 , last_password_reset_time = ?3 where username = ?1",nativeQuery = true)
     void updatePass(String username, String pass, Date lastPasswordResetTime);
 
     /**
@@ -74,7 +74,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Set<Long> getEmployeeIdByDeptsId(Set<Long> ids);
 
 
-    @Query(value ="select * from sys_user where employee_id =  (SELECT id FROM employee WHERE ding_id = ?1)",nativeQuery = true)
+    @Query(value ="select * from user where employee_id =  (SELECT id FROM employee WHERE ding_id = ?1)",nativeQuery = true)
     User findByDingID(String dingId);
 
 

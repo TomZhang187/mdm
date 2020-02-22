@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hqhop</groupId>
-    <artifactId>mdm</artifactId>
+    <artifactId>customer</artifactId>
     <packaging>pom</packaging>
     <version>2.1</version>
 
@@ -142,17 +142,17 @@
         </dependency>
 
         <!--Mysql依赖包-->
- <!--       <dependency>
+       <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
-        </dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
         </dependency>
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.postgresql/postgresql &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.postgresql</groupId>-->
+            <!--<artifactId>postgresql</artifactId>-->
+        <!--</dependency>-->
 
         <!-- druid数据源驱动 -->
         <dependency>

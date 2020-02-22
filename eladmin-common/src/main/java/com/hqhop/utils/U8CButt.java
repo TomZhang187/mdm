@@ -21,7 +21,7 @@ public class U8CButt {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("trantype", "code"); // 档案翻译方式，枚举值为：编码请录入 code， 名称请录入 name， 主键请录入 pk
         map.put("system", "001"); // 系统编码
-        map.put("usercode", "mdm"); // 用户
+        map.put("usercode", "customer"); // 用户
         //String s1 = EncryptUtils.encryptPassword("123456");
         String s1 = "e10adc3949ba59abbe56e057f20f883e";
         System.out.println("password:" + s1);

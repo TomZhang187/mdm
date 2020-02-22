@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name="sys_user")
+@Table(name="user")
 public class User implements Serializable {
 
     @Id

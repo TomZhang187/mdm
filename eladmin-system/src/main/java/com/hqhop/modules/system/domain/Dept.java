@@ -1,29 +1,13 @@
 package com.hqhop.modules.system.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hqhop.modules.company.repository.AccountRepository;
-import com.hqhop.modules.company.repository.CompanyInfoRepository;
-import com.hqhop.modules.company.repository.CompanyUpdateRepository;
-import com.hqhop.modules.company.repository.ContactRepository;
-import com.hqhop.modules.company.service.CompanyDingService;
-import com.hqhop.modules.system.repository.*;
-import com.hqhop.modules.system.service.DeptDingService;
-import com.hqhop.modules.system.service.DictDetailService;
-import com.hqhop.modules.system.service.EmployeeDingService;
-import com.hqhop.modules.system.service.impl.UserServiceImpl;
-import com.taobao.api.ApiException;
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.sql.Timestamp;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,7 +16,7 @@ import java.util.Set;
 * @date 2019-03-25
 */
 @Entity
-@Table(name="sys_dept")
+@Table(name="dept")
 public class Dept implements Serializable {
 
     /**

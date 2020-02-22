@@ -3,7 +3,6 @@ import com.hqhop.modules.company.domain.CompanyInfo;
 import com.hqhop.modules.company.repository.AccountRepository;
 import com.hqhop.modules.company.repository.CompanyInfoRepository;
 import com.hqhop.modules.company.repository.ContactRepository;
-import com.hqhop.modules.company.service.CompanyU8cService;
 import com.hqhop.modules.system.repository.DictDetailRepository;
 import com.hqhop.modules.system.service.UserService;
 import org.junit.Test;
@@ -35,9 +34,6 @@ public class TestMain {
     @Autowired
     private DictDetailRepository dictDetailRepository;
 
-
-    @Autowired
-    private CompanyU8cService companyU8cService;
 
 //    @Transactional
     @Test

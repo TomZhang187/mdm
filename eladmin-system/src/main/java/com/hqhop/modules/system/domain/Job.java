@@ -16,7 +16,7 @@ import java.io.Serializable;
 */
 @Entity
 @Data
-@Table(name="sys_job")
+@Table(name="job")
 public class Job implements Serializable {
 
     /**
