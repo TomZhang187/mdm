@@ -14,7 +14,6 @@ import com.hqhop.modules.company.service.mapper.AccountMapper;
 import com.hqhop.modules.system.repository.EmployeeRepository;
 import com.hqhop.utils.PageUtil;
 import com.hqhop.utils.QueryHelp;
-import com.hqhop.utils.SecurityUtils;
 import com.hqhop.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
 * @author zf
@@ -56,20 +53,20 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Map<String,Object> queryAll(AccountQueryCriteria criteria, Pageable pageable){
 
-        Set<Long> keys = employeeRepository.findCompanyKeysByEmployeeKey(SecurityUtils.getEmployeeId());
-        if(keys == null || keys.size()==0) {
-          criteria.setAccountKey(0L);
-        } else {
-            Set<Long> contactKeysByCompnayKes = accountRepository.findAccountKeysKeysByCompnayKes(keys.stream().collect(Collectors.toList()));
-            criteria.setKeys(contactKeysByCompnayKes);
-        }
+//        Set<Long> keys = employeeRepository.findCompanyKeysByEmployeeKey(SecurityUtils.getEmployeeId());
+//        if(keys == null || keys.size()==0) {
+//          criteria.setAccountKey(0L);
+//        } else {
+//            Set<Long> contactKeysByCompnayKes = accountRepository.findAccountKeysKeysByCompnayKes(keys.stream().collect(Collectors.toList()));
+//            criteria.setKeys(contactKeysByCompnayKes);
+//        }
 
 
         Page<Account> page = accountRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
 
         for (Account account : page) {
 
-                if(account.getAccountKey() != null){
+                if(account.getAccountKey() != null && account.getCompanyKey()!=null){
                     CompanyInfo byCompanyKey = companyInfoRepository.findByCompanyKey(account.getCompanyKey());
                     account.setBelongCompany(byCompanyKey.getCompanyName());
                 }

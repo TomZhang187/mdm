@@ -93,8 +93,6 @@ public class ContactDingServiceImpl implements ContactDingService {
 //        vo4.setValue(JSON.toJSONString(Arrays.asList(getCompanyItemList(companyInfo))));
 //        listForm.add(input);
 //        listForm.add(vo5);
-
-
         request.setFormComponentValues(listForm);
         request.setOriginatorUserId(dingUser.getUserid());
         request.setDeptId(dingUser.getDepteId());

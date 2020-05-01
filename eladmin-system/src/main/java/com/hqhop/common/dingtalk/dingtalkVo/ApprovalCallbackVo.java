@@ -1,8 +1,5 @@
 package com.hqhop.common.dingtalk.dingtalkVo;
 
-import cn.hutool.json.JSONObject;
-
-
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -186,35 +183,35 @@ public class ApprovalCallbackVo {
     }
 
 
-    public  static  ApprovalCallbackVo getVoByJSON(JSONObject jsonObject){
+    public  static  ApprovalCallbackVo getVoByJSON(Approve jsonObject){
 
         ApprovalCallbackVo approvalCallbackVo = new ApprovalCallbackVo();
 
-        approvalCallbackVo.setId(jsonObject.getLong("id"));
+        approvalCallbackVo.setId(jsonObject.getId());
 
-       approvalCallbackVo.setEventType(jsonObject.getStr("eventType"));
+       approvalCallbackVo.setEventType(jsonObject.getEventType());
 
-        approvalCallbackVo.setProcessInstanceId(jsonObject.getStr("processInstanceId"));
+        approvalCallbackVo.setProcessInstanceId(jsonObject.getProcessInstanceId());
 
-        approvalCallbackVo.setCorpId(jsonObject.getStr("corpId"));
+        approvalCallbackVo.setCorpId(jsonObject.getCorpId());
 
-        approvalCallbackVo.setCreateTime(jsonObject.getDate("createTime"));
+        approvalCallbackVo.setCreateTime(jsonObject.getCreateTime());
 
-        approvalCallbackVo.setTitle(jsonObject.getStr("title"));
+        approvalCallbackVo.setTitle(jsonObject.getTitle());
 
-        approvalCallbackVo.setType(jsonObject.getStr("type"));
+        approvalCallbackVo.setType(jsonObject.getType());
 
-        approvalCallbackVo.setStaffId(jsonObject.getStr("staffId"));
+        approvalCallbackVo.setStaffId(jsonObject.getStaffId());
 
-        approvalCallbackVo.setUrl(jsonObject.getStr("url"));
+        approvalCallbackVo.setUrl(jsonObject.getUrl());
 
-        approvalCallbackVo.setProcessCode(jsonObject.getStr("processCode"));
+        approvalCallbackVo.setProcessCode(jsonObject.getProcessCode());
 
-        approvalCallbackVo.setResult(jsonObject.getStr("result"));
+        approvalCallbackVo.setResult(jsonObject.getResult());
 
-        approvalCallbackVo.setFinishTime(jsonObject.getDate("finishTime"));
+        approvalCallbackVo.setFinishTime(jsonObject.getFinishTime());
 
-        approvalCallbackVo.setRemark(jsonObject.getStr("remark"));
+        approvalCallbackVo.setRemark(jsonObject.getRemark());
 
         return  approvalCallbackVo;
     }

@@ -9,19 +9,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DingTalkConstant {
 
-    public static String CORPID;
-    public static String AGENTID;
-    public static String APPKEY ;
-    public static String APPSECRET;
+    public static String CORPID="ding872e051ff9bb057224f2f5cc6abecb85";
+    public static String AGENTID="347498069";
+    public static String APPKEY ="dingukv2uxqkycdnjqjt";
+    public static String APPSECRET="fuvhSmxeYCKHH4kjL18LBJdVyAAKSAh_r1XQL_5K3W-GHdrJwiFzKOul5lpr_vIn";
+
+    /**
+     * 后台服务器的URL 外网地址，审批流程回调函数校验时需要用到
+     */
+    public static final String CALLBACK_URL_HOST = "http://lylcallback.vaiwan.com";
+    /**
 
     /** 物料基本档案管理审批 **/
     public  static String PROCESSCODE_MATERIAL_ADD="PROC-B0A45D0A-A9FC-43AE-BD86-76F54B5902AA" ;
 
     /** 物料生产档案管理审批 **/
     public  static String PROCESSCODE_MATERIALPRODUCTION_ADD="PROC-7E6D638F-4D21-4441-AB53-71BB48B86223" ;
+    /**
+     *
+     * 客商管理审批
+     */
+    public static String PROCESSCODE_CUSTOMER_MANAGE="PROC-38673FD5-511C-45D4-A9FE-097BD630BA28";
 
-    public static String PROCESSCODE_CUSTOMER_MANAGE="PROC-0ECA9104-1CAC-476C-8934-3FE3FA69F1EE";
-
+    /**
+     * 客商测试审批
+     */
+    public static String PROCESSCODE_CUSTOMER_TEST="PROC-42E26442-C2E1-4630-87DD-E7D193F489E9";
 
 //
 //    @Value("${dingtalk.corpid}")

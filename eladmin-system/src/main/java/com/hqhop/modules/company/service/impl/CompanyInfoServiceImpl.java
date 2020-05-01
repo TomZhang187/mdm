@@ -63,12 +63,12 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         if (criteria.getIsDisable() == null || "".equals(criteria.getIsDisable())) {
             criteria.setIsDisable(1);
         }
-        Employee employee = employeeRepository.findByDingId(id);
-        Set<Long> keys = employeeRepository.findCompanyKeysByEmployeeKey(employee!=null?employee.getId():0L);
-        if(keys==null || keys.size()==0){
-            keys.add(0L);
-        }
-        criteria.setKeys(keys);
+//        Employee employee = employeeRepository.findByDingId(id);
+//        Set<Long> keys = employeeRepository.findCompanyKeysByEmployeeKey(employee!=null?employee.getId():0L);
+//        if(keys==null || keys.size()==0){
+//            keys.add(0L);
+//        }
+//        criteria.setKeys(keys);
 
         Page<CompanyInfo> page = companyInfoRepository.findAll((root, criteriaQuery, criteriaBuilder) -> CompanyQueryHelp.getPredicate(root, criteria, criteriaBuilder, compyKeyList ), pageable);
 
@@ -153,7 +153,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Override
     public CompanyInfo VerifyAdd(CompanyInfoDTO resources) {
 
-        CompanyInfo companyInfo = companyInfoRepository.findByTaxIdAndBelongCompany(resources.getTaxId(), resources.getBelongCompany());
+        CompanyInfo companyInfo = companyInfoRepository.getByTaxId(resources.getTaxId());
         if (companyInfo != null) {
             return companyInfo;
         }

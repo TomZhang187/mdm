@@ -14,8 +14,7 @@ import java.io.Serializable;
 @Table(name="account")
 public class Account implements Serializable {
 
-
-    //  账户主键
+    // 账户主键
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_key")

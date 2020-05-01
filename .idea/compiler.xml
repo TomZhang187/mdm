@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="eladmin-common" />
+        <module name="eladmin-generator" />
+        <module name="eladmin-logging" />
+        <module name="eladmin-system" />
+        <module name="eladmin-tools" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="customer" target="1.8" />
+      <module name="eladmin-common" target="8" />
+      <module name="eladmin-generator" target="1.8" />
+      <module name="eladmin-logging" target="1.8" />
+      <module name="eladmin-system" target="1.8" />
+      <module name="eladmin-tools" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
