@@ -165,7 +165,7 @@ public class TestMain {
         String url = response.getUrl();
         List<String> callBackTag = response.getCallBackTag();
         System.out.println("监听事件类型"+callBackTag);
-        System.out.println("回调接口地址"+url);
+        System.out.println("回调接口地址"+url);  //测试
     }
 
 
