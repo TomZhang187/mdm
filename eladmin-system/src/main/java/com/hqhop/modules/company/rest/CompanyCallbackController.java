@@ -1,35 +1,32 @@
 package com.hqhop.modules.company.rest;
 
 
-import cn.hutool.json.JSONObject;
 import com.dingtalk.api.response.OapiProcessinstanceGetResponse;
-import com.hqhop.aop.log.Log;
 import com.hqhop.common.dingtalk.DingTalkUtils;
 import com.hqhop.common.dingtalk.dingtalkVo.ApprovalCallbackVo;
+import com.hqhop.common.dingtalk.dingtalkVo.Approve;
+import com.hqhop.modules.company.service.AccountDingService;
 import com.hqhop.modules.company.service.CompanyDingService;
 import com.hqhop.modules.company.service.ContactDingService;
-import com.hqhop.modules.company.service.AccountDingService;
 import com.hqhop.modules.system.service.DictDetailService;
 import com.taobao.api.ApiException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author ：张丰
  * @date ：Created in 2019/11/2 0002 18:53
- * @description：客商钉钉回调接口
+ * @description：客商钉钉回调分发业务
  * @modified By：
  * @version: $
  */
-
-
-@Api(tags = "CompanyInfo钉钉回调")
-@RestController
-@RequestMapping("ding")
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+@Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class CompanyCallbackController {
 
     @Autowired
@@ -47,14 +44,16 @@ public class CompanyCallbackController {
 
 
 
-    @Log("客商钉钉审批回调")
-    @ApiOperation(value = "客商钉钉审批回调")
-    @PutMapping(value = "/companyCallback")
+
 //    @PreAuthorize("hasAnyRole('ADMIN','COMPANYINFO_ALL','COMPANYINFO_SELECT')")
-    public ResponseEntity  addCompanyCallback( @RequestBody(required = false) JSONObject requset) throws
+    public ResponseEntity  addCompanyCallback(Approve callbackVo) throws
             ApiException {{
 
-        ApprovalCallbackVo callback = ApprovalCallbackVo.getVoByJSON(requset);
+                if(callbackVo!=null){
+                    System.out.println("回调成功！"+callbackVo.getResult());
+                }
+
+        ApprovalCallbackVo callback = ApprovalCallbackVo.getVoByJSON(callbackVo);
             String type = callback.getType();
             String result = callback.getResult();
             String processId = callback.getProcessInstanceId();
@@ -65,8 +64,8 @@ public class CompanyCallbackController {
 
         if("start".equals(callback.getType())){
             //开始回调处理
-            String dingUrl = requset.getStr("url");
-            companyDingService.startApproval(processId,dingUrl,dicValue);
+            String dingUrl = callbackVo.getUrl();
+            companyDingService.startApproval(processId,callbackVo.getUrl(),dicValue);
             return new ResponseEntity(HttpStatus.OK);
         }
 

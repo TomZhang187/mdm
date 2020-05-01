@@ -26,7 +26,7 @@ INSERT INTO `sys_alipay_config` VALUES (1, '2016091700532697', 'utf-8', 'JSON', 
 -- ----------------------------
 -- Table structure for dept
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_dept`;
+DROP TABLE IF EXISTS `dept`;
 CREATE TABLE `dept`  (
   `id` serial NOT NULL,
   `name` varchar(255) ,
@@ -40,15 +40,15 @@ CREATE TABLE `dept`  (
 -- Records of dept
 -- ----------------------------
 
-INSERT INTO sys_dept (id,name, pid, create_time, enabled) VALUES (2, '研发部', 7, '2019-03-25 09:15:32', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled)  VALUES (5, '运维部', 7, '2019-03-25 09:20:44', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled)  VALUES (6, '测试部', 8, '2019-03-25 09:52:18', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled) VALUES (7, '华南分部', 1, '2019-03-25 11:04:50', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled)  VALUES (8, '华北分部', 1, '2019-03-25 11:04:53', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled)  VALUES (9, '财务部', 7, '2019-03-25 11:05:34', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled)  VALUES (10, '行政部', 8, '2019-03-25 11:05:58', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled)  VALUES (11, '人事部', 8, '2019-03-25 11:07:58', TRUE);
-INSERT INTO sys_dept (id,name, pid, create_time, enabled)  VALUES (12, '市场部', 7, '2019-03-25 11:10:24', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled) VALUES (2, '研发部', 7, '2019-03-25 09:15:32', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled)  VALUES (5, '运维部', 7, '2019-03-25 09:20:44', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled)  VALUES (6, '测试部', 8, '2019-03-25 09:52:18', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled) VALUES (7, '华南分部', 1, '2019-03-25 11:04:50', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled)  VALUES (8, '华北分部', 1, '2019-03-25 11:04:53', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled)  VALUES (9, '财务部', 7, '2019-03-25 11:05:34', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled)  VALUES (10, '行政部', 8, '2019-03-25 11:05:58', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled)  VALUES (11, '人事部', 8, '2019-03-25 11:07:58', TRUE);
+INSERT INTO dept (id,name, pid, create_time, enabled)  VALUES (12, '市场部', 7, '2019-03-25 11:10:24', TRUE);
 -- ----------------------------
 -- Table structure for dict
 -- ----------------------------
